@@ -1,0 +1,157 @@
+/* ===== Container ===== */
+.application-form-container {
+  max-width: 850px;
+  margin: 60px auto;
+  padding: 40px 50px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+  font-family: "Poppins", sans-serif;
+  color: #333;
+}
+
+/* ===== Title and Job Info ===== */
+.application-form-container h2 {
+  text-align: center;
+  color: #007bff;
+  font-size: 28px;
+  margin-bottom: 5px;
+}
+
+.application-form-container p {
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: #666;
+}
+
+/* ===== Form Styling ===== */
+.application-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.application-form label {
+  margin-top: 15px;
+  font-weight: 600;
+  color: #333;
+  font-size: 15px;
+}
+
+.application-form input,
+.application-form textarea,
+.application-form select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 6px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.application-form input:focus,
+.application-form textarea:focus,
+.application-form select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+/* ===== File Upload ===== */
+.application-form input[type="file"] {
+  padding: 5px;
+}
+
+/* ===== Textarea ===== */
+.application-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* ===== Questions Section ===== */
+h3 {
+  margin-top: 30px;
+  color: #444;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 6px;
+  font-size: 20px;
+}
+
+.question-block {
+  margin-top: 15px;
+  background: #f9fafc;
+  padding: 15px 20px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.question-block label {
+  display: block;
+  font-weight: 500;
+  color: #222;
+  margin-bottom: 6px;
+}
+
+/* ===== Buttons ===== */
+.submit-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 14px 18px;
+  border-radius: 8px;
+  margin-top: 25px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-1px);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .application-form-container {
+    padding: 25px 20px;
+  }
+
+  .application-form-container h2 {
+    font-size: 22px;
+  }
+
+  .application-form-container p {
+    font-size: 14px;
+  }
+
+  .application-form input,
+  .application-form textarea {
+    font-size: 13px;
+  }
+}
+
+/* ===== Success Message Styling (if needed) ===== */
+.success-message {
+  text-align: center;
+  background: #d4edda;
+  color: #155724;
+  padding: 10px 15px;
+  border-radius: 6px;
+  margin-top: 15px;
+  font-size: 15px;
+  border: 1px solid #c3e6cb;
+}
+
+/* ===== Error Message ===== */
+.error-message {
+  text-align: center;
+  background: #f8d7da;
+  color: #721c24;
+  padding: 10px 15px;
+  border-radius: 6px;
+  margin-top: 15px;
+  font-size: 15px;
+  border: 1px solid #f5c6cb;
+}

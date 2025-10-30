@@ -1,0 +1,77 @@
+.applied-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.applied-container h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #1d3a5d;
+}
+
+.no-jobs {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.applied-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.applied-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.applied-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.applied-header h2 {
+  color: #333;
+  font-size: 1.3rem;
+}
+
+.view-jd-link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.applied-info {
+  margin-top: 10px;
+  color: #555;
+}
+
+.applied-info p {
+  margin: 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.icon {
+  color: #1d3a5d;
+}
+
+.applied-btn {
+  background-color: #1d3a5d;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.applied-btn:hover {
+  background-color: #274a7a;
+}
