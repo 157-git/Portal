@@ -1,0 +1,421 @@
+/* ===== General Container ===== */
+.template1-wrapper {
+  width: 100%;
+  background: #fff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #222;
+}
+
+.template1-main {
+  width: 100%;
+  max-width: 900px;
+  background: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* ===== Buttons & Controls ===== */
+.template1-top-controls {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.template1-control-row {
+  display: flex;
+  gap: 10px;
+}
+
+.template1-btn {
+  background: #15beca;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.template1-btn:hover {
+  background: #1199a4;
+}
+
+/* ===== Form Section ===== */
+.template1-form {
+  padding: 20px;
+  background: #f9f9f9;
+}
+
+.template1-form-heading {
+  margin-bottom: 15px;
+  color: #222;
+  font-weight: 600;
+}
+
+.trow {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.trow label {
+  font-size: 13px;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.trow input,
+.trow textarea {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 13px;
+}
+
+.tsection {
+  margin-top: 20px;
+}
+
+.tsection h3 {
+  font-size: 14px;
+  color: #111;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 3px;
+}
+
+.small-btn {
+  margin-top: 5px;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* ===== Preview Layout ===== */
+.template1-preview-area {
+  width: 100%;
+  padding: 20px 0;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+}
+
+.template1-preview-container {
+  width: 90%;
+  max-width: 900px;
+  background: white;
+  border: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Header (Full Width) ===== */
+.template1-header {
+  text-align: left;
+  padding: 25px 40px 10px 40px;
+  border-bottom: 2px solid #15beca;
+  background-color: #f6f9f9;
+}
+
+.template1-name {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin: 0;
+  color: #111;
+}
+
+.template1-designation {
+  font-size: 15px;
+  color: #555;
+  margin-top: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== Two-column Layout ===== */
+.template1-columns {
+  display: grid;
+  grid-template-columns: 35% 65%;
+}
+
+/* ===== Left Column ===== */
+.template1-left-column {
+  padding: 25px 25px 25px 40px;
+  border-right: 1px solid #ddd;
+  background: #fafafa;
+}
+
+.template1-left-column .block {
+  margin-bottom: 20px;
+}
+
+.template1-left-column h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111;
+  text-transform: uppercase;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+.template1-left-column p,
+.template1-left-column li {
+  font-size: 12px;
+  color: #333;
+  line-height: 1.4;
+}
+
+.template1-left-column ul {
+  padding-left: 16px;
+  margin: 0;
+}
+
+.reference-block .ref-name {
+  font-weight: 600;
+  color: #000;
+}
+
+/* ===== Right Column ===== */
+.template1-right-column {
+  padding: 25px 35px 25px 35px;
+}
+
+.template1-right-column .block {
+  margin-bottom: 20px;
+}
+
+.template1-right-column h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111;
+  text-transform: uppercase;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+.template1-right-column p {
+  font-size: 13px;
+  color: #333;
+  line-height: 1.5;
+}
+
+/* ===== Experience & Education Styling ===== */
+.experience-item,
+.education-item {
+  margin-bottom: 15px;
+}
+
+.exp-top,
+.edu-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.exp-company strong,
+.edu-degree strong {
+  color: #111;
+}
+
+.exp-dates,
+.edu-dates {
+  font-size: 12px;
+  color: #555;
+  font-style: italic;
+}
+
+.exp-desc {
+  font-size: 12.5px;
+  color: #444;
+  margin-top: 5px;
+  text-align: justify;
+}
+
+/* ===== Page Responsiveness ===== */
+@media screen and (max-width: 768px) {
+  .template1-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .template1-left-column {
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .template1-header {
+    text-align: center;
+  }
+}
+/* ========== Side-by-Side Layout ========== */
+.template1-side-by-side {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  width: 100%;
+  gap: 25px;
+  align-items: flex-start;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* ===== Form Section (Updated Design) ===== */
+.template1-form {
+  background: #ffffff;
+  border: 1px solid #d0d0d0;
+  border-radius: 10px;
+  padding: 25px 30px;
+  height: 92vh;
+  overflow-y: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.template1-form-heading {
+  font-size: 20px;
+  font-weight: 600;
+  color: #0a0a0a;
+  margin-bottom: 20px;
+  text-align: center;
+  border-bottom: 2px solid #15beca;
+  padding-bottom: 8px;
+}
+
+/* Inputs and Textareas */
+.trow {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.trow label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.trow input,
+.trow textarea {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  background: #fdfdfd;
+}
+
+.trow input:focus,
+.trow textarea:focus {
+  outline: none;
+  border-color: #15beca;
+  box-shadow: 0 0 3px rgba(21, 190, 202, 0.3);
+}
+
+/* Section Titles */
+.tsection {
+  margin-top: 25px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+
+.tsection h3 {
+  font-size: 15px;
+  color: #0e0e0e;
+  margin-bottom: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-left: 3px solid #15beca;
+  padding-left: 10px;
+}
+
+/* Buttons inside form */
+.small-btn {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  margin-top: 5px;
+  transition: 0.2s ease;
+}
+
+.small-btn:hover {
+  background: #c0392b;
+}
+
+.tsection button {
+  margin-top: 8px;
+  background: #15beca;
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.tsection button:hover {
+  background: #0fa3b0;
+}
+
+/* Scrollbars */
+.template1-form::-webkit-scrollbar {
+  width: 8px;
+}
+.template1-form::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 10px;
+}
+.template1-form::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+/* ===== Live Preview Area ===== */
+.template1-preview-area {
+  height: 92vh;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 10px 0;
+}
+
+/* ===== Responsive ===== */
+@media screen and (max-width: 1000px) {
+  .template1-side-by-side {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+
+  .template1-form {
+    height: auto;
+  }
+
+  .template1-preview-area {
+    height: auto;
+  }
+}
+/* ====== Scale Up the Entire Resume Page ====== */
+.template1-wrapper {
+  zoom: 1.15; /* increases size by 15% */
+  transform-origin: top center;
+}

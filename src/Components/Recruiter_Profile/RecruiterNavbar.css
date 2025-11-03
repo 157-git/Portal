@@ -1,4 +1,4 @@
-/* ===== Global Reset ===== */
+/* // Samruddhi Patole 29/10/25 */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -683,54 +683,424 @@
   .recNav-links li { font-size: 1rem; margin: 10px 0; }
   .recNav-right { gap: 18px; }
 }
-/* ===== Naukri-style search bar ===== */
+/* ===== COMPACT SEARCH BAR (LEFT-ALIGNED) ===== */
 .recNav-center {
   flex: 1;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin-left: 40px;  /* adjust how far from logo */
+  margin-left: 100px; /* 👈 adjust how far left you want it */
 }
 
 .recNav-search-bar-group {
-  width: 100%;
-  max-width: 600px;   /* limit width */
   display: flex;
   align-items: center;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  background: #ffffff;
   padding: 4px 8px;
-  box-shadow: none;
+  border-radius: 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  gap: 6px;
+  position: relative;
+  transform: scale(0.9); /* 👈 slightly reduced size */
 }
 
 .recNav-search-input {
-  flex: 1;
-  margin-right: 8px;
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .recNav-search-input input,
 .recNav-search-input select {
-  width: 100%;
-  border: none;
+  padding: 4px 10px; /* 👈 smaller height */
+  border-radius: 14px;
+  border: 1px solid #ccc;
   outline: none;
-  padding: 6px 10px;
-  font-size: 14px;
-  background: transparent;
+  font-size: 12.5px; /* 👈 smaller text */
+  min-width: 120px; /* 👈 reduced width */
+  background: #f9f9f9;
   color: #333;
+  transition: all 0.2s ease;
 }
 
-.recNav-search-btn {
-  padding: 6px 12px;
-  background-color: #0073cf; /* Naukri blue variant */
-  border: none;
-  border-radius: 2px;
-  color: #fff;
-  font-size: 14px;
+.recNav-search-input input:focus,
+.recNav-search-input select:focus {
+  border-color: #15beca;
+  background: #fff;
+  box-shadow: 0 0 3px rgba(21, 190, 202, 0.3);
+}
+
+/* Suggestion Dropdown */
+.suggestion-dropdown {
+  position: absolute;
+  top: 33px; /* 👈 matches smaller input */
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  padding: 4px 0;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 999;
+}
+
+.suggestion-dropdown li {
+  padding: 6px 10px;
   cursor: pointer;
-  transition: background-color .2s ease;
+  transition: background 0.2s ease;
+  font-size: 13px;
+}
+
+.suggestion-dropdown li:hover {
+  background: #e6f8fa;
+}
+
+/* Search Button */
+.recNav-search-btn {
+  background: #15beca;
+  border: none;
+  color: white;
+  font-weight: 500;
+  border-radius: 14px;
+  padding: 5px 12px; /* 👈 smaller button */
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-size: 12.5px;
 }
 
 .recNav-search-btn:hover {
-  background-color: #0058a3;
+  background: #0fa3af;
+  transform: scale(1.03);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .recNav-search-bar-group {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    transform: scale(0.85);
+  }
+}
+.new-applicant-box {
+  width: 700px;
+  max-height: 80vh;
+  padding: 20px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+}
+
+.applicant-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.no-applicants {
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+  color: #666;
+}
+
+.applicant-table-container {
+  overflow-y: auto;
+  max-height: 65vh;
+  border-radius: 8px;
+  border: 1px solid #e1e1e1;
+}
+
+/* Scrollbar */
+.applicant-table-container::-webkit-scrollbar {
+  width: 6px;
+}
+.applicant-table-container::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 5px;
+}
+
+.modern-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.modern-table th {
+  background: #15beca;
+  color: #fff;
+  padding: 10px;
+  text-align: left;
+}
+
+.modern-table td {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.modern-table tr:hover {
+  background: #f8f8f8;
+}
+
+.btn-small {
+  padding: 5px 8px;
+  font-size: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 4px;
+}
+
+.primary-btn {
+  background: #007bff;
+  color: white;
+}
+.primary-btn:hover {
+  background: #0056b3;
+}
+
+.danger-btn {
+  background: #dc3545;
+  color: white;
+}
+.danger-btn:hover {
+  background: #bb2d3b;
+}
+
+.view-btn {
+  background: #28a745;
+  color: #fff;
+}
+.view-btn:hover {
+  background: #1f7d32;
+}
+
+.app-count-btn {
+  background: none;
+  border: none;
+  color: blue;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+}
+.app-count-btn:hover {
+  text-decoration: underline;
+}
+/* === Applicants Popup Overlay === */
+.applicant-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5000;
+}
+
+/* Popup box wrapper */
+.applicant-popup-box {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 800px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  animation: fadeIn .25s ease-in-out;
+}
+
+/* Close button */
+.popup-close-btn {
+  background: red;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* ============================================
+   ✅ Responsive Fixes & Layout Adjustments
+   ============================================ */
+
+/* --- General Layout --- */
+body {
+  overflow-x: hidden;
+}
+
+.recMainContainer {
+  margin-top: 70px; /* stays below navbar */
+  display: flex;
+  flex-wrap: nowrap;
+  min-height: calc(100vh - 70px);
+  gap: 20px;
+  padding: 0 20px;
+}
+
+/* --- For large laptops/desktops --- */
+@media (max-width: 1200px) {
+  .recNav-center {
+    margin-left: 250px; /* reduce large space */
+  }
+  .recJobCard {
+    max-width: 550px;
+  }
+}
+
+/* --- For tablets (width ≤ 992px) --- */
+@media (max-width: 992px) {
+  .recMainContainer {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .recSidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+    min-height: auto;
+  }
+
+  .recJobContainer {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .recJobCard {
+    max-width: 100%;
+    flex-direction: column;
+    text-align: left;
+  }
+
+  .recJobCard-right {
+    text-align: left;
+    margin-top: 10px;
+  }
+
+  .recNav-center {
+    margin-left: 30px;
+  }
+}
+
+/* --- For mobile devices (width ≤ 768px) --- */
+@media (max-width: 768px) {
+  /* Navbar Adjustments */
+  .recNav-navbar {
+    padding: 0 15px;
+    height: 65px;
+  }
+
+  .recNav-center {
+    margin-left: 10px;
+  }
+
+  .recNav-search-bar input {
+    max-width: 220px;
+  }
+
+  /* Sidebar */
+  .recSidebar {
+    width: 100%;
+    padding: 15px;
+  }
+
+  /* Job Cards */
+  .recJobCard {
+    padding: 15px 18px;
+    border-left-width: 4px;
+  }
+
+  /* Profile panel */
+  .recNav-profile-panel {
+    width: 90%;
+    right: 5%;
+    top: 65px;
+    padding: 15px;
+  }
+
+  /* Chat popup */
+  .chat-popup-overlay {
+    width: 95%;
+    right: 2.5%;
+  }
+
+  /* Applicants table */
+  .new-applicant-box {
+    width: 95%;
+    max-height: 85vh;
+  }
+}
+
+/* --- For small mobile (width ≤ 480px) --- */
+@media (max-width: 480px) {
+  .recNav-navbar {
+    height: 60px;
+  }
+
+  .recNav-center {
+    margin-left: 5px;
+  }
+
+  .recNav-search-bar input {
+    max-width: 180px;
+    padding: 6px 10px;
+  }
+
+  .recSidebar {
+    padding: 10px;
+  }
+
+  .recJobCard {
+    padding: 12px 15px;
+    border-radius: 10px;
+  }
+
+  .recNav-right {
+    gap: 18px;
+  }
+
+  .recNav-links {
+    gap: 20px;
+  }
+
+  .chat-popup-box {
+    width: 100%;
+    height: 350px;
+  }
+
+  .modern-table th, .modern-table td {
+    font-size: 12px;
+    padding: 6px;
+  }
+}
+
+/* --- Ultra small screens (≤ 360px) --- */
+@media (max-width: 360px) {
+  .recNav-navbar {
+    height: 55px;
+  }
+
+  .recNav-logo-text {
+    font-size: 18px;
+  }
+
+  .recNav-search-bar input {
+    max-width: 160px;
+  }
+
+  .recSidebar-actions {
+    flex-direction: column;
+  }
+
+  .recSidebar-addJD-btn,
+  .recSidebar-addTest-btn {
+    width: 100%;
+  }
 }

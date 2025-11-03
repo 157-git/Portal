@@ -1,0 +1,291 @@
+/* Samruddhi Patole  */
+
+.foundit-clone {
+  width: 100%;
+  background: linear-gradient(90deg, #f7f1ff 0%, #ffffff 100%);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin-top: 0;
+  padding-top: 20px; /* adjust this to match navbar height */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: calc(100vh - 70px);
+}
+
+/* === HERO CENTER === */
+.hero-center {
+  text-align: center;
+  width: 100%;
+  max-width: 950px;
+  margin: 0 auto;
+}
+
+.hero-center h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #526d82;
+  margin-bottom: 25px;
+}
+
+/* === SEARCH BAR === */
+.search-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 48px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  width: 100%;
+  max-width: 900px; /* matches Foundit proportion */
+  height: 58px;
+  margin: 0 auto;
+  padding: 0 8px;
+}
+
+.input-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+    padding: 0 20px;
+  flex: 1;
+}
+
+.input-box .icon {
+  color: #666;
+  font-size: 1rem;
+}
+
+.input-box input,
+.input-box select {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.input-box input::placeholder {
+  color: #aaa;
+}
+
+/* Divider line */
+.divider {
+  width: 1px;
+  height: 26px;
+  background-color: #ddd;
+}
+
+/* === SEARCH BUTTON === */
+.search-btn {
+  background: linear-gradient(90deg, #526d82, #526d82);
+  color: #fff;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 48px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  height: 44px;
+  min-width: 110px;
+  margin-right: 8px;
+  box-shadow: 0 4px 10px rgba(122, 0, 230, 0.2);
+  transition: all 0.3s ease;
+
+  position: relative;
+  top: 10px; /* ✅ Moves the button slightly downward */
+}
+
+.search-btn:hover {
+  background: linear-gradient(90deg, #526d82, #526d82);
+  transform: translateY(-2px);
+}
+/* === PROFILE REMINDER CARD === */
+.profile-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+ padding: 25px 35px;
+  margin: 40px auto;
+  max-width: 900px;
+}
+
+.profile-left h3 {
+  font-size: 1rem;
+  color: #111;
+  margin-bottom: 4px;
+}
+
+.profile-left p {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.profile-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.profile-score h2 {
+  color: #4caf50;
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.add-profile-btn {
+  background: #ebe5ff;
+  color: #526d82;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.add-profile-btn:hover {
+  background: #526d82;
+  color: #fff;
+}
+/* === JOB CARDS === */
+.jobs-section {
+  max-width: 1100px;
+  margin: 50px auto;
+}
+
+.jobs-section h2 {
+  color: #222;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
+.job-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.job-card {
+ background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.job-card h4 {
+  color: #1a1a1a;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.job-card p {
+  color: #555;
+  font-size: 0.9rem;
+  margin: 2px 0;
+}
+.job-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+.job-card .job-meta {
+  color: #777;
+  font-size: 0.85rem;
+  margin: 6px 0;
+}
+
+.job-card button {
+ background: #ebe5ff;
+  color: #526d82;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.2s ease;
+}
+.job-card button:hover {
+  background: #526d82;
+  color: #fff;
+}
+
+/* === FEATURED COMPANIES === */
+.featured-companies {
+  text-align: center;
+  margin: 50px 0;
+}
+
+.featured-companies h2 {
+  color: #333;
+  margin-bottom: 25px;
+}
+
+.company-logos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+}
+
+.company-logos img {
+  width: 80px;
+  opacity: 0.8;
+  transition: transform 0.3s ease, opacity 0.3s;
+}
+
+.company-logos img:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* === FOOTER === */
+.footer-section {
+  margin-top: 50px;
+  background: #f8f8f8;
+  padding: 50px 0;
+}
+
+.footer-banner {
+  max-width: 900px;
+  margin: 20px auto;
+  border-radius: 16px;
+  color: #fff;
+  padding: 25px;
+  text-align: center;
+}
+
+.purple-banner {
+  background: linear-gradient(90deg, #526d82, #526d82);
+}
+
+.blue-banner {
+  background: linear-gradient(90deg, #526d82, #526d82);
+}
+
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .search-bar {
+    flex-direction: column;
+    border-radius: 16px;
+    height: auto;
+    padding: 15px;
+    gap: 10px;
+  }
+
+  .divider {
+    display: none;
+  }
+
+  .search-btn {
+    width: 100%;
+  }
+}

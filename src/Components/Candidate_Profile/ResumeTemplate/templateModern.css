@@ -1,0 +1,22 @@
+.modern-template {
+  background: #f5f9ff;
+  color: #1e293b;
+  padding: 40px 60px;
+  font-family: "Poppins", sans-serif;
+}
+.modern-name {
+  color: #2563eb;
+  font-size: 2.5rem;
+}
+.modern-designation {
+  color: #475569;
+}
+.modern-contact {
+  margin-bottom: 20px;
+  color: #555;
+}
+.modern-template h2 {
+  border-bottom: 2px solid #2563eb;
+  color: #2563eb;
+  padding-bottom: 4px;
+}

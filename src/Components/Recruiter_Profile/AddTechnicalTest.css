@@ -1,0 +1,374 @@
+/* =========================
+   🌟 Main Container & Titles
+========================= */
+
+/* // Samruddhi Patole 29/10/25 */
+.techTest-container {
+  padding: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  animation: fadeInMain 0.6s ease;
+}
+
+@keyframes fadeInMain {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.techTest-title {
+  font-size: 32px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #3b82f6, #10b981, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.techTest-desc {
+  font-size: 16px;
+  margin-bottom: 25px;
+  color: #555;
+  text-align: center;
+}
+
+/* =========================
+   🎯 Role Cards Grid
+========================= */
+.techTest-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.techTest-card {
+  background: #ffffff;
+  border: 2px solid #e0e0e0;
+  border-radius: 14px;
+  padding: 18px 25px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  min-width: 180px;
+  animation: popIn 0.4s ease;
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.techTest-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 25px rgba(59, 130, 246, 0.2);
+  border-color: #3b82f6;
+}
+
+.techTest-card.selected {
+  background: linear-gradient(135deg, #3b82f6, #10b981);
+  color: white;
+  border-color: #3b82f6;
+  box-shadow: 0 14px 25px rgba(59, 130, 246, 0.3);
+}
+
+/* =========================
+   💬 Modal Styles
+========================= */
+.mcq-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeOverlay 0.3s ease;
+}
+
+@keyframes fadeOverlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.mcq-modal {
+  background-color: white;
+  padding: 25px;
+  border-radius: 14px;
+  width: 700px;
+  max-width: 90%;
+  max-height: 90%;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(25px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ❌ Close Button */
+.mcq-close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 50%;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+.mcq-close-btn:hover {
+  background-color: #e60000;
+  transform: rotate(90deg);
+}
+
+/* =========================
+   ➕ Add MCQ Button
+========================= */
+.add-question-btn {
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: white;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+}
+
+.add-question-btn:hover {
+  background: linear-gradient(135deg, #218838, #17a589);
+  transform: scale(1.05);
+}
+
+/* =========================
+   🧾 Add Question Form
+========================= */
+.add-question-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 15px;
+  padding: 18px;
+  background: #f9fafb;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  animation: fadeInForm 0.4s ease;
+}
+
+@keyframes fadeInForm {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.add-question-form h4 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.add-question-form input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  transition: border 0.2s ease;
+}
+.add-question-form input:focus {
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 5px rgba(59, 130, 246, 0.3);
+}
+
+.add-form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.add-form-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.add-form-buttons button:first-child {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: white;
+  box-shadow: 0 3px 8px rgba(59, 130, 246, 0.3);
+}
+.add-form-buttons button:first-child:hover {
+  transform: scale(1.05);
+}
+
+.add-form-buttons button:last-child {
+  background-color: #ccc;
+}
+.add-form-buttons button:last-child:hover {
+  background-color: #aaa;
+  transform: scale(1.05);
+}
+
+/* =========================
+   📋 Question List
+========================= */
+.mcq-list {
+  margin-top: 25px;
+  padding: 12px;
+  background-color: #f8fafc;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  animation: fadeInList 0.4s ease;
+}
+
+@keyframes fadeInList {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.mcq-item {
+  margin-bottom: 15px;
+  padding: 12px 15px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  border-left: 5px solid #3b82f6;
+  transition: all 0.3s ease;
+}
+
+.mcq-item:hover {
+  transform: translateX(5px);
+  background: #f0f9ff;
+}
+
+.mcq-item strong {
+  color: #1e293b;
+}
+
+.mcq-item ul {
+  list-style-type: disc;
+  margin-left: 20px;
+  margin-top: 5px;
+}
+
+.mcq-item li {
+  margin-bottom: 3px;
+  font-size: 15px;
+  color: #333;
+}
+
+/* =========================
+   🗑 Delete Button
+========================= */
+.delete-question-btn {
+  background-color: #dc3545;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  float: right;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.delete-question-btn:hover {
+  background-color: #c82333;
+  transform: scale(1.1);
+}
+
+/* =========================
+   📱 Responsive Design
+========================= */
+@media (max-width: 768px) {
+  .techTest-container {
+    padding: 15px;
+  }
+
+  .techTest-grid {
+    justify-content: center;
+  }
+
+  .techTest-card {
+    min-width: 140px;
+    font-size: 14px;
+    padding: 12px 15px;
+  }
+
+  .mcq-modal {
+    width: 95%;
+    padding: 18px;
+  }
+
+  .add-question-btn {
+    width: 100%;
+  }
+
+  .add-question-form input {
+    font-size: 13px;
+  }
+
+  .mcq-item {
+    font-size: 14px;
+  }
+
+  .delete-question-btn {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+}

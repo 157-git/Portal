@@ -1,0 +1,322 @@
+/* ===============================
+   template3Resume.css (Fixed Scroll)
+   Same design + functional scrollbars
+   =============================== */
+
+/* root layout */
+.t3-root {
+  width: 100%;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  background: #f7f7f7;
+  font-family: "Segoe UI", Tahoma, Verdana, sans-serif;
+  color: #111;
+  overflow: hidden; /* prevent double scrollbars */
+}
+
+/* top controls */
+.t3-controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.t3-btn {
+  background: #111;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.t3-btn:hover {
+  opacity: 0.92;
+}
+
+/* side-by-side layout */
+.t3-side-by-side {
+  display: grid;
+  grid-template-columns: 42% 58%;
+  gap: 18px;
+  align-items: start;
+  width: 100%;
+  height: calc(100vh - 120px); /* fits viewport */
+  box-sizing: border-box;
+  overflow: hidden; /* contain both panels */
+}
+
+/* form styling (left column) */
+.t3-form {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  padding: 18px;
+  border-radius: 8px;
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-gutter: stable both-edges;
+}
+.t3-form h2 {
+  margin: 0 0 12px;
+  text-align: center;
+  font-size: 18px;
+}
+.t3-form label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 600;
+  font-size: 13px;
+}
+.t3-form input[type="text"],
+.t3-form input[type="number"],
+.t3-form textarea,
+.t3-form input[type="file"] {
+  width: 100%;
+  padding: 8px 10px;
+  margin-top: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+.t3-row {
+  display: grid;
+  grid-template-columns: 1fr 80px 80px;
+  gap: 8px;
+  align-items: center;
+  margin-top: 8px;
+}
+.t3-row textarea {
+  grid-column: 1 / -1;
+  margin-top: 8px;
+}
+.t3-small {
+  background: #e5e5e5;
+  border: none;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.t3-small:hover {
+  background: #d6d6d6;
+}
+
+/* preview card (right side) */
+.t3-preview {
+  background: #fff;
+  border-radius: 10px;
+  overflow: auto;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e6e6e6;
+  height: 100%;
+  scrollbar-gutter: stable both-edges;
+}
+
+/* inner two column preview */
+.t3-preview-inner {
+  display: grid;
+  grid-template-columns: 35% 65%;
+  gap: 0;
+  min-height: 720px;
+}
+
+/* left dark column */
+.t3-left-col {
+  background: #2b2b2d;
+  color: #eee;
+  padding: 36px 28px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.t3-left-col .t3-decor {
+  position: absolute;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+}
+.t3-left-col .top-left {
+  top: -40px;
+  left: -40px;
+  transform: rotate(12deg);
+  border: 5px dashed rgba(255, 255, 255, 0.06);
+}
+.t3-left-col .bottom-left {
+  bottom: -50px;
+  left: -30px;
+  transform: rotate(-12deg);
+}
+
+/* photo */
+.t3-photo-wrap {
+  width: 160px;
+  height: 180px;
+  background: #ddd;
+  overflow: hidden;
+  border-radius: 6px;
+  border: 6px solid rgba(255, 255, 255, 0.04);
+  margin-bottom: 20px;
+}
+.t3-photo-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* left column blocks */
+.t3-block {
+  width: 100%;
+  margin-bottom: 18px;
+}
+.t3-block h5 {
+  font-size: 12px;
+  letter-spacing: 0.8px;
+  color: #d9d9d9;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+}
+.t3-block p {
+  color: #dcdcdc;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.t3-block ul {
+  list-style: disc;
+  margin-left: 18px;
+  color: #dcdcdc;
+}
+.t3-block ul li {
+  margin-bottom: 6px;
+}
+
+/* right column (white) */
+.t3-right-col {
+  padding: 40px 36px;
+  box-sizing: border-box;
+}
+.t3-name {
+  text-align: left;
+  margin-bottom: 18px;
+}
+.t3-title-large {
+  font-size: 46px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: #4b4b4b;
+  line-height: 0.95;
+}
+.t3-title-small {
+  font-size: 18px;
+  color: #8b8b8b;
+  margin-top: 6px;
+}
+.t3-role {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #9a9a9a;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+/* sections: education / experience */
+.t3-block h5 {
+  color: #666;
+  border-bottom: 0;
+  margin-bottom: 10px;
+}
+.t3-list-vertical {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.t3-edu-item,
+.t3-exp-item {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 14px;
+  align-items: flex-start;
+}
+.t3-edu-left,
+.t3-exp-left {
+  width: 64px;
+  color: #9b9b9b;
+  font-size: 12px;
+}
+.t3-edu-right,
+.t3-exp-right {
+  flex: 1;
+}
+.t3-sub {
+  font-size: 13px;
+  color: #8e8e8e;
+}
+
+/* trait bars at bottom of right column */
+.t3-trait-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.t3-trait-label {
+  width: 110px;
+  color: #666;
+  font-size: 13px;
+}
+.t3-trait-bar {
+  flex: 1;
+  height: 8px;
+  background: #e6e6e6;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.t3-trait-fill {
+  height: 100%;
+  background: #bfc8c1;
+}
+
+/* Scrollbars */
+.t3-form::-webkit-scrollbar,
+.t3-preview::-webkit-scrollbar {
+  width: 8px;
+}
+.t3-form::-webkit-scrollbar-thumb,
+.t3-preview::-webkit-scrollbar-thumb {
+  background: #b3b3b3;
+  border-radius: 6px;
+}
+.t3-form::-webkit-scrollbar-thumb:hover,
+.t3-preview::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
+
+/* responsive */
+@media screen and (max-width: 1100px) {
+  .t3-side-by-side {
+    grid-template-columns: 1fr;
+    height: auto;
+    overflow: visible;
+  }
+  .t3-form,
+  .t3-preview {
+    max-height: none;
+    height: auto;
+  }
+  .t3-preview-inner {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .t3-left-col,
+  .t3-right-col {
+    padding: 20px;
+  }
+  .t3-photo-wrap {
+    width: 120px;
+    height: 140px;
+  }
+  .t3-title-large {
+    font-size: 36px;
+  }
+}

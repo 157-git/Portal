@@ -1,0 +1,189 @@
+/* Modern RegisterEmp.css */
+
+.register-card {
+  display: flex;
+  width: 75%;
+  max-width: 950px;
+  height: 571px;
+  margin: 70px auto;
+  background: black;
+  box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
+  border-radius: 20px;
+  overflow: hidden;
+  animation: floatCard 1.8s ease-out;
+  font-family: "Poppins", sans-serif;
+  
+}
+
+/* .main-container{
+  background: linear-gradient(135deg, #dde6ed, #9db2bf);
+} */
+
+/* ---- Left Panel ---- */
+.left-panel {
+  flex: 1;
+  background: linear-gradient(135deg, #526d82, #7695b1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.register-logo {
+  width: 80%;
+  max-width: 300px;
+  height: auto;
+  object-fit: cover;
+
+  /* Soft rectangular fade */
+  mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%),
+    linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+  mask-composite: intersect;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%),
+    linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+  -webkit-mask-composite: intersect;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.register-logo:hover {
+  transform: scale(1.05);
+  opacity: 0.95;
+}
+
+/* ---- Right Panel ---- */
+.right-panel {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px 50px;
+}
+
+.register-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #27374d;
+  text-align: center;
+}
+
+.register-form{
+  gap: 0rem;
+}
+/* ---- Inputs ---- */
+.register-form input,
+.register-form select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1.5px solid #ccc;
+  border-radius: 10px;
+  font-size: 15px;
+  transition: all 0.3s;
+}
+
+.register-form input:focus,
+.register-form select:focus {
+  outline: none;
+  border-color: #526d82;
+  box-shadow: 0 0 6px rgba(82, 109, 130, 0.3);
+}
+
+/* Password eye icon */
+.password-field {
+  position: relative;
+}
+
+.password-field .eye-icon {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  color: #526d82;
+  cursor: pointer;
+}
+
+/* ---- Buttons ---- */
+.btn-register {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #526d82, #7695b1);
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-register:hover {
+  background: linear-gradient(135deg, #40596b, #5b7a92);
+  transform: scale(1.02);
+}
+
+.btn-google {
+  width: 100%;
+  padding: 10px;
+  border: 1.5px solid #526d82;
+  color: #526d82;
+  font-weight: 600;
+  border-radius: 10px;
+  background: white;
+  cursor: pointer;
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s;
+}
+
+.btn-google:hover {
+  background: #eef2ff;
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.login-link a {
+  color: #526d82;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+/* ---- Animation ---- */
+@keyframes floatCard {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  .register-card {
+    flex-direction: column;
+    width: 90%;
+    height: auto;
+  }
+
+  .left-panel {
+    display: none;
+  }
+
+  .right-panel {
+    padding: 30px 25px;
+  }
+}

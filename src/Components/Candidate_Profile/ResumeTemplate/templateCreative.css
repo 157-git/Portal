@@ -1,0 +1,40 @@
+.creative-template {
+  background: linear-gradient(135deg, #e0f7fa, #fce4ec);
+  font-family: "Quicksand", sans-serif;
+  color: #212121;
+  padding: 40px 70px;
+}
+.creative-header {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 25px;
+}
+.creative-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid #e91e63;
+}
+.creative-template h1 {
+  color: #e91e63;
+  margin: 0;
+}
+.creative-template h3 {
+  color: #0288d1;
+  margin: 0;
+}
+.creative-template h2 {
+  border-bottom: 2px solid #e91e63;
+  color: #e91e63;
+  margin-bottom: 8px;
+}
+.creative-skills span {
+  background: white;
+  border-radius: 20px;
+  padding: 6px 12px;
+  margin: 4px;
+  font-size: 0.9rem;
+  color: #e91e63;
+  border: 1px solid #e91e63;
+}

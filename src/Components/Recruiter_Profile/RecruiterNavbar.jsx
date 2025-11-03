@@ -1,3 +1,4 @@
+// Samruddhi Patole 29/10/25
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -17,16 +18,16 @@ import "./RecruiterNavbar.css";
 const RecruiterNavbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openPanel, setOpenPanel] = useState(null);
-    const [allJobs, setAllJobs] = useState([]);
-  
+  const [allJobs, setAllJobs] = useState([]);
+
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(3);
   const [selectedJD, setSelectedJD] = useState(null);
   const [showJDModal, setShowJDModal] = useState(false);
   const [showTestPopup, setShowTestPopup] = useState(false);
-//  const [companies, setCompanies] = useState([]);
-//   const [showCompanies, setShowCompanies] = useState(false);
+  //  const [companies, setCompanies] = useState([]);
+  //   const [showCompanies, setShowCompanies] = useState(false);
   const [filters, setFilters] = useState({
     keyword: "",
     location: "All Locations",
@@ -45,73 +46,85 @@ const RecruiterNavbar = () => {
   ]);
   const [newMessage, setNewMessage] = useState("");
 
-   const [searchQuery, setSearchQuery] = useState("");
-    const [suggestions, setSuggestions] = useState([]);
-  
-    const jobsRef = useRef(null);
-    const searchContainerRef = useRef(null);
-    const navigate = useNavigate();
-  
-    const [designationSuggestions, setDesignationSuggestions] = useState([]);
-    const [locationSuggestions, setLocationSuggestions] = useState([]);
-  
+  const [searchQuery, setSearchQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+
+  const jobsRef = useRef(null);
+  const searchContainerRef = useRef(null);
+  const navigate = useNavigate();
+
+  const [designationSuggestions, setDesignationSuggestions] = useState([]);
+  const [locationSuggestions, setLocationSuggestions] = useState([]);
+
+  const [showApplicantsPopup, setShowApplicantsPopup] = useState(false);
+  const [applicants, setApplicants] = useState([]);
+  const [selectedJobId, setSelectedJobId] = useState(null);
 
   // Close profile panel on outside click
-//   useEffect(() => {
-//     const handleClickOutside = (event) => {
-//       if (
-//         openPanel === "profile" &&
-//         jobsRef.current &&
-//         !jobsRef.current.contains(event.target)
-//       ) {
-//         setOpenPanel(null);
-//       }
-//     };
-//     document.addEventListener("mousedown", handleClickOutside);
-//     return () => document.removeEventListener("mousedown", handleClickOutside);
-//   }, [openPanel]);
-//  const handleCompaniesClick = async () => {
-//     try {
-//       if (!showCompanies) {
-//         const response = await axios.get("http://localhost:8080/api/requirements/companies");
-//         setCompanies(response.data);
-//       }
-//       setShowCompanies((prev) => !prev); // toggle modal open/close
-//     } catch (error) {
-//       console.error("Error fetching companies:", error);
-//       alert("Failed to fetch company list.");
-//     }
-//   };
+  //   useEffect(() => {
+  //     const handleClickOutside = (event) => {
+  //       if (
+  //         openPanel === "profile" &&
+  //         jobsRef.current &&
+  //         !jobsRef.current.contains(event.target)
+  //       ) {
+  //         setOpenPanel(null);
+  //       }
+  //     };
+  //     document.addEventListener("mousedown", handleClickOutside);
+  //     return () => document.removeEventListener("mousedown", handleClickOutside);
+  //   }, [openPanel]);
+  //  const handleCompaniesClick = async () => {
+  //     try {
+  //       if (!showCompanies) {
+  //         const response = await axios.get("http://localhost:8080/api/requirements/companies");
+  //         setCompanies(response.data);
+  //       }
+  //       setShowCompanies((prev) => !prev); // toggle modal open/close
+  //     } catch (error) {
+  //       console.error("Error fetching companies:", error);
+  //       alert("Failed to fetch company list.");
+  //     }
+  //   };
+  const API_BASE_URL = "http://localhost:8080";
+
+
+
+  const handleViewApplicants = async (requirementId) => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/applications/requirement/${requirementId}`);
+
+      setApplicants(response.data);
+      setSelectedJobId(requirementId);
+      setShowApplicantsPopup(true);
+    } catch (error) {
+      console.error("❌ Error:", error);
+    }
+  };
+
+
+
 
   // ✅ Fetch jobs and listen to Apply count updates
+  // ✅ Fetch jobs only once from backend
   useEffect(() => {
     const fetchJobs = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("http://localhost:8080/api/requirements/all");
-        let jobList = response.data || [];
+        const response = await axios.get(`${API_BASE_URL}/api/requirements/all`);
 
-        // ✅ Start every job with 0 applications
-        jobList = jobList.map((job) => ({
+        let jobList = response.data.map(job => ({
           ...job,
-          applications: 0,
+          applications: 0 // initialize
         }));
 
-        // ✅ Merge stored application counts only if available
-        const storedJobs = JSON.parse(localStorage.getItem("jobsList")) || [];
-        if (storedJobs.length > 0) {
-          jobList = jobList.map((job) => {
-            const stored = storedJobs.find(
-              (j) => Number(j.requirementId) === Number(job.requirementId)
-            );
-            return {
-              ...job,
-              applications: stored ? Number(stored.applications) || 0 : 0,
-            };
-          });
+        // ✅ GET LIVE APPLICATION COUNT FOR EACH JOB
+        for (const job of jobList) {
+          const res = await axios.get(`${API_BASE_URL}/api/applications/requirement/${job.requirementId}`);
+          job.applications = res.data.length; // real-time count
         }
 
-        localStorage.setItem("jobsList", JSON.stringify(jobList));
+        setAllJobs(jobList);
         setJobs(jobList);
       } catch (error) {
         console.error("❌ Error fetching jobs:", error);
@@ -121,36 +134,9 @@ const RecruiterNavbar = () => {
     };
 
     fetchJobs();
-
-    // ✅ Real-time count update listener
-    const handleUpdate = (e) => {
-      const { requirementId, email } = e.detail;
-
-      setJobs((prevJobs) => {
-        const updated = prevJobs.map((job) => {
-          if (Number(job.requirementId) === Number(requirementId)) {
-            const appliedList = JSON.parse(localStorage.getItem("appliedJobsList")) || [];
-            const alreadyApplied = appliedList.some(
-              (j) => j.jobId === requirementId && j.email === email
-            );
-
-            if (alreadyApplied) return job;
-            return { ...job, applications: (Number(job.applications) || 0) + 1 };
-          }
-          return job;
-        });
-
-        localStorage.setItem("jobsList", JSON.stringify(updated));
-        return updated;
-      });
-    };
-
-    window.addEventListener("applicationUpdated", handleUpdate);
-
-    return () => {
-      window.removeEventListener("applicationUpdated", handleUpdate);
-    };
   }, []);
+
+
 
   const togglePanel = (panel) => {
     setOpenPanel((prev) => (prev === panel ? null : panel));
@@ -187,14 +173,14 @@ const RecruiterNavbar = () => {
       navigate("/add-non-technical-test");
     }
   };
-    const normalizeText = (text = "") => {
+  const normalizeText = (text = "") => {
     return String(text)
       .toLowerCase()
       .replace(/\s+/g, "")   // remove spaces
       .replace(/\./g, "")   // remove dots
       .replace(/[^a-z0-9]/g, ""); // optionally remove other punctuation
   };
-    const handleSearchChange = (value) => {
+  const handleSearchChange = (value) => {
     setSearchQuery(value);
     if (!value || !value.trim()) {
       setSuggestions([]);
@@ -216,118 +202,118 @@ const RecruiterNavbar = () => {
     const uniqueFiltered = [...new Set(filtered)].slice(0, 8);
     setSuggestions(uniqueFiltered);
   };
-   const handleSuggestionClick = (selected) => {
+  const handleSuggestionClick = (selected) => {
     setSearchQuery(selected);
     setSuggestions([]);
-      const norm = normalizeText(selected);
-       const filtered = allJobs.filter((job) =>
+    const norm = normalizeText(selected);
+    const filtered = allJobs.filter((job) =>
       normalizeText(job.designation || "").includes(norm) ||
       normalizeText(job.location || "").includes(norm)
     );
 
     setJobs(filtered);
   };
-   const handleSearchSubmit = (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    setSuggestions([]);
+  const handleSearchSubmit = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      setSuggestions([]);
 
-    if (!searchQuery.trim()) {
-      setJobs(allJobs);
+      if (!searchQuery.trim()) {
+        setJobs(allJobs);
+        return;
+      }
+
+      // Split by comma and normalize each keyword
+      const keywords = searchQuery
+        .split(",")
+        .map((k) => normalizeText(k))
+        .filter((k) => k.length > 0);
+
+      const filtered = allJobs.filter((job) => {
+        const jobDesignation = normalizeText(job.designation || "");
+        const jobLocation = normalizeText(job.location || "");
+        const jobCompany = normalizeText(job.companyName || "");
+        const jobSkills = normalizeText(job.skills || "");
+
+        // ✅ check if any keyword matches any field
+        return keywords.some(
+          (kw) =>
+            jobDesignation.includes(kw) ||
+            jobLocation.includes(kw) ||
+            jobCompany.includes(kw) ||
+            jobSkills.includes(kw)
+        );
+      });
+
+      setJobs(filtered);
+    }
+  };
+  const handleDesignationChange = (value) => {
+    setFilters((prev) => ({ ...prev, designation: value }));
+
+    if (!value.trim()) {
+      setDesignationSuggestions([]);
       return;
     }
 
-    // Split by comma and normalize each keyword
-    const keywords = searchQuery
-      .split(",")
-      .map((k) => normalizeText(k))
-      .filter((k) => k.length > 0);
+    const designations = [...new Set(allJobs.map((j) => j.designation || ""))];
+    const filtered = designations.filter((d) =>
+      d.toLowerCase().includes(value.toLowerCase())
+    );
+    setDesignationSuggestions(filtered.slice(0, 6));
+  };
+
+  const handleSelectDesignation = (selected) => {
+    setFilters((prev) => ({ ...prev, designation: selected }));
+    setDesignationSuggestions([]);
+  };
+
+  // --- Handle experience ---
+  const handleExperienceChange = (value) => {
+    setFilters((prev) => ({ ...prev, experience: value }));
+  };
+
+  // --- Handle location typing ---
+  const handleLocationChange = (value) => {
+    setFilters((prev) => ({ ...prev, location: value }));
+
+    if (!value.trim()) {
+      setLocationSuggestions([]);
+      return;
+    }
+
+    const locations = [...new Set(allJobs.map((j) => j.location || ""))];
+    const filtered = locations.filter((loc) =>
+      loc.toLowerCase().includes(value.toLowerCase())
+    );
+    setLocationSuggestions(filtered.slice(0, 6));
+  };
+
+  const handleSelectLocation = (selected) => {
+    setFilters((prev) => ({ ...prev, location: selected }));
+    setLocationSuggestions([]);
+  };
+
+  // --- Combined Search ---
+  const handleCombinedSearch = () => {
+    const { designation, experience, location } = filters;
 
     const filtered = allJobs.filter((job) => {
-      const jobDesignation = normalizeText(job.designation || "");
-      const jobLocation = normalizeText(job.location || "");
-      const jobCompany = normalizeText(job.companyName || "");
-      const jobSkills = normalizeText(job.skills || "");
+      const matchDesignation = designation
+        ? job.designation?.toLowerCase().includes(designation.toLowerCase())
+        : true;
+      const matchLocation = location
+        ? job.location?.toLowerCase().includes(location.toLowerCase())
+        : true;
+      const matchExperience = experience
+        ? job.experience?.toLowerCase().includes(experience.toLowerCase())
+        : true;
 
-      // ✅ check if any keyword matches any field
-      return keywords.some(
-        (kw) =>
-          jobDesignation.includes(kw) ||
-          jobLocation.includes(kw) ||
-          jobCompany.includes(kw) ||
-          jobSkills.includes(kw)
-      );
+      return matchDesignation && matchLocation && matchExperience;
     });
 
     setJobs(filtered);
-  }
-};
-const handleDesignationChange = (value) => {
-  setFilters((prev) => ({ ...prev, designation: value }));
-
-  if (!value.trim()) {
-    setDesignationSuggestions([]);
-    return;
-  }
-
-  const designations = [...new Set(allJobs.map((j) => j.designation || ""))];
-  const filtered = designations.filter((d) =>
-    d.toLowerCase().includes(value.toLowerCase())
-  );
-  setDesignationSuggestions(filtered.slice(0, 6));
-};
-
-const handleSelectDesignation = (selected) => {
-  setFilters((prev) => ({ ...prev, designation: selected }));
-  setDesignationSuggestions([]);
-};
-
-// --- Handle experience ---
-const handleExperienceChange = (value) => {
-  setFilters((prev) => ({ ...prev, experience: value }));
-};
-
-// --- Handle location typing ---
-const handleLocationChange = (value) => {
-  setFilters((prev) => ({ ...prev, location: value }));
-
-  if (!value.trim()) {
-    setLocationSuggestions([]);
-    return;
-  }
-
-  const locations = [...new Set(allJobs.map((j) => j.location || ""))];
-  const filtered = locations.filter((loc) =>
-    loc.toLowerCase().includes(value.toLowerCase())
-  );
-  setLocationSuggestions(filtered.slice(0, 6));
-};
-
-const handleSelectLocation = (selected) => {
-  setFilters((prev) => ({ ...prev, location: selected }));
-  setLocationSuggestions([]);
-};
-
-// --- Combined Search ---
-const handleCombinedSearch = () => {
-  const { designation, experience, location } = filters;
-
-  const filtered = allJobs.filter((job) => {
-    const matchDesignation = designation
-      ? job.designation?.toLowerCase().includes(designation.toLowerCase())
-      : true;
-    const matchLocation = location
-      ? job.location?.toLowerCase().includes(location.toLowerCase())
-      : true;
-    const matchExperience = experience
-      ? job.experience?.toLowerCase().includes(experience.toLowerCase())
-      : true;
-
-    return matchDesignation && matchLocation && matchExperience;
-  });
-
-  setJobs(filtered);
-};
+  };
 
 
   const toggleChatPopup = () => {
@@ -346,7 +332,7 @@ const handleCombinedSearch = () => {
 
           <ul className={`recNav-links ${menuOpen ? "recNav-open" : ""}`}>
             <li>Jobs</li>
-{/* <li onClick={handleCompaniesClick}>Companies</li> */}
+            {/* <li onClick={handleCompaniesClick}>Companies</li> */}
             <li>Companies</li>
 
           </ul>
@@ -356,86 +342,86 @@ const handleCombinedSearch = () => {
           </div>
         </div>
 
-           <div className="recNav-center">
+        <div className="recNav-center">
           <div className="recNav-search-bar-group" ref={searchContainerRef}>
-  {/* Designation Input */}
-  <div className="recNav-search-input">
-    <input
-      type="text"
-      placeholder="Enter Designation..."
-      value={filters.designation}
-      onChange={(e) => handleDesignationChange(e.target.value)}
-    />
-    {designationSuggestions.length > 0 && (
-      <ul className="suggestion-dropdown">
-        {designationSuggestions.map((sug, idx) => (
-          <li key={idx} onClick={() => handleSelectDesignation(sug)}>
-            {sug}
-          </li>
-        ))}
-      </ul>
-    )}
-  </div>
+            {/* Designation Input */}
+            <div className="recNav-search-input">
+              <input
+                type="text"
+                placeholder="Enter Designation..."
+                value={filters.designation}
+                onChange={(e) => handleDesignationChange(e.target.value)}
+              />
+              {designationSuggestions.length > 0 && (
+                <ul className="suggestion-dropdown">
+                  {designationSuggestions.map((sug, idx) => (
+                    <li key={idx} onClick={() => handleSelectDesignation(sug)}>
+                      {sug}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
 
-  {/* Experience Dropdown */}
-  <div className="recNav-search-input">
-    <select value={filters.experience} onChange={(e) => handleExperienceChange(e.target.value)}>
-      <option value="">Select Experience</option>
-      <option value="0">Fresher</option>
-      <option value="1">1 year</option>
-      <option value="2">2 years</option>
-      <option value="3">3 years</option>
-      <option value="4">4 years</option>
-      <option value="5">5 years</option>
-      <option value="6">6 years</option>
-      <option value="7">7 years</option>
-      <option value="8">8 years</option>
-      <option value="9">9 years</option>
-      <option value="10">10 years</option>
-      <option value="11">11 years</option>
-      <option value="12">12 years</option>
-      <option value="13">13 years</option>
-      <option value="14">14 years</option>
-      <option value="15">15 years</option>
-      <option value="16">16 years</option>
-      <option value="17">17 years</option>
-      <option value="18">18 years</option>
-      <option value="19">19 years</option>
-      <option value="20 +">20 + years</option>
-    </select>
-  </div>
+            {/* Experience Dropdown */}
+            <div className="recNav-search-input">
+              <select value={filters.experience} onChange={(e) => handleExperienceChange(e.target.value)}>
+                <option value="">Select Experience</option>
+                <option value="0">Fresher</option>
+                <option value="1">1 year</option>
+                <option value="2">2 years</option>
+                <option value="3">3 years</option>
+                <option value="4">4 years</option>
+                <option value="5">5 years</option>
+                <option value="6">6 years</option>
+                <option value="7">7 years</option>
+                <option value="8">8 years</option>
+                <option value="9">9 years</option>
+                <option value="10">10 years</option>
+                <option value="11">11 years</option>
+                <option value="12">12 years</option>
+                <option value="13">13 years</option>
+                <option value="14">14 years</option>
+                <option value="15">15 years</option>
+                <option value="16">16 years</option>
+                <option value="17">17 years</option>
+                <option value="18">18 years</option>
+                <option value="19">19 years</option>
+                <option value="20 +">20 + years</option>
+              </select>
+            </div>
 
-  {/* Location Input */}
-  <div className="recNav-search-input">
-    <input
-      type="text"
-      placeholder="Enter Location..."
-      value={filters.location}
-      onChange={(e) => handleLocationChange(e.target.value)}
-    />
-    {locationSuggestions.length > 0 && (
-      <ul className="suggestion-dropdown">
-        {locationSuggestions.map((sug, idx) => (
-          <li key={idx} onClick={() => handleSelectLocation(sug)}>
-            {sug}
-          </li>
-        ))}
-      </ul>
-    )}
-  </div>
+            {/* Location Input */}
+            <div className="recNav-search-input">
+              <input
+                type="text"
+                placeholder="Enter Location..."
+                value={filters.location}
+                onChange={(e) => handleLocationChange(e.target.value)}
+              />
+              {locationSuggestions.length > 0 && (
+                <ul className="suggestion-dropdown">
+                  {locationSuggestions.map((sug, idx) => (
+                    <li key={idx} onClick={() => handleSelectLocation(sug)}>
+                      {sug}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
 
-  <button className="recNav-search-btn" onClick={handleCombinedSearch} style={{"marginTop" : " 5px"}}>
-    Search
-  </button>
-</div>
+            <button className="recNav-search-btn" onClick={handleCombinedSearch} style={{ "marginTop": " 5px" }}>
+              Search
+            </button>
+          </div>
 
         </div>
 
         <div className="recNav-right">
-          <div className="recNav-item">
+          {/* <div className="recNav-item">
             <FaUsers className="recNav-icon-big" />
             <span className="recNav-label">My Network</span>
-          </div>
+          </div> */}
           <div className="recNav-item" onClick={toggleChatPopup}>
             <FaEnvelope className="recNav-icon-big" />
             <span className="recNav-label">Messaging</span>
@@ -601,8 +587,18 @@ const handleCombinedSearch = () => {
                     <p><strong>Designation:</strong> {job.designation}</p>
                   </div>
                   <div className="recJobCard-right">
-                    <p><strong>Applications:</strong> {job.applications}</p>
+                    <p>
+                      <strong>Applications:</strong>{" "}
+                      <button
+                        className="app-count-btn"
+                        onClick={() => handleViewApplicants(job.requirementId)}
+                      >
+                        {job.applications}
+                      </button>
+                    </p>
+
                   </div>
+
                   <div style={{ width: "100%", marginTop: "10px", textAlign: "right" }}>
                     <button
                       className="recJobCard-view-btn"
@@ -785,6 +781,55 @@ const handleCombinedSearch = () => {
           </div>
         </div>
       )}
+      {showApplicantsPopup && (
+        <div className="applicant-popup-overlay">
+          <div className="applicant-popup-box new-applicant-box">
+
+            <div className="applicant-header">
+              <h3>Applicants ({applicants.length})</h3>
+              <button className="popup-close-btn" onClick={() => setShowApplicantsPopup(false)}>×</button>
+            </div>
+
+            {applicants.length === 0 ? (
+              <p className="no-applicants">No applicants yet.</p>
+            ) : (
+              <div className="applicant-table-container">
+                <table className="applicant-table modern-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Contact</th>
+                      <th>Education</th>
+                      <th>Applied</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {applicants.map((c, i) => (
+                      <tr key={i}>
+                        <td>{c.fullName}</td>
+                        <td>{c.contactNumber}</td>
+                        <td>{c.educationalQualification}</td>
+                        <td>{new Date(c.submittedAt).toLocaleDateString()}</td>
+
+                        <td>
+                          <button className="btn-small view-btn">View Resume</button>
+                          <button className="btn-small primary-btn">Shortlist</button>
+                          <button className="btn-small danger-btn">Reject</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+
+                </table>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+
     </>
   );
 };

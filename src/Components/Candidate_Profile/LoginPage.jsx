@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./LoginPage.css";
-import LoginImage from "../assets/bike.png"; // replace with your logo path
+import LoginImage from "../.././assets/candidate.png"; // replace with your logo path
 import { SyncOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router-dom";
-import { API_BASE_URL } from "../API/api";
+import { API_BASE_URL } from "../../API/api";
 import axios from "axios";
 
 const LoginCard = () => {
@@ -151,7 +151,8 @@ const LoginCard = () => {
                     <button className="forgot-password-btn">Forgot Password?</button>
 
                     <button
-                        type="submit" className="login-button">
+                        type="submit" className="login-button"
+                        onClick={()=>navigate(`/navbar`)}>
                         Login
                     </button>
                 </form>

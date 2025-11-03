@@ -1,4 +1,5 @@
-/* ===== Global Reset ===== */
+/* // Samruddhi Patole 29/10/25 */
+/*  */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -119,12 +120,12 @@
 .quick-links a {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 13px;
-  text-decoration: none;
+  gap: 8px;
   color: #333;
+  text-decoration: none;
   padding: 6px 0;
-  transition: 0.2s;
+  font-size: 16px;
+  transition: color 0.2s ease;
 }
 .quick-links a:hover { color: #0078ff; }
 .quick-icon { font-size: 14px; color: #0078ff; }
@@ -356,41 +357,38 @@ body {
 .navDash-addJD:hover {
   background: #005bbb;
 }
-
-/* ===== Job Cards Section ===== */
-.navDash-jobContainer {
-  margin-left: 260px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  padding: 10px;
+.navDash-jobContainer h2 {
+  margin-top: -40px; /* move it up slightly */
+  margin-bottom: 15px; /* optional: keeps space below heading */
+  color: #1d3557; /* optional styling */
+  font-size: 22px;
+  font-weight: 600;
 }
 
-/* ===== Job Card ===== */
+/* ===== Job Cards Section ===== */
+ 
+
 .navDash-jobCard {
-  position: relative;
-  background: #fff;
-  border: 1px solid #e8eaed;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  margin-bottom: 1.5rem;
-  transition: all 0.2s ease-in-out;
+   background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 20px;
+  transition: transform 0.2s ease;
 }
 
 .navDash-jobCard:hover {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
   box-shadow: 0 4px 12px rgba(0, 120, 255, 0.1);
 }
 
-.navDash-jobCard h4 {
-  font-size: 16px;
-  font-weight: 600;
-  color: #0078ff;
-  margin-bottom: 4px;
+.navDash-jobCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 120, 255, 0.15);
 }
-
+.navDash-showMore,
+.no-cv-highlight {
+  grid-column: span 2; /* ✅ make them take full width */
+}
 .navDash-jobCard p {
   font-size: 13.5px;
   color: #555;
@@ -563,12 +561,7 @@ body {
   margin-bottom: 1rem;
 }
 
-.navDash-jobActions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 1rem;
-}
+
 
 .navDash-viewBtn,
 .navDash-applyBtn {
@@ -579,34 +572,86 @@ body {
   font-weight: 600;
 }
 
+
+.navDash-saveBtn {
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 6px 8px;
+  color: #0078ff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navDash-saveBtn:hover {
+  background: #e6f0ff;
+  color: #005bbb;
+}
+
+.navDash-saveBtn svg {
+  pointer-events: none;
+}
+
 .navDash-viewBtn {
   background-color: #007bff;
   color: white;
 }
 
+
+.navDash-jobActions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 6px; /* ⬅️ reduced gap */
+  margin-top: 8px; /* ⬅️ closer to content */
+}
+
 .navDash-applyBtn {
-  position: absolute;
-  bottom: 12px;
-  right: 12px;
   background-color: #28a745;
   color: white;
   border: none;
-  padding: 6px 12px;
+  padding: 6px 12px; /* ⬅️ smaller */
   border-radius: 6px;
-  cursor: pointer;
   font-size: 13px;
   font-weight: 600;
+  cursor: pointer;
   transition: background 0.3s ease;
 }
+
+
+.navDash-applyBtn:hover {
+  background-color: #1e7e34;
+}
+
+.navDash-saveBtn {
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 5px 7px;
+  color: #0078ff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.navDash-saveBtn:hover {
+  background: #e6f0ff;
+  color: #005bbb;
+}
+
 .navDash-applyBtn:hover {
   background-color: #1e7e34;
 }
 .navDash-jobInfo {
-  padding-top: 2rem;
-  padding-bottom: 2.5rem;
+  padding-top: 1rem;
+  padding-bottom: rem; /* ⬅️ smaller spacing */
 }
 .navDash-jobInfo p {
-  margin: 0.3rem 0;
+  font-size: 13.5px;
+  margin: 4px 0;
+  color: #444;
 }
 
 /* Modal styling */
@@ -668,13 +713,7 @@ body {
   height: 100%;
 }
 
-.navDash-jobActions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: auto;
-  margin-top: 1rem;
-}
+
 .applyModal-content h3 {
   text-align: center;
   margin-bottom: 1.5rem;
@@ -750,114 +789,701 @@ body {
   font-weight: 500;
   text-align: center;
 }
+.no-cv-highlight {
+  margin-top: 40px;
+  background: linear-gradient(135deg, #1d3a5d, #2a4f83);
+  color: white;
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-/* ===================== */
-/* Base Dropdown Styling */
-/* ===================== */
-.more-item {
+.no-cv-highlight:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+.no-cv-text h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.no-cv-text p {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.no-cv-create-btn {
+  background: white;
+  color: #1d3a5d;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.no-cv-create-btn:hover {
+  background: #f5f8ff;
+  color: #0e2a4d;
+}
+
+/* Candidate Chat Popup - Isolated Styling */
+.candChat-popup-overlay {
+  position: fixed;
+  bottom: 0;
+  right: 25px;
+  z-index: 3000;
+  width: 340px;
+  animation: candChatSlideUp 0.3s ease-out;
+}
+
+@keyframes candChatSlideUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.candChat-popup-box {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 14px 14px 0 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+  overflow: hidden;
+}
+
+.candChat-popup-header {
+  background: #526d82;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  font-weight: 600;
+}
+
+.candChat-popup-close {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.candChat-popup-messages {
+  flex-grow: 1;
+  padding: 10px;
+  overflow-y: auto;
+  background: #f7f9fc;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.candChat-message {
+  padding: 8px 12px;
+  border-radius: 10px;
+  max-width: 80%;
+  word-wrap: break-word;
+  font-size: 14px;
+}
+
+.candChat-sent {
+  align-self: flex-end;
+  background: #526d82;
+  color: #fff;
+}
+
+.candChat-received {
+  align-self: flex-start;
+  background: #e9ecef;
+}
+
+.candChat-popup-input {
+  display: flex;
+  border-top: 1px solid #ddd;
+}
+.candChat-popup-input input {
+  flex: 1;
+  border: none;
+  padding: 10px;
+  outline: none;
+}
+.candChat-popup-input button {
+  background: #526d82;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+.candChat-popup-input button:hover {
+  background: #526d82;
+}
+.nav-item-companies {
   position: relative;
   cursor: pointer;
 }
 
-.more-dropdown {
+.company-dropdown {
   position: absolute;
-  top: 30px;
+  top: 35px;
   left: 0;
-  background-color: #fff;
+  background: white;
   border: 1px solid #ddd;
-  border-radius: 6px;
-  width: 180px;
-  list-style: none;
-  padding: 5px 0;
-  margin: 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 20;
+  border-radius: 8px;
+  box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+  padding: 10px;
+  width: 200px;
+  z-index: 1000;
 }
 
-.more-dropdown li {
-  padding: 8px 15px;
-  color: #333;
+.company-item {
+  padding: 8px 10px;
+  border-bottom: 1px solid #eee;
+  transition: background 0.2s;
+}
+
+.company-item:last-child {
+  border-bottom: none;
+}
+
+.company-item:hover {
+  background: #f5f5f5;
+}
+.company-item.active-company {
+  background-color: #0073b1; /* LinkedIn blue */
+  color: white;
+  font-weight: bold;
+}
+.company-item.active-company:hover {
+  background-color: #005b8a;
+}
+/* === Settings Panel (Dynamic Tabs) === */
+.settings-panel {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  font-family: "Poppins", sans-serif;
+  z-index: 1200;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid #eee;
+}
+
+.settings-header h2 {
+  font-size: 22px;
+  color: #222;
+  margin: 0;
+}
+
+.close-settings {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #555;
+}
+
+.settings-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.settings-sidebar {
+  width: 240px;
+  background: #f9f9f9;
+  border-right: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-tab {
+  padding: 14px 22px;
   font-size: 15px;
-  transition: background-color 0.2s ease;
-  position: relative;
+  color: #444;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-.more-dropdown li:hover {
-  background-color: #f5f5f5;
-  color: #007bff;
+.settings-tab:hover,
+.settings-tab.active {
+  background: #e6f0ff;
+  color: #0056d2;
+  font-weight: 500;
 }
 
-/* ===================== */
-/* Nested Submenu        */
-/* ===================== */
-.interview-item {
-  position: relative;
+.settings-main {
+  flex: 1;
+  padding: 28px 32px;
+  overflow-y: auto;
+  transition: all 0.3s ease;
 }
 
-.interview-submenu {
-  position: absolute;
-  top: 0;
-  left: 180px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  width: 190px;
-  list-style: none;
-  padding: 5px 0;
-  margin: 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 30;
+.fade-in {
+  animation: fadeInTab 0.3s ease-in-out;
 }
 
-.interview-submenu li {
-  padding: 8px 15px;
-  color: #333;
+.settings-main h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #222;
+}
+
+.settings-main p {
   font-size: 14px;
-  white-space: nowrap;
+  color: #666;
+  margin-bottom: 25px;
 }
 
-.interview-submenu li:hover {
+.settings-option label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 15px;
+  color: #444;
+}
+
+.settings-option input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.settings-form label {
+  display: block;
+  margin-bottom: 16px;
+}
+
+.settings-form input,
+.settings-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+.settings-form textarea {
+  height: 80px;
+  resize: none;
+}
+
+.save-settings {
+  background: #0056d2;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.save-settings:hover {
+  background: #0042a3;
+}
+
+.danger-btn {
+  background: #ff4b4b;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.danger-btn:hover {
+  background: #e13c3c;
+}
+
+.help-list {
+  list-style: none;
+  padding: 0;
+}
+
+.help-list li {
+  padding: 8px 0;
+  font-size: 15px;
+  color: #444;
+}
+
+@keyframes fadeInTab {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.faq-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.faq-container {
+  width: 90%;
+  max-width: 700px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  animation: slideUp 0.35s ease;
+}
+
+.faq-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.faq-header h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #1d3557;
+}
+
+.faq-close {
+  background: #ff4b4b;
+  color: white;
+  border: none;
+  font-size: 20px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.faq-content {
+  margin-top: 15px;
+}
+
+details {
+  background: #f8faff;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  cursor: pointer;
+}
+
+summary {
+  font-weight: 600;
+  color: #2a4365;
+  font-size: 15px;
+}
+
+details p {
+  font-size: 14px;
+  margin-top: 8px;
+  color: #444;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.logout-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeBg 0.25s ease-in-out;
+}
+
+.logout-sheet {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 30px 25px;
+  width: 330px;
+  text-align: center;
+  box-shadow: 0px 6px 18px rgba(0,0,0,0.15);
+  animation: zoomIn 0.25s ease-in-out;
+  border: 1px solid #f3f3f3;
+}
+
+.logout-sheet h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #2d3436;
+}
+
+.logout-sheet p {
+  font-size: 14px;
+  color: #636e72;
+  margin-bottom: 25px;
+  line-height: 1.5;
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 12px;
+  background: #ff5252;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  transition: 0.25s;
+  margin-bottom: 12px;
+}
+
+.logout-btn:hover {
+  background: #ff2e2e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255,0,0,0.25);
+}
+
+.cancel-btn {
+  width: 100%;
+  padding: 12px;
+  background: #fff;
+  color: #2d3436;
+  border: 1px solid #dfe6e9;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.cancel-btn:hover {
+  background: #f5f6fa;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+@keyframes zoomIn {
+  from { opacity: 0; transform: scale(0.92) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes fadeBg {
+  from { background: rgba(0,0,0,0); }
+  to { background: rgba(0,0,0,0.45); }
+}
+.main-content-below-navbar {
+  margin-top: 70px; /* adjust if navbar height differs */
+}
+/* ✅ Main job container */
+.navDash-jobContainer {
+  margin-left: 250px; /* Leave space for sidebar */
+  padding: 20px;
+  width: calc(100% - 250px);
+  box-sizing: border-box;
+}
+
+/* ✅ Heading above grid */
+.navDash-jobContainer-heading {
+  margin-top: -20px;
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #1d3557;
+}
+
+/* ✅ Grid for job cards */
+.navDash-jobGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* ⬅️ smaller width */
+  gap: 16px; /* ⬅️ smaller gap between cards */
+  justify-content: center;
+  align-items: start;
+}
+
+
+/* ✅ Job cards styling */
+.navDash-jobCard {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px 13px; /* ⬅️ reduced internal padding */
+  transition: transform 0.2s ease;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.navDash-jobCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 120, 255, 0.15);
+}
+
+/* ✅ Make “Show More” full width */
+.navDash-showMore {
+  grid-column: span 2;
+  margin: 20px auto 0;
+  background-color: #0078ff;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+.navDash-showMore:hover {
+  background-color: #005bbb;
+}
+/* ===== Notification Side Panel ===== */
+.notif-overlay {
+  position: fixed;
+  top: 70px; /* height of your navbar */
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 2000;
+  transition: background 0.3s ease-in-out;
+}
+
+.notif-panel {
+  width: 350px;
+  background: #fff;
+  height: calc(100vh - 70px); /* adjusts for navbar height */
+  box-shadow: -3px 0 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  animation: slideInRight 0.3s ease forwards;
+  position: relative;
+  border-top-left-radius: 12px;
+}
+
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+.notif-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #ddd;
   background-color: #f5f5f5;
-  color: #007bff;
+  border-top-left-radius: 12px;
 }
 
-/* ===================== */
-/* Responsive Styles     */
-/* ===================== */
-@media (max-width: 768px) {
-  /* Stack dropdown vertically under "More" */
-  .more-dropdown {
-    position: static;
-    width: 100%;
-    box-shadow: none;
-    border: none;
-    padding: 0;
-    background-color: transparent;
-  }
-
-  .more-dropdown li {
-    background-color: #fff;
-    border-bottom: 1px solid #eee;
-  }
-
-  .interview-submenu {
-    position: static;
-    width: 100%;
-    box-shadow: none;
-    border: none;
-    margin-left: 10px; /* indent nested submenu */
-  }
-
-  .interview-item {
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* Make arrows point down instead of right on mobile */
-  .interview-item::after {
-    content: "▾";
-    position: absolute;
-    right: 15px;
-  }
+.notif-header h3 {
+  font-size: 18px;
+  margin: 0;
+  color: #333;
+}
+.notif-close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #444;
+}
+.notif-list {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 10px 20px;
 }
 
+.notif-item {
+  background: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  transition: background 0.3s;
+}
+
+.notif-item:hover {
+  background: #eef4ff;
+}
+
+.notif-item p {
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.notif-item span {
+  font-size: 12px;
+  color: gray;
+}
+
+.clear-btn {
+  margin: 10px 20px;
+  padding: 8px 0;
+  border: none;
+  border-radius: 8px;
+  background-color: #1e3de9dd;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.clear-btn:hover {
+  background-color: #162ac3;
+}
+
+.no-notifs {
+  text-align: center;
+  color: gray;
+  margin-top: 20px;
+}/* Offset main content so it starts below navbar */
+.main-content-below-navbar {
+  margin-top: 80px; /* match your navbar height */
+  padding: 20px;
+}
+
+
+/* ✅ Responsive: Stack on smaller screens */
+@media (max-width: 900px) {
+  .navDash-jobGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .navDash-jobContainer {
+    margin-left: 0;
+    width: 100%;
+  }
+}

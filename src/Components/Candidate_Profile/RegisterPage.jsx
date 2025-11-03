@@ -64,9 +64,9 @@ const RegisterPage = () => {
             Join <span className="highlight">RG Job Portal</span>
           </h2>
           <ul>
-            Build your profile and get noticed by recruiters
-            Receive personalized job recommendations
-            Apply to top companies instantly
+            Build your profile and get noticed by recruiters<br/>
+            Receive personalized job recommendations<br/>
+            Apply to top companies instantly<br/>
           </ul>
           <p>Your dream job is just a click away 🚀</p>
         </div>

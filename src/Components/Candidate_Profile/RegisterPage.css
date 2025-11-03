@@ -4,8 +4,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: white;
   padding: 1rem;
+  background: linear-gradient(135deg, #dde6ed, #9db2bf);
+
 }
 
 @media (min-width: 768px) {
@@ -36,7 +37,7 @@
 /* Left side info */
 .register-info {
   display: none;
-  color: #fff;
+  color: black;
 }
 
 @media (min-width: 768px) {
@@ -46,7 +47,7 @@
     justify-content: center;
     width: 50%;
     padding: 2rem 2.5rem;
-    color: white;
+    color: black;
   }
 
   .register-info h2 {
@@ -57,7 +58,7 @@
   }
 
   .register-info .highlight {
-    color: #facc15;
+    color: #546f84;
   }
 
   .register-info ul {
@@ -73,7 +74,7 @@
   }
 
   .register-info p {
-    font-size: 0.875rem;
+    font-size: 1.2rem;
     font-style: italic;
     opacity: 0.9;
   }

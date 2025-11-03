@@ -1,0 +1,201 @@
+/* ===== Global Container ===== */
+.template2-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background: #f4f6f8;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+}
+
+/* ===== Top Controls ===== */
+.template2-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 15px;
+}
+
+.t2-btn {
+  background: #15beca;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s;
+  /* margin-left: 600px; */
+}
+
+.t2-btn:hover {
+  background: #10a8b3;
+}
+
+/* ===== Main Side-by-Side Layout ===== */
+.template2-side-by-side {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+  flex: 1;
+  height: 85vh;
+  overflow: hidden;
+}
+
+/* ===== Left Edit Form ===== */
+.template2-form {
+  flex: 1;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  overflow-y: auto;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.template2-form h2,
+.template2-form h3 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.t2-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.t2-field label {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.t2-field input,
+.t2-field textarea {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 14px;
+  transition: border 0.2s;
+}
+
+.t2-field input:focus,
+.t2-field textarea:focus {
+  border-color: #15beca;
+  outline: none;
+}
+
+.t2-exp-item,
+.t2-edu-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 15px;
+}
+
+.t2-exp-item input,
+.t2-edu-item input,
+.t2-exp-item textarea {
+  font-size: 13.5px;
+}
+
+/* ===== Right Live Preview ===== */
+.template2-preview {
+  flex: 1;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 30px 40px;
+  overflow-y: auto;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.t2-header {
+  text-align: center;
+  border-bottom: 2px solid #15beca;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.t2-header h1 {
+  font-size: 26px;
+  color: #222;
+  margin-bottom: 5px;
+}
+
+.t2-header h3 {
+  font-size: 18px;
+  color: #15beca;
+  margin-bottom: 5px;
+}
+
+.t2-header p {
+  font-size: 13.5px;
+  color: #555;
+}
+
+/* ===== Resume Sections ===== */
+.t2-section {
+  margin-bottom: 20px;
+}
+
+.t2-section h4 {
+  color: #15beca;
+  font-size: 16px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 3px;
+}
+
+.t2-exp,
+.t2-edu {
+  margin-bottom: 12px;
+}
+
+.t2-years {
+  font-weight: bold;
+  color: #666;
+  font-size: 13.5px;
+}
+
+.t2-role,
+.t2-degree {
+  font-size: 14px;
+  color: #222;
+}
+
+.t2-details {
+  font-size: 13.5px;
+  color: #444;
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+/* ===== Scrollbars ===== */
+.template2-form::-webkit-scrollbar,
+.template2-preview::-webkit-scrollbar {
+  width: 8px;
+}
+
+.template2-form::-webkit-scrollbar-thumb,
+.template2-preview::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .template2-side-by-side {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .template2-form,
+  .template2-preview {
+    height: auto;
+    max-height: none;
+  }
+}
