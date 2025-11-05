@@ -801,26 +801,49 @@ const RecruiterNavbar = () => {
                       <th>Contact</th>
                       <th>Education</th>
                       <th>Applied</th>
+                      <th>Test Score</th>
                       <th>Action</th>
                     </tr>
                   </thead>
 
                   <tbody>
-                    {applicants.map((c, i) => (
-                      <tr key={i}>
-                        <td>{c.fullName}</td>
-                        <td>{c.contactNumber}</td>
-                        <td>{c.educationalQualification}</td>
-                        <td>{new Date(c.submittedAt).toLocaleDateString()}</td>
+                    {applicants
+                      .slice()
+                      .sort((a, b) => {
+                        // If both have scores → sort descending
+                        if (a.testScore != null && b.testScore != null) {
+                          return b.testScore - a.testScore;
+                        }
+                        // If only a has score → a first
+                        if (a.testScore != null && b.testScore == null) {
+                          return -1;
+                        }
+                        // If only b has score → b first
+                        if (a.testScore == null && b.testScore != null) {
+                          return 1;
+                        }
+                        // Both no score → keep original order
+                        return 0;
+                      })
+                      .map((c, i) => (
+                        <tr key={i}>
+                          <td>{c.fullName}</td>
+                          <td>{c.contactNumber}</td>
+                          <td>{c.educationalQualification}</td>
+                          <td>{new Date(c.submittedAt).toLocaleDateString()}</td>
+                          <td>
+                            {c.testScore != null ? c.testScore : "Test not given"}
+                          </td>
+                          <td>
+                            <button className="btn-small view-btn">View Resume</button>
+                            <button className="btn-small primary-btn">Shortlist</button>
+                            <button className="btn-small danger-btn">Reject</button>
+                          </td>
+                        </tr>
+                      ))}
 
-                        <td>
-                          <button className="btn-small view-btn">View Resume</button>
-                          <button className="btn-small primary-btn">Shortlist</button>
-                          <button className="btn-small danger-btn">Reject</button>
-                        </td>
-                      </tr>
-                    ))}
                   </tbody>
+
 
                 </table>
               </div>

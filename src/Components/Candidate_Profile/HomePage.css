@@ -94,7 +94,7 @@
   transition: all 0.3s ease;
 
   position: relative;
-  top: 10px; /* ✅ Moves the button slightly downward */
+  /* top: 10px;  */
 }
 
 .search-btn:hover {
