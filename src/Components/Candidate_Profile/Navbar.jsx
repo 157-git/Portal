@@ -18,6 +18,7 @@ import "./Navbar.css";
 import { useNavigate } from "react-router-dom";
 import HomePage from "./HomePage";
 import { FaRegBookmark, FaBookmark } from "react-icons/fa";
+import ChatBot from "./ChatBot";
 
 const Navbar = () => {
   // ===== Navbar States =====
@@ -1137,7 +1138,7 @@ const Navbar = () => {
           </div>
         </div>
       )}
-
+<ChatBot />
 
     </>
   );
