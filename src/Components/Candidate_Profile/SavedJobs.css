@@ -1,37 +1,37 @@
 /* Page Container */
-.savedjobs-container {
-  max-width: 900px;
+.savejobs-container {
+  max-width: 1000px;
   margin: 40px auto;
   padding: 20px;
   font-family: "Poppins", sans-serif;
 }
 
 /* Title */
-.savedjobs-title {
+.savejobs-heading {
   font-size: 28px;
   font-weight: 600;
-  color: #2c3e50;
+  color: #1e3a8a;
   margin-bottom: 20px;
   text-align: center;
 }
 
-/* Empty State */
-.savedjobs-empty {
+/* Empty Text */
+.savejobs-empty {
   text-align: center;
   padding: 20px;
   font-size: 18px;
   color: #555;
 }
 
-/* Grid Responsive Cards */
-.savedjobs-grid {
+/* Grid Layout */
+.savejobs-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 18px;
 }
 
 /* Job Card */
-.savedjobs-card {
+.savejobs-card {
   background: #fff;
   border-radius: 12px;
   padding: 18px;
@@ -40,30 +40,30 @@
   border: 1px solid #e8e8e8;
 }
 
-.savedjobs-card:hover {
+.savejobs-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-  border-color: #3b82f6;
+  border-color: #2563eb;
 }
 
-/* Job Title */
-.savedjobs-card h3 {
+/* Company Name */
+.savejobs-card h3 {
   font-size: 20px;
   font-weight: 600;
   color: #1e3a8a;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
-/* Text */
-.savedjobs-card p {
+/* Job Info */
+.savejobs-card p {
   margin: 5px 0;
   font-size: 15px;
-  color: #444;
+  color: #333;
 }
 
-/* Button */
-.view-btn {
-  margin-top: 10px;
+/* View Button */
+.savejobs-viewbtn {
+  margin-top: 12px;
   width: 100%;
   padding: 10px;
   border-radius: 8px;
@@ -75,17 +75,110 @@
   transition: 0.3s;
 }
 
-.view-btn:hover {
+.savejobs-viewbtn:hover {
   background: #1e40af;
 }
 
-/* Mobile Responsive */
-@media (max-width: 480px) {
-  .savedjobs-title {
-    font-size: 22px;
+/* ================== MODAL POPUP ================== */
+
+/* Overlay */
+.jdPop-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Modal Box */
+.jdPop-box {
+  background: white;
+  width: 80%;
+  max-width: 850px;
+  max-height: 90vh;
+  padding: 20px;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Modal Title */
+.jdPop-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1e3a8a;
+  margin-bottom: 10px;
+}
+
+/* Close Button */
+.jdPop-close {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  background: transparent;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  color: #333;
+}
+
+/* Scrollable Content */
+.jdPop-scroll {
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+/* Section */
+.jdPop-section {
+  margin-bottom: 20px;
+}
+
+.jdPop-section h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #1e40af;
+}
+
+/* Grid inside modal */
+.jdPop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 10px;
+}
+
+.jdPop-grid p {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Lists */
+.jdPop-section ul {
+  margin-left: 20px;
+  padding-left: 10px;
+}
+
+.jdPop-section li {
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #444;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .jdPop-box {
+    width: 95%;
+    padding: 12px;
   }
 
-  .savedjobs-card h3 {
-    font-size: 18px;
+  .jdPop-title {
+    font-size: 20px;
   }
 }
