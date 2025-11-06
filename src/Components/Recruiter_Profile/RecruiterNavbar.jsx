@@ -14,6 +14,7 @@ import {
   FaEnvelope,
 } from "react-icons/fa";
 import "./RecruiterNavbar.css";
+import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 
 const RecruiterNavbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -28,6 +29,8 @@ const RecruiterNavbar = () => {
   const [showTestPopup, setShowTestPopup] = useState(false);
   //  const [companies, setCompanies] = useState([]);
   //   const [showCompanies, setShowCompanies] = useState(false);
+const [filteredJobs, setFilteredJobs] = useState([]);
+
   const [filters, setFilters] = useState({
     keyword: "",
     location: "All Locations",
@@ -38,13 +41,16 @@ const RecruiterNavbar = () => {
     company: "All Companies",
   });
 
+   const params = new URLSearchParams(location.search);
+  const userType = params.get("userType");
+
   // 💬 Chat Popup States
-  const [showChatPopup, setShowChatPopup] = useState(false);
-  const [messages, setMessages] = useState([
-    { sender: "Candidate", text: "Hello, is this position still open?" },
-    { sender: "You", text: "Yes, it is! Please share your updated resume." },
-  ]);
-  const [newMessage, setNewMessage] = useState("");
+  // const [showChatPopup, setShowChatPopup] = useState(false);
+  // const [messages, setMessages] = useState([
+  //   { sender: "Candidate", text: "Hello, is this position still open?" },
+  //   { sender: "You", text: "Yes, it is! Please share your updated resume." },
+  // ]);
+  // const [newMessage, setNewMessage] = useState("");
 
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
@@ -88,6 +94,29 @@ const RecruiterNavbar = () => {
   //   };
   const API_BASE_URL = "http://localhost:8080";
 
+const handleDelete = async (requirementId) => {
+  if (!window.confirm("Are you sure you want to delete this job description?")) return;
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/requirements/delete/${requirementId}`,
+      { method: "DELETE" }
+    );
+
+    if (response.ok) {
+      toast.success("Job deleted successfully!");
+      setJobs((prevJobs) =>
+        prevJobs.filter((job) => job.requirementId !== requirementId)
+      );
+    } else {
+      toast.error("Failed to delete job!");
+    }
+  } catch (error) {
+    console.error("Error deleting job:", error);
+    toast.error("Error connecting to backend!");
+  }
+};
+
 
 
   const handleViewApplicants = async (requirementId) => {
@@ -103,6 +132,9 @@ const RecruiterNavbar = () => {
   };
 
 
+ const handleEdit = (requirementId) => {
+  navigate(`/add-job-description/${requirementId}`);
+};
 
 
   // ✅ Fetch jobs and listen to Apply count updates
@@ -124,8 +156,10 @@ const RecruiterNavbar = () => {
           job.applications = res.data.length; // real-time count
         }
 
-        setAllJobs(jobList);
-        setJobs(jobList);
+       setAllJobs(jobList);
+       setJobs(jobList);
+       setFilteredJobs(jobList); 
+
       } catch (error) {
         console.error("❌ Error fetching jobs:", error);
       } finally {
@@ -145,6 +179,44 @@ const RecruiterNavbar = () => {
   const handleChange = (e) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
   };
+useEffect(() => {
+  let updated = jobs;
+
+  if (filters.keyword) {
+    updated = updated.filter(
+      (job) =>
+        job.designation?.toLowerCase().includes(filters.keyword.toLowerCase()) ||
+        job.companyName?.toLowerCase().includes(filters.keyword.toLowerCase()) ||
+        job.location?.toLowerCase().includes(filters.keyword.toLowerCase())
+    );
+  }
+
+  if (filters.location && filters.location !== "All Locations") {
+    updated = updated.filter((job) => job.location === filters.location);
+  }
+
+  if (filters.experience && filters.experience !== "All Experience Levels") {
+    updated = updated.filter((job) => job.experience === filters.experience);
+  }
+
+  if (filters.salary && filters.salary !== "All Salary Ranges") {
+    updated = updated.filter((job) => job.salary === filters.salary);
+  }
+
+  if (filters.designation && filters.designation !== "All Job Designations") {
+    updated = updated.filter((job) => job.designation === filters.designation);
+  }
+
+  if (filters.qualification && filters.qualification !== "All Qualifications") {
+    updated = updated.filter((job) => job.qualification === filters.qualification);
+  }
+
+  if (filters.company && filters.company !== "All Companies") {
+    updated = updated.filter((job) => job.companyName === filters.company);
+  }
+
+  setFilteredJobs(updated);
+}, [filters, jobs]);
 
   const handleAddJD = () => {
     navigate("/paid-post");
@@ -422,10 +494,10 @@ const RecruiterNavbar = () => {
             <FaUsers className="recNav-icon-big" />
             <span className="recNav-label">My Network</span>
           </div> */}
-          <div className="recNav-item" onClick={toggleChatPopup}>
+          {/* <div className="recNav-item" onClick={toggleChatPopup}>
             <FaEnvelope className="recNav-icon-big" />
             <span className="recNav-label">Messaging</span>
-          </div>
+          </div> */}
           <div className="recNav-item">
             <FaUserCircle
               className="recNav-icon-big"
@@ -486,77 +558,76 @@ const RecruiterNavbar = () => {
         {/* Sidebar */}
         <div className="recSidebar">
           <div className="recSidebar-search">
-            <input
+            {/* <input
               type="text"
               name="keyword"
               value={filters.keyword}
               onChange={handleChange}
               placeholder="Search by keyword..."
-            />
+            /> */}
           </div>
 
           <div className="recSidebar-filters">
-            <label>
-              Location
-              <select name="location" value={filters.location} onChange={handleChange}>
-                <option>All Locations</option>
-                <option>Pune</option>
-                <option>Mumbai</option>
-                <option>Bangalore</option>
-              </select>
-            </label>
-            <label>
-              Experience
-              <select name="experience" value={filters.experience} onChange={handleChange}>
-                <option>All Experience Levels</option>
-                <option>0-1 Years</option>
-                <option>1-3 Years</option>
-                <option>3-5 Years</option>
-              </select>
-            </label>
-            <label>
-              Salary
-              <select name="salary" value={filters.salary} onChange={handleChange}>
-                <option>All Salary Ranges</option>
-                <option>0-3 LPA</option>
-                <option>3-5 LPA</option>
-                <option>5-10 LPA</option>
-              </select>
-            </label>
-            <label>
-              Designation
-              <select
-                name="designation"
-                value={filters.designation}
-                onChange={handleChange}
-              >
-                <option>All Job Designations</option>
-                <option>Software Engineer</option>
-                <option>Team Lead</option>
-                <option>Project Manager</option>
-              </select>
-            </label>
-            <label>
-              Qualification
-              <select
-                name="qualification"
-                value={filters.qualification}
-                onChange={handleChange}
-              >
-                <option>All Qualifications</option>
-                <option>B.Sc</option>
-                <option>B.Tech</option>
-                <option>MBA</option>
-              </select>
-            </label>
-            <label>
-              Company
-              <select name="company" value={filters.company} onChange={handleChange}>
-                <option>All Companies</option>
-                <option>ABC Pvt Ltd</option>
-                <option>XYZ Corp</option>
-              </select>
-            </label>
+          <label>
+  Location
+  <select name="location" value={filters.location} onChange={handleChange}>
+    <option>All Locations</option>
+    {[...new Set(jobs.map((job) => job.location))].map((loc) => (
+      <option key={loc}>{loc}</option>
+    ))}
+  </select>
+</label>
+
+<label>
+  Experience
+  <select name="experience" value={filters.experience} onChange={handleChange}>
+    <option>All Experience Levels</option>
+    {[...new Set(jobs.map((job) => job.experience))].map((exp) => (
+      <option key={exp}>{exp}</option>
+    ))}
+  </select>
+</label>
+
+<label>
+  Salary
+  <select name="salary" value={filters.salary} onChange={handleChange}>
+    <option>All Salary Ranges</option>
+    {[...new Set(jobs.map((job) => job.salary))].map((sal) => (
+      <option key={sal}>{sal}</option>
+    ))}
+  </select>
+</label>
+
+<label>
+  Designation
+  <select name="designation" value={filters.designation} onChange={handleChange}>
+    <option>All Job Designations</option>
+    {[...new Set(jobs.map((job) => job.designation))].map((role) => (
+      <option key={role}>{role}</option>
+    ))}
+  </select>
+</label>
+
+<label>
+  Qualification
+  <select name="qualification" value={filters.qualification} onChange={handleChange}>
+    <option>All Qualifications</option>
+    {[...new Set(jobs.map((job) => job.qualification))].map((q) => (
+      <option key={q}>{q}</option>
+    ))}
+  </select>
+</label>
+
+<label>
+  Company
+  <select name="company" value={filters.company} onChange={handleChange}>
+    <option>All Companies</option>
+    {[...new Set(jobs.map((job) => job.companyName))].map((c) => (
+      <option key={c}>{c}</option>
+    ))}
+  </select>
+</label>
+
           </div>
 
           <div className="recSidebar-actions">
@@ -577,7 +648,7 @@ const RecruiterNavbar = () => {
             <p>No jobs found.</p>
           ) : (
             <>
-              {jobs.slice(0, visibleCount).map((job) => (
+            {filteredJobs.slice(0, visibleCount).map((job) => (
                 <div key={job.requirementId} className="recJobCard">
                   <div className="recJobCard-left">
                     <p><strong>Requirement ID:</strong> {job.requirementId}</p>
@@ -599,7 +670,36 @@ const RecruiterNavbar = () => {
 
                   </div>
 
-                  <div style={{ width: "100%", marginTop: "10px", textAlign: "right" }}>
+                 <div
+  style={{
+    width: "100%",
+    marginTop: "10px",
+    textAlign: "right",
+    display: "flex",
+    justifyContent: "flex-end",
+    gap: "10px", // spacing between buttons
+  }}
+>
+                    {/* {userType === "PortalEmp" && ( */}
+<div style={{ display: "flex", alignItems: "center" }}>
+  <button
+    className="recJobCard-edit-btn"
+    onClick={() => handleEdit(job.requirementId)}
+    title="Edit Job"
+  >
+    <FaPencilAlt />
+  </button>
+
+  <button
+    className="recJobCard-delete-btn"
+    onClick={() => handleDelete(job.requirementId)}
+    title="Delete Job"
+  >
+    <FaTrashAlt />
+  </button>
+</div>
+
+
                     <button
                       className="recJobCard-view-btn"
                       onClick={() => handleViewJD(job.requirementId)}
@@ -741,7 +841,7 @@ const RecruiterNavbar = () => {
       )}
 
       {/* ===== CHAT POPUP ===== */}
-      {showChatPopup && (
+      {/* {showChatPopup && (
         <div className="chat-popup-overlay">
           <div className="chat-popup-box">
             <div className="chat-popup-header">
@@ -780,7 +880,7 @@ const RecruiterNavbar = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
       {showApplicantsPopup && (
         <div className="applicant-popup-overlay">
           <div className="applicant-popup-box new-applicant-box">
