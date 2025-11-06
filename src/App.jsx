@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import UserTypeSelection from "./Components/UserTypeSelection.jsx";
@@ -10,15 +9,17 @@ import Navbar from "./Components/Candidate_Profile/Navbar.jsx";
 
 // Recruiter-related components
 import RecruiterNavbar from "./Components/Recruiter_Profile/RecruiterNavbar.jsx";
+import AddJobDescription from "./Components/Recruiter_Profile/addJobDescription.jsx";
+import PaidPostPage from "./Components/Recruiter_Profile/PaidPostPage.jsx";
+import AddTechnicalTest from "./Components/Recruiter_Profile/AddTechnicalTest.jsx";
+import LoginEmp from "../src/Components/Recruiter_Profile/LoginEmp.jsx";
 
 // Candidate-related components
 import JobApplicationForm from "./Components/Candidate_Profile/JobApplicationForm.jsx";
 import InterviewFAQ from "./Components/Candidate_Profile/InterviewFAQ.jsx";
 import ShareInterviewQuestions from "./Components/Candidate_Profile/ShareInterviewQuestions.jsx";
 import SalaryHikeCalculator from "./Components/Candidate_Profile/SalaryHikeCalculator.jsx";
-import AddJobDescription from "./Components/Recruiter_Profile/AddJobDescription.jsx";
 import AppliedJobs from "./Components/Candidate_Profile/AppliedJobs.jsx";
-import LoginEmp from "../src/Components/Recruiter_Profile/LoginEmp.jsx";
 import SocketTest from "./Components/SocketIO/SocketTest.jsx";
 import ResumeTemplates from "./Components/Candidate_Profile/ResumeTemplate/ResumeTemplate.jsx";
 import SavedJobs from "./Components/Candidate_Profile/SavedJobs.jsx";
@@ -28,7 +29,6 @@ import LandingPage from "./Components/LandingPage.jsx";
 import HeaderWrapper from "./Components/HeaderWrapper.jsx"
 
 function App() {
-
   return (
     <BrowserRouter>
       <HeaderWrapper />  {/* Header only for specific pages */}
@@ -38,10 +38,12 @@ function App() {
         <Route path="/login/:userType/:role?" element={<LoginPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/loginemp" element={<LoginEmp />} />
+        <Route path="/navbar" element={<Navbar />} />
 
-        {/* Recruiter routes */}
+        {/* ===================== Recruiter Routes ===================== */}
         <Route path="/recruiter-navbar/:userType" element={<RecruiterNavbar />} />
         <Route path="/add-job-description" element={<AddJobDescription />} />
+        <Route path="/add-job-description/:requirementId" element={<AddJobDescription />} />
         <Route path="/registerEmp" element={<RegisterEmp />} />
         <Route path="/paid-post" element={<PaidPostPage />} />
         <Route path="/add-technical-test" element={<AddTechnicalTest />} />
@@ -64,9 +66,6 @@ function App() {
         <Route path="/registerCandidate" element={<RegisterPage />} />
         <Route path="/resume-templates" element={<ResumeTemplates />} />
         <Route path="/saved-jobs" element={<SavedJobs />} />
-
-
-
       </Routes>
     </BrowserRouter>
   );

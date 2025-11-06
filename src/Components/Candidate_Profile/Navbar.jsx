@@ -33,11 +33,16 @@ const Navbar = () => {
   const [activeSection, setActiveSection] = useState("home");
   const [showDropdown, setShowDropdown] = useState();
   const [showInterviewSubmenu, setShowInterviewSubmenu] = useState();
+  const [filteredJobs, setFilteredJobs] = useState([]);
+  const [showSearchOverlay, setShowSearchOverlay] = useState(false);
+const [searchSkill, setSearchSkill] = useState("");
+const [searchExp, setSearchExp] = useState("");
+const [searchLocation, setSearchLocation] = useState("");
 
   // ===== Job Dashboard States =====
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [visibleCount, setVisibleCount] = useState(4);
+  const [visibleCount, setVisibleCount] = useState(6);
   const [filters, setFilters] = useState({
     keyword: "",
     location: "All Locations",
@@ -51,15 +56,15 @@ const Navbar = () => {
   const companyDropdownRef = useRef(null);
 
   // ===== Chat Popup States =====
-  const [showChatPopup, setShowChatPopup] = useState(false);
-  const [messages, setMessages] = useState([
-    { sender: "recruiter", text: "Hi Samruddhi! We have a great job for you!" },
-    { sender: "candidate", text: "Hello! I’m interested, please tell me more." },
-  ]);
+  // const [showChatPopup, setShowChatPopup] = useState(false);
+  // // const [messages, setMessages] = useState([
+  //   { sender: "recruiter", text: "Hi Samruddhi! We have a great job for you!" },
+  //   { sender: "candidate", text: "Hello! I’m interested, please tell me more." },
+  // ]);
   const [companyNames, setCompanyNames] = useState([]);
   const [showCompanies, setShowCompanies] = useState(false);
 
-  const [newMessage, setNewMessage] = useState("");
+  // const [newMessage, setNewMessage] = useState("");
   // ===== Optional Test States =====
   const [showTestPopup, setShowTestPopup] = useState(false);
   const [showMCQModal, setShowMCQModal] = useState(false);
@@ -73,7 +78,7 @@ const Navbar = () => {
     JSON.parse(localStorage.getItem("savedJobs")) || []
   );
   const toggleSave = async (jobId) => {
-    const candidateId = 1; // ✅ replace with logged-in user ID from localStorage/session
+    const candidateId = 1; 
 
     try {
       let updated;
@@ -129,7 +134,8 @@ const Navbar = () => {
       try {
         const res = await axios.get("http://localhost:8080/api/requirements/all");
         const data = res.data || [];
-        setJobs(data);
+         setJobs(data);
+         setFilteredJobs(data); 
         localStorage.setItem("jobsList", JSON.stringify(data)); // ✅ store globally
       } catch (error) {
         console.error("Error fetching jobs:", error);
@@ -176,7 +182,6 @@ const Navbar = () => {
           `http://localhost:8080/api/saved-jobs/candidate/${candidateId}`
         );
 
-        // ✅ Extract only requirement IDs
         const savedIds = res.data.map(job => job.requirementId);
 
         setSavedJobs(savedIds);
@@ -193,6 +198,45 @@ const Navbar = () => {
   const handleChange = (e) =>
     setFilters({ ...filters, [e.target.name]: e.target.value });
 
+  useEffect(() => {
+  let updated = jobs;
+
+  if (filters.keyword) {
+    updated = updated.filter(
+      (job) =>
+        job.jobRole?.toLowerCase().includes(filters.keyword.toLowerCase()) ||
+        job.companyName?.toLowerCase().includes(filters.keyword.toLowerCase())
+    );
+  }
+
+  if (filters.location && filters.location !== "All Locations") {
+    updated = updated.filter((job) => job.location === filters.location);
+  }
+
+  if (filters.experience && filters.experience !== "All Experience Levels") {
+    updated = updated.filter((job) => job.experience === filters.experience);
+  }
+
+  if (filters.salary && filters.salary !== "All Salary Ranges") {
+    updated = updated.filter((job) => job.salary === filters.salary);
+  }
+
+  if (filters.designation && filters.designation !== "All Job Designations") {
+    updated = updated.filter((job) => job.jobRole === filters.designation);
+  }
+
+  if (filters.qualification && filters.qualification !== "All Qualifications") {
+    updated = updated.filter((job) => job.qualification === filters.qualification);
+  }
+
+  if (filters.company && filters.company !== "All Companies") {
+    updated = updated.filter((job) => job.companyName === filters.company);
+  }
+
+  setFilteredJobs(updated);
+}, [filters, jobs]);
+
+
   const handleViewJD = async (id) => {
     try {
       const response = await axios.get(
@@ -207,17 +251,13 @@ const Navbar = () => {
   };
 
   const handleApplyNow = (job) => {
-    // ✅ Get applied jobs from localStorage
     const appliedJobs = JSON.parse(localStorage.getItem("appliedJobs")) || {};
 
-    // ✅ Increment the count for this requirement
     const currentCount = appliedJobs[job.requirementId] || 0;
     appliedJobs[job.requirementId] = currentCount + 1;
 
-    // ✅ Save back to localStorage
     localStorage.setItem("appliedJobs", JSON.stringify(appliedJobs));
 
-    // ✅ Also update jobsList (for RecruiterNavbar’s reference)
     const jobsList = JSON.parse(localStorage.getItem("jobsList")) || [];
     const updatedList = jobsList.map((j) =>
       j.requirementId === job.requirementId
@@ -226,13 +266,11 @@ const Navbar = () => {
     );
     localStorage.setItem("jobsList", JSON.stringify(updatedList));
 
-    // ✅ Trigger update event so RecruiterNavbar refreshes instantly
     const event = new CustomEvent("applicationUpdated", {
       detail: { requirementId: job.requirementId },
     });
     window.dispatchEvent(event);
 
-    // ✅ Finally navigate to application page
     navigate(`/apply/${job.requirementId}`, { state: { jobDetails: job } });
   };
 
@@ -241,17 +279,42 @@ const Navbar = () => {
     setShowForm(false);
     setSelectedJob(null);
   };
-  const handleSendMessage = () => {
-    if (newMessage.trim() === "") return;
-    setMessages((prev) => [...prev, { sender: "candidate", text: newMessage }]);
-    setNewMessage("");
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        { sender: "recruiter", text: "Thanks for your message! We’ll get back soon." },
-      ]);
-    }, 1000);
-  };
+  // const handleSendMessage = () => {
+  //   if (newMessage.trim() === "") return;
+  //   setMessages((prev) => [...prev, { sender: "candidate", text: newMessage }]);
+  //   setNewMessage("");
+  //   setTimeout(() => {
+  //     setMessages((prev) => [
+  //       ...prev,
+  //       { sender: "recruiter", text: "Thanks for your message! We’ll get back soon." },
+  //     ]);
+  //   }, 1000);
+  // };
+const handleSearchJobs = () => {
+  let filtered = jobs;
+
+  if (searchSkill.trim() !== "") {
+    filtered = filtered.filter(job =>
+      (job.skills?.toLowerCase().includes(searchSkill.toLowerCase())) ||
+      (job.designation?.toLowerCase().includes(searchSkill.toLowerCase())) ||
+      (job.jobRole?.toLowerCase().includes(searchSkill.toLowerCase()))
+    );
+  }
+
+  if (searchExp !== "") {
+    filtered = filtered.filter(job => job.experience?.includes(searchExp));
+  }
+
+  if (searchLocation.trim() !== "") {
+    filtered = filtered.filter(job =>
+      job.location?.toLowerCase().includes(searchLocation.toLowerCase())
+    );
+  }
+
+  setFilteredJobs(filtered);
+  setActiveSection("jobs");
+  setShowSearchOverlay(false);
+};
 
   return (
     <>
@@ -350,7 +413,12 @@ const Navbar = () => {
         <div className="navbar-center">
           {activeSection !== "home" && (
             <div className="search-bar">
-              <input type="text" placeholder="Search jobs, companies..." />
+<input
+  type="text"
+  placeholder="Search jobs, companies..."
+  onFocus={() => setShowSearchOverlay(true)}
+  readOnly
+/>
             </div>
           )}
         </div>
@@ -378,21 +446,15 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* === My Network === */}
-          {/* <div className="nav-item">
-            <FaUsers className="nav-icon-big" />
-            <span className="nav-label">My Network</span>
-          </div> */}
-
-          {/* === Messaging === */}
-          <div
+     
+          {/* <div
             className="nav-item messaging-item"
             onClick={() => setShowChatPopup(!showChatPopup)}
           >
             <FaEnvelope className="nav-icon-big" />
             <span className="nav-label">Messaging</span>
             {/* <span className="message-badge">3</span> */}
-          </div>
+          {/* </div> */} 
 
           <FaBell
             className="icon"
@@ -408,8 +470,7 @@ const Navbar = () => {
         </div>
       </nav>
       {/* ===== CHAT POPUP ===== */}
-      {/* ===== CHAT POPUP ===== */}
-      {showChatPopup && (
+      {/* {showChatPopup && (
         <div className="candChat-popup-overlay">
           <div className="candChat-popup-box">
             <div className="candChat-popup-header">
@@ -446,7 +507,7 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
 
       {/* ===== PROFILE PANEL ===== */}
       {openPanel === "profile" && (
@@ -503,7 +564,7 @@ const Navbar = () => {
               onClick={(e) => {
                 e.preventDefault();
                 setShowSettings(true);
-                setOpenPanel(null); // close profile panel
+                setOpenPanel(null);
               }}
             >
               <FaCog className="quick-icon" /> Settings
@@ -514,7 +575,7 @@ const Navbar = () => {
               onClick={(e) => {
                 e.preventDefault();
                 setShowFAQ(true);
-                setOpenPanel(null); // Close profile
+                setOpenPanel(null);
               }}
             >
               <FaQuestionCircle className="quick-icon" /> FAQs
@@ -703,7 +764,6 @@ const Navbar = () => {
 
 
 
-      {/* ===== JOB DASHBOARD (Sidebar + Jobs) ===== */}
       {/* ===== MAIN SECTION BELOW NAVBAR ===== */}
       <div className="main-content-below-navbar">
         {activeSection === "home" && <HomePage />}
@@ -712,188 +772,181 @@ const Navbar = () => {
           <div className="navDash-container">
             {/* Sidebar */}
             <div className="navDash-sidebar">
-              <input
+              {/* <input
                 type="text"
                 name="keyword"
                 value={filters.keyword}
                 onChange={handleChange}
                 placeholder="Search by keyword..."
-              />
+              /> */}
 
               <label>
-                Location
-                <select
-                  name="location"
-                  value={filters.location}
-                  onChange={handleChange}
-                >
-                  <option>All Locations</option>
-                  <option>Pune</option>
-                  <option>Mumbai</option>
-                  <option>Bangalore</option>
-                </select>
-              </label>
-              <label>
-                Experience
-                <select
-                  name="experience"
-                  value={filters.experience}
-                  onChange={handleChange}
-                >
-                  <option>All Experience Levels</option>
-                  <option>0-1 Years</option>
-                  <option>1-3 Years</option>
-                  <option>3-5 Years</option>
-                </select>
-              </label>
-              <label>
-                Salary
-                <select
-                  name="salary"
-                  value={filters.salary}
-                  onChange={handleChange}
-                >
-                  <option>All Salary Ranges</option>
-                  <option>0-3 LPA</option>
-                  <option>3-5 LPA</option>
-                  <option>5-10 LPA</option>
-                </select>
-              </label>
-              <label>
-                Designation
-                <select
-                  name="designation"
-                  value={filters.designation}
-                  onChange={handleChange}
-                >
-                  <option>All Job Designations</option>
-                  <option>Software Engineer</option>
-                  <option>Team Lead</option>
-                  <option>Project Manager</option>
-                </select>
-              </label>
-              <label>
-                Qualification
-                <select
-                  name="qualification"
-                  value={filters.qualification}
-                  onChange={handleChange}
-                >
-                  <option>All Qualifications</option>
-                  <option>B.Sc</option>
-                  <option>B.Tech</option>
-                  <option>MBA</option>
-                </select>
-              </label>
-              <label>
-                Company
-                <select
-                  name="company"
-                  value={filters.company}
-                  onChange={handleChange}
-                >
-                  <option>All Companies</option>
-                  <option>ABC Pvt Ltd</option>
-                  <option>XYZ Corp</option>
-                </select>
-              </label>
-            </div>
+  Location
+  <select name="location" value={filters.location} onChange={handleChange}>
+    <option>All Locations</option>
+    {[...new Set(jobs.map((job) => job.location))].map((loc) => (
+      <option key={loc}>{loc}</option>
+    ))}
+  </select>
+</label>
 
-            {/* Job Cards */}
-            <div className="navDash-jobContainer">
-              <h2 className="navDash-jobContainer-heading">Jobs For You</h2>
+<label>
+  Experience
+  <select name="experience" value={filters.experience} onChange={handleChange}>
+    <option>All Experience Levels</option>
+    {[...new Set(jobs.map((job) => job.experience))].map((exp) => (
+      <option key={exp}>{exp}</option>
+    ))}
+  </select>
+</label>
 
-              {loading ? (
-                <p>Loading jobs...</p>
-              ) : jobs.length === 0 ? (
-                <p>No jobs found.</p>
-              ) : (
-                <>
-                  {/* ✅ Put job cards in a separate grid div */}
-                  <div className="navDash-jobGrid">
-                    {jobs
-                      .filter(
-                        (job) =>
-                          selectedCompany === "All Companies" ||
-                          job.companyName === selectedCompany
-                      )
-                      .slice(0, visibleCount)
-                      .map((job) => (
-                        <div key={job.requirementId} className="navDash-jobCard">
-                          <button
-                            className="navDash-viewBtn"
-                            onClick={() => handleViewJD(job.requirementId)}
-                          >
-                            View JD
-                          </button>
+<label>
+  Salary
+  <select name="salary" value={filters.salary} onChange={handleChange}>
+    <option>All Salary Ranges</option>
+    {[...new Set(jobs.map((job) => job.salary))].map((sal) => (
+      <option key={sal}>{sal}</option>
+    ))}
+  </select>
+</label>
 
-                          <div className="navDash-jobInfo">
-                            <p><strong>Company:</strong> {job.companyName}</p>
-                            <p><strong>Location:</strong> {job.location}</p>
-                            <p><strong>Experience:</strong> {job.experience}</p>
-                            <p><strong>Job Role:</strong> {job.jobRole}</p>
-                          </div>
+<label>
+  Designation
+  <select name="designation" value={filters.designation} onChange={handleChange}>
+    <option>All Job Designations</option>
+    {[...new Set(jobs.map((job) => job.jobRole))].map((role) => (
+      <option key={role}>{role}</option>
+    ))}
+  </select>
+</label>
 
-                          {/* ✅ Buttons aligned side by side — Save first, Apply next */}
-                          <div className="navDash-jobActions">
-                            <button
-                              className="navDash-saveBtn"
-                              onClick={() => toggleSave(job.requirementId)}
-                              title={
-                                savedJobs.includes(job.requirementId)
-                                  ? "Unsave Job"
-                                  : "Save Job"
-                              }
-                            >
-                              {savedJobs.includes(job.requirementId) ? (
-                                <FaBookmark />
-                              ) : (
-                                <FaRegBookmark />
-                              )}
-                            </button>
+<label>
+  Qualification
+  <select name="qualification" value={filters.qualification} onChange={handleChange}>
+    <option>All Qualifications</option>
+    {[...new Set(jobs.map((job) => job.qualification))].map((q) => (
+      <option key={q}>{q}</option>
+    ))}
+  </select>
+</label>
 
-                            <button
-                              className="navDash-applyBtn"
-                              onClick={() => handleApplyNow(job)}
-                            >
-                              Apply Now
-                            </button>
-                          </div>
-                        </div>
-                      ))}
-                  </div>
+<label>
+  Company
+  <select name="company" value={filters.company} onChange={handleChange}>
+    <option>All Companies</option>
+    {[...new Set(jobs.map((job) => job.companyName))].map((c) => (
+      <option key={c}>{c}</option>
+    ))}
+  </select>
+</label>
+</div>
+{/* Job Cards */}
+<div className="navDash-jobContainer">
+  <h2 className="navDash-jobContainer-heading">Jobs For You</h2>
 
+  {loading ? (
+    <p>Loading jobs...</p>
+  ) : jobs.length === 0 ? (
+    <p>No jobs found.</p>
+  ) : (
+    <>
+      <div className="navDash-jobGrid">
+        {filteredJobs
+          .filter(
+            (job) =>
+              selectedCompany === "All Companies" ||
+              job.companyName === selectedCompany
+          )
+          .slice(0, visibleCount)
+          .map((job) => (
+            <div key={job.requirementId} className="navDash-jobCard">
 
+              <div className="navDash-jobHeader">
+                {job.companyLogo && (
+                  <img
+                    src={job.companyLogo}
+                    alt="Company Logo"
+                    className="navDash-companyLogo"
+                  />
+                  
+                )}
 
-                  {/* ✅ Show More Button below grid */}
-                  {visibleCount < jobs.length && (
-                    <button
-                      className="navDash-showMore"
-                      onClick={() => setVisibleCount((prev) => prev + 4)}
-                    >
-                      Show More
-                    </button>
-                  )}
-                </>
-              )}
-
-
-
-              {/* ✅ "No CV? No Problem" Highlight */}
-              <div className="no-cv-highlight">
-                <div className="no-cv-text">
-                  <h3>No CV? No Problem 🚀</h3>
-                  <p>Create your professional resume instantly in minutes.</p>
+                <div className="navDash-jobInfo">
+                  <p><strong>Company:</strong> {job.companyName}</p>
+                  <p><strong>Location:</strong> {job.location}</p>
+                  <p><strong>Experience:</strong> {job.experience}</p>
+                  <p><strong>Job Role:</strong> {job.jobRole}</p>
                 </div>
+              </div>
 
+              {/* ✅ Bottom Buttons */}
+              <div className="navDash-jobActions">
+                {/* View JD - Bottom Left */}
                 <button
-                  className="no-cv-create-btn"
-                  onClick={() => navigate("/resume-templates")}
+                  className="navDash-viewBtn"
+                  onClick={() => handleViewJD(job.requirementId)}
                 >
-                  Create Resume
+                  View JD
                 </button>
+
+                {/* Save + Apply Now - Bottom Right */}
+                <div className="navDash-actionRight">
+                  <button
+                    className="navDash-saveBtn"
+                    onClick={() => toggleSave(job.requirementId)}
+                    title={
+                      savedJobs.includes(job.requirementId)
+                        ? "Unsave Job"
+                        : "Save Job"
+                    }
+                  >
+                    {savedJobs.includes(job.requirementId) ? (
+                      <FaBookmark />
+                    ) : (
+                      <FaRegBookmark />
+                    )}
+                  </button>
+
+                  <button
+                    className="navDash-applyBtn"
+                    onClick={() => handleApplyNow(job)}
+                  >
+                    Apply Now
+                  </button>
+                </div>
               </div>
             </div>
+          ))}
+      </div>
+
+      {/* Show More Button below grid */}
+      {visibleCount < jobs.length && (
+        <button
+          className="navDash-showMore"
+          onClick={() => setVisibleCount((prev) => prev + 6)}
+        >
+          Show More
+        </button>
+      )}
+    </>
+  )}
+
+  {/* No CV Highlight */}
+  <div className="no-cv-highlight">
+    <div className="no-cv-text">
+      <h3>No CV? No Problem 🚀</h3>
+      <p>Create your professional resume instantly in minutes.</p>
+    </div>
+
+    <button
+      className="no-cv-create-btn"
+      onClick={() => navigate("/resume-templates")}
+    >
+      Create Resume
+    </button>
+  </div>
+</div>
+
           </div>
         )}
       </div>
@@ -1138,6 +1191,58 @@ const Navbar = () => {
           </div>
         </div>
       )}
+      {showSearchOverlay && (
+  <div className="rgSearch-top">
+    <div className="rgSearch-wrapper">
+      {/* ===== Logo and Title ===== */}
+      <div className="rgSearch-left">
+        <img src="/jobportal.jpg" alt="RG Portal Logo" className="rgSearch-logo" />
+        <span className="rgSearch-title">RG Portal</span>
+      </div>
+
+      {/* ===== Search Fields ===== */}
+      <div className="rgSearch-fields">
+        <input
+  type="text"
+  placeholder="Enter Skills, Designation etc"
+  className="rgSearch-input"
+  value={searchSkill}
+  onChange={(e) => setSearchSkill(e.target.value)}
+/>
+
+<select
+  className="rgSearch-select"
+  value={searchExp}
+  onChange={(e) => setSearchExp(e.target.value)}
+>
+  <option value="">Experience</option>
+  {[...Array(11).keys()].map((n) => (
+    <option key={n} value={n}>{n} year{n !== 1 ? "s" : ""}</option>
+  ))}
+</select>
+
+<input
+  type="text"
+  placeholder="Location"
+  className="rgSearch-input"
+  value={searchLocation}
+  onChange={(e) => setSearchLocation(e.target.value)}
+/>
+
+<button className="rgSearch-btn" onClick={handleSearchJobs}>
+  Let’s Find
+</button>
+
+      </div>
+
+      {/* ===== Close Button ===== */}
+      <button className="rgSearch-close" onClick={() => setShowSearchOverlay(false)}>
+        ×
+      </button>
+    </div>
+  </div>
+)}
+
 <ChatBot />
 
     </>

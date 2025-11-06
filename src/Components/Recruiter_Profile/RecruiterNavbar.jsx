@@ -11,9 +11,10 @@ import {
   FaSearch,
 } from "react-icons/fa";
 import "./RecruiterNavbar.css";
+import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 
 const RecruiterNavbar = () => {
-  const API_BASE_URL = "http://localhost:8080";
+  // const API_BASE_URL = "http://localhost:8080";
 
   const [activePage, setActivePage] = useState("home");
   const [showJDModal, setShowJDModal] = useState(false);
@@ -27,16 +28,104 @@ const RecruiterNavbar = () => {
     { sender: "You", text: "Yes, please share your updated resume." },
   ]);
   const [newMessage, setNewMessage] = useState("");
-  const [visibleCount, setVisibleCount] = useState(3);
   const [allJobs, setAllJobs] = useState([]);
   const [applicants, setApplicants] = useState([]);
   const [selectedJobId, setSelectedJobId] = useState(null);
   const [showApplicantsPopup, setShowApplicantsPopup] = useState(false);
   const [openPanel, setOpenPanel] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const [visibleCount, setVisibleCount] = useState(3);
+  //  const [companies, setCompanies] = useState([]);
+  //   const [showCompanies, setShowCompanies] = useState(false);
+const [filteredJobs, setFilteredJobs] = useState([]);
+
+  const [filters, setFilters] = useState({
+    keyword: "",
+    location: "All Locations",
+    experience: "All Experience Levels",
+    salary: "All Salary Ranges",
+    designation: "All Job Designations",
+    qualification: "All Qualifications",
+    company: "All Companies",
+  });
+
+   const params = new URLSearchParams(location.search);
+  const userType = params.get("userType");
+
+  // 💬 Chat Popup States
+  // const [showChatPopup, setShowChatPopup] = useState(false);
+  // const [messages, setMessages] = useState([
+  //   { sender: "Candidate", text: "Hello, is this position still open?" },
+  //   { sender: "You", text: "Yes, it is! Please share your updated resume." },
+  // ]);
+  // const [newMessage, setNewMessage] = useState("");
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+
+  const jobsRef = useRef(null);
+  const searchContainerRef = useRef(null);
+  const navigate = useNavigate();
+
+  const [designationSuggestions, setDesignationSuggestions] = useState([]);
+  const [locationSuggestions, setLocationSuggestions] = useState([]);
+
+
+
+  // Close profile panel on outside click
+  //   useEffect(() => {
+  //     const handleClickOutside = (event) => {
+  //       if (
+  //         openPanel === "profile" &&
+  //         jobsRef.current &&
+  //         !jobsRef.current.contains(event.target)
+  //       ) {
+  //         setOpenPanel(null);
+  //       }
+  //     };
+  //     document.addEventListener("mousedown", handleClickOutside);
+  //     return () => document.removeEventListener("mousedown", handleClickOutside);
+  //   }, [openPanel]);
+  //  const handleCompaniesClick = async () => {
+  //     try {
+  //       if (!showCompanies) {
+  //         const response = await axios.get("http://localhost:8080/api/requirements/companies");
+  //         setCompanies(response.data);
+  //       }
+  //       setShowCompanies((prev) => !prev); // toggle modal open/close
+  //     } catch (error) {
+  //       console.error("Error fetching companies:", error);
+  //       alert("Failed to fetch company list.");
+  //     }
+  //   };
+  const API_BASE_URL = "http://localhost:8080";
+
+const handleDelete = async (requirementId) => {
+  if (!window.confirm("Are you sure you want to delete this job description?")) return;
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/requirements/delete/${requirementId}`,
+      { method: "DELETE" }
+    );
+
+    if (response.ok) {
+      toast.success("Job deleted successfully!");
+      setJobs((prevJobs) =>
+        prevJobs.filter((job) => job.requirementId !== requirementId)
+      );
+    } else {
+      toast.error("Failed to delete job!");
+    }
+  } catch (error) {
+    console.error("Error deleting job:", error);
+    toast.error("Error connecting to backend!");
+  }
+};
+
 
   const currentYear = new Date().getFullYear();
-
-  const navigate = useNavigate();
 
   const handleViewApplicants = async (requirementId) => {
     try {
@@ -51,6 +140,9 @@ const RecruiterNavbar = () => {
   };
 
 
+ const handleEdit = (requirementId) => {
+  navigate(`/add-job-description/${requirementId}`);
+};
 
 
   // ✅ Fetch jobs and listen to Apply count updates
@@ -72,8 +164,10 @@ const RecruiterNavbar = () => {
           job.applications = res.data.length; // real-time count
         }
 
-        setAllJobs(jobList);
-        setJobs(jobList);
+       setAllJobs(jobList);
+       setJobs(jobList);
+       setFilteredJobs(jobList); 
+
       } catch (error) {
         console.error("❌ Error fetching jobs:", error);
       } finally {
@@ -156,7 +250,7 @@ const RecruiterNavbar = () => {
           <div className="recNav-item" onClick={() => setShowChatPopup(true)}>
             <FaEnvelope className="recNav-icon-big" />
             <span className="recNav-label">Messaging</span>
-          </div>
+          </div> 
           <div className="recNav-item">
             <FaUserCircle
               className="recNav-icon-big"
@@ -222,7 +316,7 @@ const RecruiterNavbar = () => {
       )}
 
       {/* ===== CHAT POPUP ===== */}
-      {showChatPopup && (
+      {/* {showChatPopup && (
         <div className="chat-popup-overlay">
           <div className="chat-popup-box">
             <div className="chat-popup-header">
