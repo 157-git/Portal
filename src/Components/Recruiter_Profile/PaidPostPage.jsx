@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./PaidPostPage.css";
 
@@ -10,6 +10,10 @@ const PaidPostPage = () => {
   const [upiApp, setUpiApp] = useState("");
   const [bank, setBank] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
+  const [remainingDays, setRemainingDays] = useState(0);
+  const [planStatus, setPlanStatus] = useState(null);
+
+  const recruiterId = 1; // ✅ static ID for now (no login needed)
 
   const plans = {
     basic: { price: 499, title: "Basic Plan", posts: "1 Job Posting" },
@@ -17,12 +21,67 @@ const PaidPostPage = () => {
     premium: { price: 1999, title: "Premium Plan", posts: "10 Job Postings" },
   };
 
+  // Fetch plan info on load
+  useEffect(() => {
+    const fetchPlan = async () => {
+      try {
+        const res = await fetch(`http://localhost:8080/api/plan/${recruiterId}`);
+        if (res.ok) {
+          const data = await res.json();
+          const today = new Date();
+          const expiry = new Date(data.expiryDate);
+          const diff = Math.ceil((expiry - today) / (1000 * 60 * 60 * 24));
+          if (diff > 0) setRemainingDays(diff);
+        }
+      } catch (error) {
+        console.error("Error fetching plan:", error);
+      }
+    };
+    fetchPlan();
+  }, []);
+
+  // Save or extend plan
+  const savePlanToBackend = async () => {
+    const days = 30; // all plans last 30 days
+
+    try {
+      const response = await fetch("http://localhost:8080/api/plan/purchase", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          recruiterId,
+          planType: selectedPlan,
+          days,
+        }),
+      });
+
+      if (response.ok) {
+        console.log("✅ Plan saved/extended successfully!");
+      } else {
+        console.error("❌ Failed to update plan");
+      }
+    } catch (error) {
+      console.error("Error saving plan:", error);
+    }
+  };
+
+  // Check plan status
+  const checkPlanStatus = async () => {
+    try {
+      const res = await fetch(`http://localhost:8080/api/plan/status/${recruiterId}`);
+      const data = await res.json();
+      setPlanStatus(data);
+    } catch (error) {
+      console.error("Error checking plan status:", error);
+    }
+  };
+
   const handlePayment = () => setShowPopup(true);
 
-  const confirmPayment = () => {
+  const confirmPayment = async () => {
     setShowPopup(false);
+    await savePlanToBackend();
     setShowSuccess(true);
-
     setTimeout(() => {
       setShowSuccess(false);
       navigate("/add-job-description");
@@ -33,6 +92,12 @@ const PaidPostPage = () => {
     <div className="paidPost-container">
       <h1>Choose a Job Posting Plan</h1>
       <p>Select a plan that fits your hiring needs</p>
+
+      {remainingDays > 0 && (
+        <p className="remaining-days">
+          You have {remainingDays} days left on your current plan.
+        </p>
+      )}
 
       <div className="plans">
         {Object.keys(plans).map((key) => (
@@ -49,11 +114,33 @@ const PaidPostPage = () => {
         ))}
       </div>
 
-      <button className="proceed-btn" onClick={handlePayment}>
-        Proceed to Pay ₹{plans[selectedPlan].price}
-      </button>
+      {/* === SAME STYLE BUTTONS === */}
+      <div className="action-buttons">
+        <button className="main-btn" onClick={handlePayment}>
+          Proceed to Pay ₹{plans[selectedPlan].price}
+        </button>
+        <button className="main-btn secondary" onClick={checkPlanStatus}>
+          Check My Plan Status
+        </button>
+      </div>
 
-      {/* Payment Popup */}
+      {/* === PLAN STATUS DISPLAY === */}
+     {planStatus && (
+  <div className="plan-status-box animated-status">
+    <h3>📊 Plan Status</h3>
+    <p><strong>Plan Type:</strong> {planStatus.planType}</p>
+    <p><strong>Expiry Date:</strong> {planStatus.expiryDate}</p>
+    <p><strong>Remaining Days:</strong> {planStatus.remainingDays}</p>
+    <p
+      className={`status-message ${planStatus.active ? "active" : "expired"}`}
+    >
+      {planStatus.message}
+    </p>
+  </div>
+)}
+
+
+      {/* === PAYMENT POPUP === */}
       {showPopup && (
         <div className="payment-overlay">
           <div className="payment-popup">
@@ -80,7 +167,6 @@ const PaidPostPage = () => {
               ))}
             </div>
 
-            {/* Dynamic content */}
             <div className="method-content">
               {method === "upi" && (
                 <div className="upi-options">
@@ -110,44 +196,6 @@ const PaidPostPage = () => {
                   />
                 </div>
               )}
-
-              {method === "card" && (
-                <div className="card-details">
-                  <input type="text" placeholder="Card Number" />
-                  <div className="card-row">
-                    <input type="text" placeholder="MM/YY" />
-                    <input type="text" placeholder="CVV" />
-                  </div>
-                  <input type="text" placeholder="Cardholder Name" />
-                </div>
-              )}
-
-              {method === "netbanking" && (
-                <div className="bank-list">
-                  <p>Select Your Bank:</p>
-                  <div className="banks">
-                    {["SBI", "HDFC", "ICICI", "Axis", "Kotak"].map((b) => (
-                      <div
-                        key={b}
-                        className={`bank ${bank === b ? "selected" : ""}`}
-                        onClick={() => setBank(b)}
-                      >
-                        🏦 {b}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {method === "wallet" && (
-                <div className="wallets">
-                  {["Amazon Pay", "Mobikwik", "Freecharge"].map((w) => (
-                    <div key={w} className="wallet">
-                      💼 {w}
-                    </div>
-                  ))}
-                </div>
-              )}
             </div>
 
             <div className="popup-buttons">
@@ -162,7 +210,7 @@ const PaidPostPage = () => {
         </div>
       )}
 
-      {/* Success Modal */}
+      {/* === SUCCESS POPUP === */}
       {showSuccess && (
         <div className="success-overlay">
           <div className="success-box">

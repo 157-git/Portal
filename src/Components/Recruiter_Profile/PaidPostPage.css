@@ -31,7 +31,8 @@
   color: #007bff;
 }
 
-.proceed-btn {
+/* === Common Button Style === */
+.main-btn {
   background: #007bff;
   color: white;
   padding: 12px 24px;
@@ -39,10 +40,26 @@
   border-radius: 8px;
   cursor: pointer;
   font-weight: 500;
+  font-size: 16px;
+  margin: 10px;
+  transition: all 0.3s ease;
+  min-width: 220px;
+  box-shadow: 0 2px 5px rgba(0, 123, 255, 0.3);
 }
 
-.proceed-btn:hover {
+
+.main-btn:hover {
   background: #0056b3;
+  transform: scale(1.05);
+  box-shadow: 0 3px 8px rgba(0, 123, 255, 0.4);
+}
+/* Optional: container for spacing and centering buttons */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-top: 20px;
 }
 
 /* Popup Overlay */
@@ -254,6 +271,65 @@
   border-bottom: 4px solid #28a745;
   transform: rotate(45deg);
   animation: draw 0.5s ease;
+}
+.remaining-days {
+  color: #007bff;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+
+.plan-status-box {
+  background: #ffffff;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 25px;
+  margin-top: 25px;
+  width: 380px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s ease;
+}
+.plan-status-box h3 {
+  color: #007bff;
+  margin-bottom: 15px;
+  text-align: center;
+}
+.plan-status-box p {
+  margin: 6px 0;
+  font-size: 15px;
+  color: #444;
+}
+.status-message {
+  text-align: center;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 16px;
+}
+.status-message.active {
+  color: #28a745; /* green for active */
+}
+
+.status-message.expired {
+  color: #d11a2a; /* red for expired */
+}
+/* === Elegant Plan Status Animation === */
+.animated-status {
+  opacity: 0;
+  transform: translateY(15px);
+  animation: fadeSlideIn 0.6s ease forwards;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes draw {

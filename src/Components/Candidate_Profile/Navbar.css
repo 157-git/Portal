@@ -376,6 +376,43 @@ body {
   transition: transform 0.2s ease;
 }
 
+.navDash-actionRight {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* or space-between if needed */
+  gap: 10px; /* spacing between save icon & button */
+  margin-top: 10px;
+}
+
+.navDash-saveBtn {
+  background: none;
+  border: none;
+  color: #0078ff;
+  font-size: 20px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.navDash-saveBtn:hover {
+  color: #005bbb;
+}
+
+.navDash-applyBtn {
+  background-color: #0078ff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.navDash-applyBtn:hover {
+  background-color: #005bbb;
+}
+
 .navDash-jobCard:hover {
   transform: translateY(-4px);
   box-shadow: 0 4px 12px rgba(0, 120, 255, 0.1);
@@ -398,8 +435,8 @@ body {
 /* View Button */
 .navDash-viewBtn {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  bottom: 12px;
+  left: 12px;
   background-color: #007bff;
   color: white;
   border: none;
@@ -410,9 +447,11 @@ body {
   font-weight: 600;
   transition: background 0.3s ease;
 }
+
 .navDash-viewBtn:hover {
   background-color: #005bbb;
 }
+
 
 /* ===== Modal Overlay ===== */
 /* ===== Modal Overlay ===== */
@@ -700,10 +739,11 @@ body {
 }
 .navDash-jobCard {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  background: #fff;
+  transition: 0.2s ease-in-out;
 }
 
 .navDash-jobCard-content {
@@ -1297,9 +1337,7 @@ details p {
   from { background: rgba(0,0,0,0); }
   to { background: rgba(0,0,0,0.45); }
 }
-.main-content-below-navbar {
-  margin-top: 70px; /* adjust if navbar height differs */
-}
+
 /* ✅ Main job container */
 .navDash-jobContainer {
   margin-left: 250px; /* Leave space for sidebar */
@@ -1320,13 +1358,18 @@ details p {
 /* ✅ Grid for job cards */
 .navDash-jobGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* ⬅️ smaller width */
-  gap: 16px; /* ⬅️ smaller gap between cards */
+  grid-template-columns: repeat(3, 1fr); /* 👈 3 cards per row */
+  gap: 20px; /* space between cards */
   justify-content: center;
   align-items: start;
 }
 
-
+.navDash-jobHeader {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
 /* ✅ Job cards styling */
 .navDash-jobCard {
   background: #fff;
@@ -1474,9 +1517,138 @@ details p {
   margin-top: 80px; /* match your navbar height */
   padding: 20px;
 }
+/* ===== RG Portal Top Search Bar (TimesJobs-style) ===== */
+.rgSearch-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;                 /* same visual height as TimesJobs bar */
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: slideDown 0.35s ease forwards;
+}
 
+@keyframes slideDown {
+  from { transform: translateY(-100%); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+
+.rgSearch-wrapper {
+  width: 100%;
+  max-width: 1180px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 25px;
+  position: relative;
+}
+
+.rgSearch-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rgSearch-logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+}
+
+.rgSearch-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #526d82;               /* RG Portal accent (like TimesJobs red) */
+}
+
+.rgSearch-fields {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  justify-content: center;
+}
+
+.rgSearch-input,
+.rgSearch-select {
+  height: 45px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  padding: 0 18px;
+  font-size: 15px;
+  width: 240px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.rgSearch-input:focus,
+.rgSearch-select:focus {
+  border-color: #526d82;
+  box-shadow: 0 0 5px rgba(224,72,77,0.3);
+}
+
+.rgSearch-btn {
+  height: 45px;
+  background:#526d82;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  padding: 0 25px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.rgSearch-btn:hover {
+  background:#526d82;
+}
+
+.rgSearch-close {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  color: #777;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.rgSearch-close:hover {
+  color: #526d82;
+}
+
+.job-card {
+  position: relative; /* important */
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.company-logo, .navDash-companyLogo {
+  position: absolute;
+  top: 17px;
+  right: 21px;
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  /* border-radius: 50%; */
+  /* border: 1px solid #ddd; */
+  padding: 2px;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
 
 /* ✅ Responsive: Stack on smaller screens */
+
 @media (max-width: 900px) {
   .navDash-jobGrid {
     grid-template-columns: 1fr;
@@ -1485,5 +1657,20 @@ details p {
   .navDash-jobContainer {
     margin-left: 0;
     width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .settings-sidebar {
+    width: 100px;
+  }
+
+  .notif-panel {
+    width: 100%;
+  }
+
+  .faq-container {
+    width: 95%;
+    padding: 15px;
   }
 }

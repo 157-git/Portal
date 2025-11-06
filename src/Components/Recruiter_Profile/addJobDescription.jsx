@@ -9,11 +9,30 @@ import { Select } from "antd";
 import { useNavigate } from "react-router-dom";
 
 const AddJobDescription = ({loginEmployeeName}) => {
-const { employeeId, userType} = useParams();
+const { employeeId, userType ,requirementId } = useParams();
 
 // const employeeId = paramEmployeeId || 977;
 // const userType = paramUserType || "TeamLeader";
+useEffect(() => {
+  if (requirementId) {
+    // fetch job details for edit
+    fetch(`http://localhost:8080/api/requirements/${requirementId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setFormData((prev) => ({
+          ...prev,
+          ...data,
+          jdAddedDate: prev.jdAddedDate // keep current date as per your logic
+        }));
 
+        // prefill skills tags if data.skills is a comma-separated string
+        if (data.skills) {
+          setTags(data.skills.split(",").map((s) => s.trim()));
+        }
+      })
+      .catch((err) => console.error("Error fetching JD:", err));
+  }
+}, [requirementId]);
 
   const [socket, setSocket] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -59,14 +78,14 @@ const navigate = useNavigate();
     jobRole: "",
     perks: "",
     incentive: "",
-    reportingHierarchy: "",
-    gender: "",
+     companyLogo: "", 
+      gender: "",
     documentation: "",
     ageCriteria: "",
     note: "",
     jdAddedDate: formatDate(),
-    jdType: "All Members",
-    jdStatus: "Active",
+    // jdType: "All Members",
+    // jdStatus: "Active",
     holdStatus: "Unhold",
     positionOverview: { overview: "", employeeId: "" },
     responsibilities: [{ employeeId: "", responsibilitiesMsg: "" }],
@@ -77,6 +96,7 @@ const navigate = useNavigate();
         questions: [{ question: "" }], 
 
   });
+
 
   
     useEffect(() => {
@@ -130,7 +150,7 @@ const validateField = (name, value) => {
     "weekOff",
     "jobRole",
     "incentive",
-    "reportingHierarchy",
+     "companyLogo",
     "documentation",
     "ageCriteria",
   ];
@@ -290,125 +310,140 @@ console.log(errors);
 const handleSubmit = async (e) => {
   e.preventDefault();
 
-  // Don’t show loader or route
-  // setLoading(true);  <-- we skip this intentionally
-
-  // 🧩 Validation
   const newErrors = {};
 
-  const requiredFields = [
-    "companyName",
-    "designation",
-    "field",
-    "stream",
-    "location",
-    "jobType",
-    "salary",
-    "experience",
-    "bond",
-    "skills",
-    "weekOff",
-    "jobRole",
-    "incentive",
-    "reportingHierarchy",
-    "documentation",
-    "ageCriteria",
-  ];
+  // ✅ Run validation only for ADD mode
+  if (!requirementId) {
+    const requiredFields = [
+      "companyName",
+      "designation",
+      "field",
+      "stream",
+      "location",
+      "jobType",
+      "salary",
+      "experience",
+      "bond",
+      "skills",
+      "weekOff",
+      "jobRole",
+      "incentive",
+      "companyLogo",
+      "documentation",
+      "ageCriteria",
+    ];
 
-  requiredFields.forEach((key) => {
-    const value = formData[key];
-    if (!value || !value.toString().trim()) {
-      newErrors[key] = "This field is required";
-    }
-  });
-
-  const nestedGroups = [
-    { key: "responsibilities", field: "responsibilitiesMsg" },
-    { key: "jobRequirements", field: "jobRequirementMsg" },
-    { key: "preferredQualifications", field: "preferredQualificationMsg" },
-    { key: "questions", field:"question"}
-  ];
-
-  nestedGroups.forEach(({ key, field }) => {
-    formData[key].forEach((item, index) => {
-      if (!item[field] || !item[field].trim()) {
-        if (!newErrors[key]) newErrors[key] = [];
-        newErrors[key][index] = { [field]: "This field is required" };
+    requiredFields.forEach((key) => {
+      const value = formData[key];
+      if (!value || !value.toString().trim()) {
+        newErrors[key] = "This field is required";
       }
     });
-  });
 
-  setErrors(newErrors);
+    const nestedGroups = [
+      { key: "responsibilities", field: "responsibilitiesMsg" },
+      { key: "jobRequirements", field: "jobRequirementMsg" },
+      { key: "preferredQualifications", field: "preferredQualificationMsg" },
+      { key: "questions", field: "question" },
+    ];
 
-  if (Object.keys(newErrors).length > 0) {
-    toast.error("Please fill all required fields!");
-    return;
+    nestedGroups.forEach(({ key, field }) => {
+      formData[key].forEach((item, index) => {
+        if (!item[field] || !item[field].trim()) {
+          if (!newErrors[key]) newErrors[key] = [];
+          newErrors[key][index] = { [field]: "This field is required" };
+        }
+      });
+    });
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      toast.error("Please fill all required fields!");
+      return;
+    }
   }
 
   try {
-    const response = await fetch("http://localhost:8080/api/requirements/create", {
-      method: "POST",
+    const url = requirementId
+      ? `http://localhost:8080/api/requirements/update/${requirementId}`
+      : "http://localhost:8080/api/requirements/create";
+
+    const method = requirementId ? "PUT" : "POST";
+
+    const response = await fetch(url, {
+      method,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
     });
 
     if (response.ok) {
+      toast.success(
+        requirementId
+          ? "Requirement updated successfully!"
+          : "Requirement saved successfully!"
+      );
 
-
-     alert("Requirement saved successfully!");
-     navigate("/recruiter"); // or whatever your dashboard route is
-
-
-      // Reset form fields
-      setFormData({
-        ...formData,
-        companyName: "",
-        designation: "",
-        position: "",
-        qualification: "",
-        yearOfPassing: "",
-        field: "",
-        stream: "",
-        location: "",
-        salary: "",
-        jobType: "",
-        experience: "",
-        bond: "",
-        percentage: "",
-        skills: "",
-        companyLink: "",
-        detailAddress: "",
-        shift: "",
-        weekOff: "",
-        noticePeriod: "",
-        jobRole: "",
-        perks: "",
-        incentive: "",
-        reportingHierarchy: "",
-        gender: "",
-        documentation: "",
-        ageCriteria: "",
-        note: "",
-        jdAddedDate: formatDate(),
-        jdType: "All Members",
-        jdStatus: "Active",
-        holdStatus: "Unhold",
-        positionOverview: { overview: "", employeeId: "" },
-        responsibilities: [{ employeeId: "", responsibilitiesMsg: "" }],
-        jobRequirements: [{ employeeId: "", jobRequirementMsg: "" }],
-        preferredQualifications: [{ employeeId: "", preferredQualificationMsg: "" }],
-        questions: [{ question: "" }],
-
-      });
-
-      setTags([]);
+       if (requirementId) {
+    navigate("/recruiter-navbar/newRecruiter");
+  } else {
+    navigate("/navbar");
+  }
+      // Reset form only if adding new
+      if (!requirementId) {
+        setFormData({
+          ...formData,
+          companyName: "",
+          designation: "",
+          position: "",
+          qualification: "",
+          yearOfPassing: "",
+          field: "",
+          stream: "",
+          location: "",
+          salary: "",
+          jobType: "",
+          experience: "",
+          bond: "",
+          percentage: "",
+          skills: "",
+          companyLink: "",
+          detailAddress: "",
+          shift: "",
+          weekOff: "",
+          noticePeriod: "",
+          jobRole: "",
+          perks: "",
+          incentive: "",
+          companyLogo: "",
+          gender: "",
+          documentation: "",
+          ageCriteria: "",
+          note: "",
+          jdAddedDate: formatDate(),
+          holdStatus: "Unhold",
+          positionOverview: { overview: "", employeeId: "" },
+          responsibilities: [{ employeeId: "", responsibilitiesMsg: "" }],
+          jobRequirements: [{ employeeId: "", jobRequirementMsg: "" }],
+          preferredQualifications: [
+            { employeeId: "", preferredQualificationMsg: "" },
+          ],
+          questions: [{ question: "" }],
+        });
+        setTags([]);
+      }
     } else {
-      toast.error("Failed to save requirement!");
+      toast.error(
+        requirementId
+          ? "Failed to update requirement!"
+          : "Failed to save requirement!"
+      );
     }
   } catch (error) {
+    console.error("Error connecting to backend:", error);
     toast.error("Error connecting to backend!");
   }
 };
+
 
 
 
@@ -834,19 +869,33 @@ console.log(formData);
                     </div>
                     <div className="field-Row-white">
                       <div className="field">
-                        <label>Reporting Hierarchy:</label>
-                        <div className="setDivDisplayBlockForJDValidation">
-                          <input
-                            style={{ width: "100%" }}
-                            type="text"
-                            name="reportingHierarchy"
-                            value={formData.reportingHierarchy}
-                            onChange={handleChange}
-                            placeholder="Enter Reporting Hierarchy"
-                          />
-                          {errors.reportingHierarchy && <div className="setStarAsError">{errors.reportingHierarchy}</div>}
-                        </div>
-                      </div>
+  <label>Company Logo:</label>
+  
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(e) => {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setFormData({ ...formData, companyLogo: reader.result });
+      };
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    }}
+  />
+
+  {formData.companyLogo && (
+    <img
+      src={formData.companyLogo}
+      alt="Company Logo"
+      style={{ width: "100px", height: "100px", marginTop: "8px", borderRadius: "5px", border: "1px solid #ccc" }}
+    />
+  )}
+</div>
+
                       <div className="field">
                         <label>Gender:</label>
                         <select
@@ -896,7 +945,7 @@ console.log(formData);
 
                     {/* Arshad Attar Added New Code From Here , JD New fields 27-10-2024 */}
                     <div className="field-Row-Gray">
-                      <div className="field">
+                      {/* <div className="field">
                         <label>Select JD Type :</label>
                         <select
                           name="jdType"
@@ -907,9 +956,9 @@ console.log(formData);
                           <option value="All Members">All Members</option>
                           <option value="Team Members">Team Members</option>
                         </select>
-                      </div>
+                      </div> */}
 
-                      <div className="field">
+                      {/* <div className="field">
                         <label>Select JD Status</label>
                         <select
                           name="jdStatus"
@@ -921,7 +970,7 @@ console.log(formData);
 
 
                         </select>
-                      </div>
+                      </div> */}
                     </div>
                     {/* Arshad Attar Added New Code From Here , JD New fields 27-10-2024  */}
 
