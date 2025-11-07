@@ -522,7 +522,7 @@ const handleSearchJobs = () => {
               <p>B.Sc Computer Science at Dr D Y Patil Law College, Pune</p>
               <button
                 className="btn-update"
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/profile-page")}
               >
                 View & Update Profile
               </button>

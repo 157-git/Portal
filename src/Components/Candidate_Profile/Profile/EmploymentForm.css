@@ -1,0 +1,85 @@
+.employment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #fcfcfd;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.form-group label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  display: block;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #000000;
+  font-size: 14px;
+}
+
+
+textarea { min-height: 100px; resize: vertical; }
+
+.radio-row { display: flex; gap: 20px; }
+
+.exp-row { display: flex; gap: 10px; }
+
+.skills-row { display: flex; gap: 8px; }
+
+.chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+
+.chip { background: #f3f4f6; padding: 4px 8px; border-radius: 999px; font-size: 13px; display: flex; gap: 6px; align-items: center; }
+
+.chip button { border: none; background: transparent; cursor: pointer; }
+
+.form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }
+
+.form-actions button { padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; }
+
+.form-actions button[type="submit"] { background: #526d82; color: #fff; }
+
+.form-actions button[type="button"] { background: #e5e7eb; }
+
+
+/* EmploymentModal.css */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(249, 248, 248, 0.2); /* semi-transparent dark blur */
+  backdrop-filter: blur(3px); /* blur effect */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+   border-radius: 12px;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 500px;
+  max-width: 90%;
+  max-height: 80%;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
