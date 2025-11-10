@@ -423,8 +423,8 @@ const Navbar = () => {
           )}
         </div>
 
-
         <div className="navbar-right">
+
           <div className="jobs-click-container" ref={jobsRef}>
             <span className="jobs-label" onClick={() => togglePanel("jobs")}>
               My Jobs
@@ -447,6 +447,15 @@ const Navbar = () => {
           </div>
 
 
+      <div className="premium-click-container">
+    <span
+      className="premium-label"
+      onClick={() => navigate("/premium")}
+      style={{ cursor: "pointer", marginLeft: "15px", fontWeight: "bold" }}
+    >
+      Premium
+    </span>
+  </div>
           {/* <div
             className="nav-item messaging-item"
             onClick={() => setShowChatPopup(!showChatPopup)}
