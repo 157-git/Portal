@@ -22,11 +22,7 @@ import { API_BASE_PORTAL } from "../../../API/api";
 
 const ProfilePage = () => {
 
-<<<<<<< HEAD
-  const API_BASE_URL = "http://192.168.1.44:9091/api/profile"; // Adjust if needed
-=======
   // const API_BASE_URL = "http://localhost:8080/api/profile"; // Adjust if needed
->>>>>>> f74d11fe382fdadb906da5c24282000b63e1639d
   const [resumeHeadline, setResumeHeadline] = useState("");
   const [resumeFile, setResumeFile] = useState(null);
   const [uploadDate, setUploadDate] = useState(null);
