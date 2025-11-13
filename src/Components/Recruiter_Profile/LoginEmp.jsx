@@ -4,9 +4,12 @@ import LoginImage from "../.././assets/recruiter.png";
 import { SyncOutlined, EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons"; // 👈 Added icons
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_PORTAL, API_BASE_URL } from "../../API/api";
+import { useUser } from "../UserContext";
 
 const LoginEmp = () => {
   const { role } = useParams();
+  const { loginUser } = useUser();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // 👈 Added for toggle
@@ -39,7 +42,39 @@ const LoginEmp = () => {
   useEffect(() => { generateCaptcha(); }, []);
   useEffect(() => { drawCaptcha(); }, [captcha]);
 
+  const buildLoginBody = (username, password, role) => {
+    if (role === "portalemp") {
+      // For portal employee loginEmployee API
+      return {
+        userName: username,           // ✅ matches backend field
+        employeePassword: password,   // ✅ matches backend field
+        userType: role                // ✅ matches backend field
+      };
+    }
+
+    // For other roles (if applicable)
+    switch (role) {
+      case "Recruiters":
+        return { userName: username, employeePassword: password };
+      case "TeamLeader":
+        return { userName: username, tlPassword: password };
+      case "Manager":
+        return { userName: username, managerPassword: password };
+      case "SuperUser":
+        return { userName: username, superUserPassword: password };
+      default:
+        throw new Error("Invalid role");
+    }
+  };
+
+
+
+
   const handleLogin = async (e) => {
+    console.log("username:", username);
+    console.log("employeePassword:", password);
+    console.log("userType:", userType);
+
     e.preventDefault();
 
     if (userCaptcha !== captcha) {
@@ -53,26 +88,48 @@ const LoginEmp = () => {
     }
 
     try {
-      let response;
-      if (userType === "newRecruiter") {
-        response = await axios.post("http://localhost:8080/jobportal/api/loginEmployee", {
-          userName: username,
-          password,
-          userType
-        });
-      } else {
-        response = await axios.post(
-          `http://192.168.1.39:9090/api/ats/157industries/user-login-157/${userType}`,
-          { userName: username, password }
-        );
-      }
+      // Step 1: Build the request body
+      const body = buildLoginBody(username, password, userType);
 
-      localStorage.setItem("username", username);
-      localStorage.setItem("userType", userType);
+      // Step 2: Select the right API
+      const apiUrl =
+        userType === "portalemp"
+          ? `${API_BASE_PORTAL}/loginEmployee`
+          : `${API_BASE_URL}/user-login-157/${userType}`;
+
+      console.log("📤 API URL:", apiUrl);
+      console.log("📦 Request Body:", body);
+
+      // Step 3: Make API call
+      const response = await axios.post(apiUrl, body);
+      console.log("✅ API Response:", response);
+
+      // Step 4: Extract only what's needed
+      const userId =
+        userType === "portalemp"
+          ? response.data.uid
+          : response.data.employeeId;
+
+      // Step 5: Save login info in context
+      loginUser({
+        userId,
+        userType: "employee",
+        role: userType,
+      });
+
+      // Step 6: Persist minimal info in localStorage
+      localStorage.setItem("userId", userId);
+      localStorage.setItem("userType", "employee");
+      localStorage.setItem("role", userType);
+
+      // Step 7: Navigate to the correct dashboard
       navigate(`/recruiter-navbar/${userType}`);
     } catch (error) {
+      console.error("❌ Login failed:", error.response?.data || error);
       alert(error.response?.data || "Login failed. Please try again.");
     }
+
+
   };
 
   return (
@@ -117,11 +174,11 @@ const LoginEmp = () => {
               required
             >
               <option value="">Select User Type</option>
-              <option value="Recruiter">Recruiter</option>
+              <option value="Recruiters">Recruiter</option>
               <option value="TeamLeader">Team Leader</option>
               <option value="Manager">Manager</option>
               <option value="SuperUser">Super User</option>
-              <option value="newRecruiter">New Recruiter</option>
+              <option value="portalemp">Portal Employee</option>
             </select>
 
             <div className="captcha-container">

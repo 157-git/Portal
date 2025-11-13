@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./PaidPostPage.css";
+import { API_BASE_PORTAL } from "../../API/api";
 
 const PaidPostPage = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const PaidPostPage = () => {
   useEffect(() => {
     const fetchPlan = async () => {
       try {
-        const res = await fetch(`http://localhost:8080/api/plan/${recruiterId}`);
+        const res = await fetch(`${API_BASE_PORTAL}/getPlanByRecruiterId/${recruiterId}`);
         if (res.ok) {
           const data = await res.json();
           const today = new Date();
@@ -45,7 +46,7 @@ const PaidPostPage = () => {
     const days = 30; // all plans last 30 days
 
     try {
-      const response = await fetch("http://localhost:8080/api/plan/purchase", {
+      const response = await fetch(`${API_BASE_PORTAL}/purchase`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -68,7 +69,7 @@ const PaidPostPage = () => {
   // Check plan status
   const checkPlanStatus = async () => {
     try {
-      const res = await fetch(`http://localhost:8080/api/plan/status/${recruiterId}`);
+      const res = await fetch(`${API_BASE_PORTAL}/status/${recruiterId}`);
       const data = await res.json();
       setPlanStatus(data);
     } catch (error) {

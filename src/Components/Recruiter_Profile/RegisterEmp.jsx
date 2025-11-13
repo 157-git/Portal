@@ -4,6 +4,7 @@ import "./RegisterEmp.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { API_BASE_PORTAL } from "../../API/api";
 
 const RegisterEmp = () => {
   const [formData, setFormData] = useState({
@@ -29,7 +30,7 @@ const RegisterEmp = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/jobportal/api/addEmployee",
+        `${API_BASE_PORTAL}/addEmployee`,
         formData
       );
 
@@ -124,7 +125,7 @@ const RegisterEmp = () => {
             required
           >
             <option value="">Select User Type</option>
-            <option value="newRecruiter">New Recruiter</option>
+            <option value="portalemp">New Recruiter</option>
           </select>
 
           <button type="submit" className="btn-register">

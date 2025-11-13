@@ -16,11 +16,17 @@ import PersonalDetailsModal from "./PersonalDetailsModal";
 import { Camera } from "lucide-react"; 
 import axios from "axios";
 import 'remixicon/fonts/remixicon.css';
+import { useUser } from "../../UserContext";
+import { API_BASE_PORTAL } from "../../../API/api";
 
 
 const ProfilePage = () => {
 
+<<<<<<< HEAD
   const API_BASE_URL = "http://192.168.1.44:9091/api/profile"; // Adjust if needed
+=======
+  // const API_BASE_URL = "http://localhost:8080/api/profile"; // Adjust if needed
+>>>>>>> f74d11fe382fdadb906da5c24282000b63e1639d
   const [resumeHeadline, setResumeHeadline] = useState("");
   const [resumeFile, setResumeFile] = useState(null);
   const [uploadDate, setUploadDate] = useState(null);
@@ -77,7 +83,11 @@ const ProfilePage = () => {
 
   const fetchCandidateData = async (id) => {
     try {
+<<<<<<< HEAD
       const res = await axios.get(`http://192.168.1.44:9091/jobportal/api/profile/${id}`);
+=======
+      const res = await axios.get(`${API_BASE_PORTAL}/deleteBasicDetails/${id}`);
+>>>>>>> f74d11fe382fdadb906da5c24282000b63e1639d
       if (res.data && Object.keys(res.data).length > 0) {
         // returning user: load data
         setPersonalDetails(res.data.personalDetails || {});
@@ -160,7 +170,7 @@ const ProfilePage = () => {
     try {
       const candidateId = localStorage.getItem("candidateId");
       const response = await axios.post(
-        `${API_BASE_URL}/createBasicDetails/${candidateId}`,
+        `${API_BASE_PORTAL}/createBasicDetails/${candidateId}`,
         details
       );
       alert("✅ Basic Details Created!");
@@ -174,7 +184,7 @@ const ProfilePage = () => {
     const fetchAllBasicDetails = async () => {
     try {
       const candidateId = localStorage.getItem("candidateId");
-      const response = await axios.get(`${API_BASE_URL}/getAll/${candidateId}`);
+      const response = await axios.get(`${API_BASE_PORTAL}/getAll/${candidateId}`);
       console.log("All Details:", response.data);
     } catch (error) {
       console.error("❌ Error fetching details:", error.message);
@@ -184,7 +194,7 @@ const ProfilePage = () => {
 
   const fetchBasicDetailsById = async (id) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/getBasicDetails/${id}`);
+      const response = await axios.get(`${API_BASE_PORTAL}/getBasicDetails/${id}`);
       setBasicDetails(response.data);
     } catch (error) {
       console.error("❌ Error fetching detail:", error.message);
@@ -195,7 +205,7 @@ const ProfilePage = () => {
     try {
       const candidateId = localStorage.getItem("candidateId");
       const response = await axios.put(
-        `${API_BASE_URL}/updateBasicDetails/${id}/${candidateId}`,
+        `${API_BASE_PORTAL}/updateBasicDetails/${id}/${candidateId}`,
         updatedData
       );
       setBasicDetails(response.data);
@@ -207,7 +217,7 @@ const ProfilePage = () => {
 
   const deleteBasicDetails = async (id) => {
     try {
-      await axios.delete(`${API_BASE_URL}/${id}`);
+      await axios.delete(`${API_BASE_PORTAL}/deleteBasicDetails/${id}`);
       alert("🗑️ Basic Details Deleted!");
       setBasicDetails({
         name: "",
@@ -230,7 +240,7 @@ const ProfilePage = () => {
 
   const createEmployment = async (employmentData) => {
     try {
-      const res = await axios.post(`${API_BASE_URL}/createEmployment`, employmentData);
+      const res = await axios.post(`${API_BASE_PORTAL}/createEmployment`, employmentData);
       setEmployment((prev) => [...prev, res.data]);
       alert("✅ Employment record added!");
     } catch (err) {
@@ -240,7 +250,7 @@ const ProfilePage = () => {
 
   const fetchAllEmployment = async () => {
     try {
-      const res = await axios.get(`${API_BASE_URL}/getAllEmp`);
+      const res = await axios.get(`${API_BASE_PORTAL}/getAllEmp`);
       if (Array.isArray(res.data)) setEmployment(res.data);
     } catch (err) {
       console.error("❌ Error fetching employment:", err.message);
@@ -249,7 +259,7 @@ const ProfilePage = () => {
 
   const updateEmployment = async (id, updatedData) => {
     try {
-      const res = await axios.put(`${API_BASE_URL}/updateEmployment/${id}`, updatedData);
+      const res = await axios.put(`${API_BASE_PORTAL}/updateEmployment/${id}`, updatedData);
       setEmployment((prev) =>
         prev.map((emp) => (emp.id === id ? res.data : emp))
       );
@@ -261,7 +271,7 @@ const ProfilePage = () => {
 
   const deleteEmployment = async (id) => {
     try {
-      await axios.delete(`${API_BASE_URL}/deleteEmployment/${id}`);
+      await axios.delete(`${API_BASE_PORTAL}/deleteEmployment/${id}`);
       setEmployment((prev) => prev.filter((emp) => emp.id !== id));
       alert("🗑️ Employment record deleted!");
     } catch (err) {
@@ -277,7 +287,7 @@ const ProfilePage = () => {
 
   const createEducation = async (educationData) => {
     try {
-      const res = await axios.post(`${API_BASE_URL}/createEducation`, educationData);
+      const res = await axios.post(`${API_BASE_PORTAL}/createEducation`, educationData);
       setEducation((prev) => [...prev, res.data]);
       alert("✅ Education record added!");
     } catch (err) {
@@ -287,7 +297,7 @@ const ProfilePage = () => {
 
   const fetchAllEducation = async () => {
     try {
-      const res = await axios.get(`${API_BASE_URL}/allEducation`);
+      const res = await axios.get(`${API_BASE_PORTAL}/allEducation`);
       if (Array.isArray(res.data)) setEducation(res.data);
     } catch (err) {
       console.error("❌ Error fetching education:", err.message);
@@ -296,7 +306,7 @@ const ProfilePage = () => {
 
   const updateEducation = async (id, updatedData) => {
     try {
-      const res = await axios.put(`${API_BASE_URL}/updateEducation/${id}`, updatedData);
+      const res = await axios.put(`${API_BASE_PORTAL}/updateEducation/${id}`, updatedData);
       setEducation((prev) => prev.map((edu) => (edu.id === id ? res.data : edu)));
       alert("✅ Education record updated!");
     } catch (err) {
@@ -306,7 +316,7 @@ const ProfilePage = () => {
 
   const deleteEducation = async (id) => {
     try {
-      await axios.delete(`${API_BASE_URL}/deleteEducation/${id}`);
+      await axios.delete(`${API_BASE_PORTAL}/deleteEducation/${id}`);
       setEducation((prev) => prev.filter((edu) => edu.id !== id));
       alert("🗑️ Education record deleted!");
     } catch (err) {
@@ -323,7 +333,7 @@ const ProfilePage = () => {
 
   const createProject = async (projectData) => {
     try {
-      const res = await axios.post(`${API_BASE_URL}/create`, projectData);
+      const res = await axios.post(`${API_BASE_PORTAL}/createProject`, projectData);
       setProjects((prev) => [...prev, res.data]);
       alert("✅ Project added successfully!");
     } catch (err) {
@@ -333,7 +343,7 @@ const ProfilePage = () => {
 
   const fetchAllProjects = async () => {
     try {
-      const res = await axios.get(`${API_BASE_URL}/getallprojects`);
+      const res = await axios.get(`${API_BASE_PORTAL}/getallprojects`);
       if (Array.isArray(res.data)) setProjects(res.data);
     } catch (err) {
       console.error("❌ Error fetching projects:", err.message);
@@ -342,7 +352,7 @@ const ProfilePage = () => {
 
   const updateProject = async (id, updatedData) => {
     try {
-      const res = await axios.put(`${API_BASE_URL}/updateProject/${id}`, updatedData);
+      const res = await axios.put(`${API_BASE_PORTAL}/updateProject/${id}`, updatedData);
       setProjects((prev) =>
         prev.map((proj) => (proj.id === id ? res.data : proj))
       );
@@ -355,7 +365,7 @@ const ProfilePage = () => {
   const deleteProject = async (id) => {
     if (!window.confirm("Are you sure you want to delete this project?")) return;
     try {
-      await axios.delete(`${API_BASE_URL}/deleteProjectById/${id}`);
+      await axios.delete(`${API_BASE_PORTAL}/deleteProjectById/${id}`);
       setProjects((prev) => prev.filter((proj) => proj.id !== id));
       alert("🗑️ Project deleted successfully!");
     } catch (err) {
@@ -372,7 +382,7 @@ const ProfilePage = () => {
 
   const createCertification = async (certData) => {
     try {
-      const res = await axios.post(`${API_BASE_URL}/createCertification`, certData);
+      const res = await axios.post(`${API_BASE_PORTAL}/createCertification`, certData);
       setCertifications((prev) => [...prev, res.data]);
       alert("✅ Certification added successfully!");
     } catch (err) {
@@ -382,7 +392,7 @@ const ProfilePage = () => {
 
   const fetchAllCertifications = async () => {
     try {
-      const res = await axios.get(`${API_BASE_URL}/getallCertification`);
+      const res = await axios.get(`${API_BASE_PORTAL}/getallCertification`);
       if (Array.isArray(res.data)) setCertifications(res.data);
     } catch (err) {
       console.error("❌ Error fetching certifications:", err.message);
@@ -391,7 +401,7 @@ const ProfilePage = () => {
 
   const updateCertification = async (id, updatedData) => {
     try {
-      const res = await axios.put(`${API_BASE_URL}/updateCertification/${id}`, updatedData);
+      const res = await axios.put(`${API_BASE_PORTAL}/updateCertification/${id}`, updatedData);
       setCertifications((prev) =>
         prev.map((cert) => (cert.id === id ? res.data : cert))
       );
@@ -404,7 +414,7 @@ const ProfilePage = () => {
   const deleteCertification = async (id) => {
     if (!window.confirm("Are you sure you want to delete this certification?")) return;
     try {
-      await axios.delete(`${API_BASE_URL}/deleteCertification/${id}`);
+      await axios.delete(`${API_BASE_PORTAL}/deleteCertification/${id}`);
       setCertifications((prev) => prev.filter((cert) => cert.id !== id));
       alert("🗑️ Certification deleted successfully!");
     } catch (err) {
@@ -420,7 +430,7 @@ const ProfilePage = () => {
 
   const createPersonalDetails = async (data) => {
   try {
-    const res = await axios.post(`${API_BASE_URL}/createPersonalDetails`, data);
+    const res = await axios.post(`${API_BASE_PORTAL}/createPersonalDetails`, data);
     setPersonalDetails(res.data); // ✅ directly store object
     alert("✅ Personal details added successfully!");
   } catch (err) {
@@ -430,7 +440,7 @@ const ProfilePage = () => {
 
 const fetchAllPersonalDetails = async () => {
   try {
-    const res = await axios.get(`${API_BASE_URL}/getAllPersonalDetails`);
+    const res = await axios.get(`${API_BASE_PORTAL}/getAllPersonalDetails`);
     if (Array.isArray(res.data) && res.data.length > 0) {
       setPersonalDetails(res.data[0]); // ✅ take the first record
     }
@@ -442,7 +452,7 @@ const fetchAllPersonalDetails = async () => {
 
   const updatePersonalDetails = async (id, updatedData) => {
     try {
-    const res = await axios.put(`${API_BASE_URL}/updatePersonalDetails/${id}`, updatedData);
+    const res = await axios.put(`${API_BASE_PORTAL}/updatePersonalDetails/${id}`, updatedData);
     setPersonalDetails(res.data); // ✅ updated object
     alert("✅ Personal details updated successfully!");
   } catch (err) {
@@ -453,7 +463,7 @@ const fetchAllPersonalDetails = async () => {
   const deletePersonalDetails = async (id) => {
   if (!window.confirm("Are you sure you want to delete this personal record?")) return;
   try {
-    await axios.delete(`${API_BASE_URL}/deleteProfileDetails/${id}`);
+    await axios.delete(`${API_BASE_PORTAL}/deleteProfileDetails/${id}`);
     setPersonalDetails({
       fullName: "",
       gender: "",
@@ -538,7 +548,7 @@ const fetchAllPersonalDetails = async () => {
     formData.append("file", file);
 
     try {
-      await axios.post(`${API_BASE_URL}/uploadResume`, formData, {
+      await axios.post(`${API_BASE_PORTAL}/uploadResume`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       setResumeFile(file.name);
@@ -565,7 +575,7 @@ const fetchAllPersonalDetails = async () => {
 
     const saveResumeHeadline = async () => {
       try {
-        await axios.post(`${API_BASE_URL}/headline`, { headline: resumeHeadline });
+        await axios.post(`${API_BASE_PORTAL}/headline`, { headline: resumeHeadline });
         alert("✅ Headline saved successfully!");
       } catch (err) {
         alert("❌ Failed to save headline: " + err.message);

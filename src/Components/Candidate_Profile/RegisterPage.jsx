@@ -31,7 +31,7 @@ const RegisterPage = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/jobportal/api/addCandidate",
+        `${API_BASE_PORTAL}/addCandidate`,
         formData
       );
 

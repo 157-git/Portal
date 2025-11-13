@@ -1,13 +1,16 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import "./LoginPage.css";
 import LoginImage from "../.././assets/candidate.png";
 import { SyncOutlined, EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router-dom";
-import { API_BASE_URL } from "../../API/api";
+import { API_BASE_PORTAL, API_BASE_URL } from "../../API/api";
 import axios from "axios";
+import { useUser } from "../UserContext"; 
+
 
 const LoginPage = () => {
     const { userType, role } = useParams();
+    const { loginUser } = useUser();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false); // <-- new state
@@ -49,18 +52,29 @@ const LoginPage = () => {
         }
         try {
             const loginResponse = await axios.post(
-                `${API_BASE_URL}/user-login-157/${userType}`,
-                { userName: username, password }
+                `${API_BASE_PORTAL}/loginUser`,
+                {
+                    userName: username,
+                    password: password,
+                }
             );
             console.log("Login success:", loginResponse.data);
-            localStorage.setItem("userType", userType);
-            if (role) localStorage.setItem("role", role);
-            localStorage.setItem("username", username);
-            navigate(`/dashboard/${userType}${role ? `/${role}` : ""}`);
+
+            // ✅ Set context + localStorage
+            loginUser({
+                userId: loginResponse.data.candidateId,
+                userType: "candidate",
+                name: loginResponse.data.fullName
+            });
+
+            // Navigate after storing info
+            navigate(`/navbar`);
+
         } catch (error) {
             console.error("Login failed:", error);
             alert(error.response?.status === 401 ? "Invalid credentials!" : "Login failed!");
         }
+
     };
 
     return (
@@ -119,8 +133,9 @@ const LoginPage = () => {
                     />
                     {captchaError && <p className="error">{captchaError}</p>}
 
-                    <button className="forgot-password-btn">Forgot Password?</button>
-                    <button type="submit" className="login-button">Login</button>
+                    <button type="submit" className="login-button">
+                        Login
+                    </button>
                 </form>
                 <button className="register-btn" onClick={() => navigate(`/registerCandidate`)}>
                     New User? Register

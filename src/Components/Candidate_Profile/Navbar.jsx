@@ -19,9 +19,13 @@ import { useNavigate } from "react-router-dom";
 import HomePage from "./HomePage";
 import { FaRegBookmark, FaBookmark } from "react-icons/fa";
 import ChatBot from "./ChatBot";
+import { useUser } from "../UserContext";
+import { API_BASE_PORTAL } from "../../API/api";
 
 const Navbar = () => {
   // ===== Navbar States =====
+  const { user } = useUser(); // get user here
+  const { logoutUser } = useUser(); // ✅ now it's defined
   const [menuOpen, setMenuOpen] = useState(false);
   const [openPanel, setOpenPanel] = useState(null);
   const jobsRef = useRef(null);
@@ -84,12 +88,12 @@ const Navbar = () => {
       let updated;
       if (savedJobs.includes(jobId)) {
         await axios.delete(
-          `http://localhost:8080/api/saved-jobs/unsave?candidateId=${candidateId}&requirementId=${jobId}`
+          `${API_BASE_PORTAL}/unsave?candidateId=${candidateId}&requirementId=${jobId}`
         );
         updated = savedJobs.filter((id) => id !== jobId);
       } else {
         await axios.post(
-          `http://localhost:8080/api/saved-jobs/save?candidateId=${candidateId}&requirementId=${jobId}`
+          `${API_BASE_PORTAL}/save?candidateId=${candidateId}&requirementId=${jobId}`
         );
         updated = [...savedJobs, jobId];
       }
@@ -132,7 +136,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/api/requirements/all");
+        const res = await axios.get(`${API_BASE_PORTAL}/getAllRequirements`);
         const data = res.data || [];
         setJobs(data);
         setFilteredJobs(data);
@@ -148,7 +152,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/api/requirements/companies");
+        const res = await axios.get(`${API_BASE_PORTAL}/companies`);
         setCompanyNames(res.data || []);
       } catch (error) {
         console.error("Error fetching company names:", error);
@@ -179,7 +183,7 @@ const Navbar = () => {
 
       try {
         const res = await axios.get(
-          `http://localhost:8080/api/saved-jobs/candidate/${candidateId}`
+          `${API_BASE_PORTAL}/getSavedJobsByCandidate/${candidateId}`
         );
 
         const savedIds = res.data.map(job => job.requirementId);
@@ -240,7 +244,7 @@ const Navbar = () => {
   const handleViewJD = async (id) => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/requirements/${id}`
+        `${API_BASE_PORTAL}/getRequirementById/${id}`
       );
       setSelectedJD(response.data);
       setShowJDModal(true);
@@ -314,6 +318,12 @@ const Navbar = () => {
     setFilteredJobs(filtered);
     setActiveSection("jobs");
     setShowSearchOverlay(false);
+  };
+
+  const handleLogout = () => {
+    logoutUser();
+    setOpenPanel(null);
+    navigate("/login");
   };
 
   return (
@@ -442,23 +452,23 @@ const Navbar = () => {
                 <div className="job-item" onClick={() => navigate("/saved-jobs")}>
                   Saved
                 </div>
-                 <div className="job-item" onClick={() => navigate("/invites")}>
-        Invites
-      </div>
+                <div className="job-item" onClick={() => navigate("/invites")}>
+                  Invites
+                </div>
               </div>
             )}
           </div>
 
 
-      <div className="premium-click-container">
-    <span
-      className="premium-label"
-      onClick={() => navigate("/premium")}
-      style={{ cursor: "pointer", marginLeft: "15px", fontWeight: "bold" }}
-    >
-      Premium
-    </span>
-  </div>
+          <div className="premium-click-container">
+            <span
+              className="premium-label"
+              onClick={() => navigate("/premium")}
+              style={{ cursor: "pointer", marginLeft: "15px", fontWeight: "bold" }}
+            >
+              Premium
+            </span>
+          </div>
           {/* <div
             className="nav-item messaging-item"
             onClick={() => setShowChatPopup(!showChatPopup)}
@@ -532,7 +542,7 @@ const Navbar = () => {
           <div className="profile-top">
             <img src="icon.png" alt="Profile" className="profile-pic" />
             <div className="profile-info">
-              <h3>Samruddhi Shekhar Patole</h3>
+              <h3>{user?.name || "Guest User"}</h3>
               <p>B.Sc Computer Science at Dr D Y Patil Law College, Pune</p>
               <button
                 className="btn-update"
@@ -600,8 +610,7 @@ const Navbar = () => {
               href="#"
               onClick={(e) => {
                 e.preventDefault();
-                setShowLogoutPopup(true);
-                setOpenPanel(null);
+                setShowLogoutPopup(true);  // show popup
               }}
             >
               <FaSignOutAlt className="quick-icon" /> Logout
@@ -1153,7 +1162,7 @@ const Navbar = () => {
             <h2>Logout?</h2>
             <p>Are you sure you want to logout from your account?</p>
 
-            <button
+            {/* <button
               className="logout-btn"
               onClick={() => {
                 localStorage.clear();
@@ -1162,7 +1171,8 @@ const Navbar = () => {
               }}
             >
               Yes, Logout
-            </button>
+            </button> */}
+            <button className="logout-btn" onClick={handleLogout}>Yes, Logout</button>
 
             <button
               className="cancel-btn"

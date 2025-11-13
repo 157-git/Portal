@@ -4,6 +4,7 @@ import axios from "axios";
 import { FaBuilding, FaMapMarkerAlt, FaClock, FaTimes } from "react-icons/fa";
 import "./AppliedJobs.css";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_PORTAL } from "../../API/api";
 
 const AppliedJobs = () => {
   const [appliedJobs, setAppliedJobs] = useState([]);
@@ -19,7 +20,7 @@ const AppliedJobs = () => {
   const handleViewJD = async (requirementId) => {
     try {
       const res = await axios.get(
-        `http://localhost:8080/api/requirements/${requirementId}`
+        `${API_BASE_PORTAL}/getRequirementById/${requirementId}`
       );
       setSelectedJD(res.data);
       setShowJDModal(true);
@@ -33,7 +34,7 @@ const AppliedJobs = () => {
   useEffect(() => {
     const fetchAppliedJobs = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/api/applications/all");
+        const res = await axios.get(`${API_BASE_PORTAL}/getAllApplications`);
         const sorted = [...res.data].sort(
           (a, b) => new Date(b.submittedAt) - new Date(a.submittedAt)
         );

@@ -19,6 +19,7 @@ import {
 import "./RecruiterNavbar.css";
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { API_BASE_PORTAL } from "../../API/api";
 
 const RecruiterNavbar = () => {
   // const API_BASE_URL = "http://localhost:8080";
@@ -117,7 +118,7 @@ const [selectedJobTitle, setSelectedJobTitle] = useState("");
 
     try {
       const response = await fetch(
-        `http://localhost:8080/api/requirements/delete/${requirementId}`,
+        `${API_BASE_PORTAL}/delete/${requirementId}`,
         { method: "DELETE" }
       );
 
@@ -140,7 +141,7 @@ const [selectedJobTitle, setSelectedJobTitle] = useState("");
 
   const handleViewApplicants = async (requirementId) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/applications/requirement/${requirementId}`);
+      const response = await axios.get(`${API_BASE_PORTAL}/requirement/${requirementId}`);
 
       setApplicants(response.data);
       setSelectedJobId(requirementId);
@@ -235,7 +236,7 @@ const handleSendAllInvites = async () => {
     const fetchJobs = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${API_BASE_URL}/api/requirements/all`);
+        const response = await axios.get(`${API_BASE_PORTAL}/getAllRequirements`);
 
         let jobList = response.data.map(job => ({
           ...job,
@@ -244,7 +245,7 @@ const handleSendAllInvites = async () => {
 
         // ✅ GET LIVE APPLICATION COUNT FOR EACH JOB
         for (const job of jobList) {
-          const res = await axios.get(`${API_BASE_URL}/api/applications/requirement/${job.requirementId}`);
+          const res = await axios.get(`${API_BASE_PORTAL}/requirement/${job.requirementId}`);
           job.applications = res.data.length; // real-time count
         }
 
@@ -268,7 +269,7 @@ const handleSendAllInvites = async () => {
     const fetchJobs = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${API_BASE_URL}/api/requirements/all`);
+        const res = await axios.get(`${API_BASE_PORTAL}/getAllRequirements`);
         setJobs(res.data || []);
       } catch (err) {
         console.error("Error fetching jobs:", err);
@@ -299,7 +300,7 @@ const handleSendAllInvites = async () => {
 
   const handleViewJD = async (id) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/requirements/${id}`);
+      const response = await axios.get(`${API_BASE_PORTAL}/getRequirementById/${id}`);
       setSelectedJD(response.data);
       setShowJDModal(true);
     } catch (err) {

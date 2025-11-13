@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Profile.css";
+import { API_BASE_PORTAL } from "../../../API/api";
 
 const KeySkillsSection = () => {
   const [skills, setSkills] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
 
-  const API_BASE_URL = "http://localhost:8080/api/profile";
+  // const API_BASE_URL = "http://localhost:8080/api/profile";
 
   const suggestedSkills = [
     "Java", "Spring Boot", "Hibernate", "React.js", "Angular", "Node.js",
@@ -19,7 +20,7 @@ const KeySkillsSection = () => {
   // ✅ Fetch all key skills from backend
   const fetchAllSkills = async () => {
     try {
-      const res = await axios.get(`${API_BASE_URL}/allKeySkills`);
+      const res = await axios.get(`${API_BASE_PORTAL}/allKeySkills`);
       if (Array.isArray(res.data)) {
         setSkills(res.data.map((s) => s.skillName)); // only store skill names
       }
@@ -36,7 +37,7 @@ const KeySkillsSection = () => {
   const handleAddSkill = async (skill) => {
     if (!skill || skills.includes(skill)) return;
     try {
-      await axios.post(`${API_BASE_URL}/createKeySkill`, { skillName: skill });
+      await axios.post(`${API_BASE_PORTAL}/createKeySkill`, { skillName: skill });
       setInputValue("");
       setShowSuggestions(false);
       fetchAllSkills(); // refresh
@@ -48,10 +49,10 @@ const KeySkillsSection = () => {
   // ✅ Delete skill
  const handleRemoveSkill = async (skillToRemove) => {
   try {
-    const res = await axios.get(`${API_BASE_URL}/allKeySkills`);
+    const res = await axios.get(`${API_BASE_PORTAL}/allKeySkills`);
     const skill = res.data.find((s) => s.skillName === skillToRemove);
     if (skill) {
-      await axios.delete(`${API_BASE_URL}/deleteKeySkills/${skill.id}`);
+      await axios.delete(`${API_BASE_PORTAL}/deleteKeySkills/${skill.id}`);
     }
     setSkills((prev) => prev.filter((s) => s !== skillToRemove));
   } catch (err) {

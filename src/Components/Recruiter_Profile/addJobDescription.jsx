@@ -3,57 +3,58 @@ import "./addJobDescription.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import {useParams } from "react-router-dom";
- import { getFormattedDateTime } from "../getFormattedDateTime";
+import { useParams } from "react-router-dom";
+import { getFormattedDateTime } from "../getFormattedDateTime";
 import { Select } from "antd";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_PORTAL } from "../../API/api";
 
-const AddJobDescription = ({loginEmployeeName}) => {
-const { employeeId, userType ,requirementId } = useParams();
+const AddJobDescription = ({ loginEmployeeName }) => {
+  const { employeeId, userType, requirementId } = useParams();
 
-// const employeeId = paramEmployeeId || 977;
-// const userType = paramUserType || "TeamLeader";
-useEffect(() => {
-  if (requirementId) {
-    // fetch job details for edit
-    fetch(`http://localhost:8080/api/requirements/${requirementId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setFormData((prev) => ({
-          ...prev,
-          ...data,
-          jdAddedDate: prev.jdAddedDate // keep current date as per your logic
-        }));
+  // const employeeId = paramEmployeeId || 977;
+  // const userType = paramUserType || "TeamLeader";
+  useEffect(() => {
+    if (requirementId) {
+      // fetch job details for edit
+      fetch(`${API_BASE_PORTAL}/getRequirementById/${requirementId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setFormData((prev) => ({
+            ...prev,
+            ...data,
+            jdAddedDate: prev.jdAddedDate // keep current date as per your logic
+          }));
 
-        // prefill skills tags if data.skills is a comma-separated string
-        if (data.skills) {
-          setTags(data.skills.split(",").map((s) => s.trim()));
-        }
-      })
-      .catch((err) => console.error("Error fetching JD:", err));
-  }
-}, [requirementId]);
+          // prefill skills tags if data.skills is a comma-separated string
+          if (data.skills) {
+            setTags(data.skills.split(",").map((s) => s.trim()));
+          }
+        })
+        .catch((err) => console.error("Error fetching JD:", err));
+    }
+  }, [requirementId]);
 
   const [socket, setSocket] = useState(null);
   const [loading, setLoading] = useState(false);
-    const [tags, setTags] = useState([]);
-      // employeeId=977;
-      // userType=TeamLeader;
-const navigate = useNavigate();
+  const [tags, setTags] = useState([]);
+  // employeeId=977;
+  // userType=TeamLeader;
+  const navigate = useNavigate();
 
-   const formatDate = () => {
-      const date = new Date();
-      const day = date.getDate();
-      const month = date.toLocaleString("en-US", { month: "long" });
-      const year = date.getFullYear();
-      const hours = date.getHours() % 12 || 12;
-      const minutes = date.getMinutes().toString().padStart(2, "0");
-      const ampm = date.getHours() >= 12 ? "PM" : "AM";
-      return `${day} ${month} ${year} ${hours}:${minutes} ${ampm}`;
-    };
+  const formatDate = () => {
+    const date = new Date();
+    const day = date.getDate();
+    const month = date.toLocaleString("en-US", { month: "long" });
+    const year = date.getFullYear();
+    const hours = date.getHours() % 12 || 12;
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const ampm = date.getHours() >= 12 ? "PM" : "AM";
+    return `${day} ${month} ${year} ${hours}:${minutes} ${ampm}`;
+  };
 
   const [formData, setFormData] = useState({
-    employeeId:employeeId,
+    employeeId: employeeId,
     userType: userType,
     companyName: "",
     designation: "",
@@ -78,8 +79,8 @@ const navigate = useNavigate();
     jobRole: "",
     perks: "",
     incentive: "",
-     companyLogo: "", 
-      gender: "",
+    companyLogo: "",
+    gender: "",
     documentation: "",
     ageCriteria: "",
     note: "",
@@ -93,80 +94,80 @@ const navigate = useNavigate();
     preferredQualifications: [
       { employeeId: "", preferredQualificationMsg: "" },
     ],
-        questions: [{ question: "" }], 
+    questions: [{ question: "" }],
 
   });
 
 
-  
-    useEffect(() => {
+
+  useEffect(() => {
     // Update `jdAddedDate` only once on mount
     setFormData((prevFormData) => ({
       ...prevFormData,
       jdAddedDate: formatDate(),
     }));
-  }, []); 
+  }, []);
   // states created by sahil karnekar date 3-12-2024
   const [errors, setErrors] = useState({});
   const [errorForOverView, setErrorForOverview] = useState("");
   const [triggerForRequiredErrors, setTriggerForRequiredErrors] = useState(false);
 
-    // establishing socket for emmiting event
-    // useEffect(() => {
-    //   // const newSocket = getSocket();
-    //   setSocket(newSocket);
-    // }, []);
+  // establishing socket for emmiting event
+  // useEffect(() => {
+  //   // const newSocket = getSocket();
+  //   setSocket(newSocket);
+  // }, []);
 
   // Empty dependency array to run only once
   // Validate specific field
   // line 75 to  167 added by sahil karnekar date 3-12-2024
-  
+
 
   // Remove this duplicate
-// function validateField(fieldValue) {
-//   if (fieldValue == null) { // handles null or undefined
-//     return "This field is required";
-//   }
+  // function validateField(fieldValue) {
+  //   if (fieldValue == null) { // handles null or undefined
+  //     return "This field is required";
+  //   }
 
-//   if (fieldValue.toString().trim().length === 0) {
-//     return "This field is required";
-//   }
+  //   if (fieldValue.toString().trim().length === 0) {
+  //     return "This field is required";
+  //   }
 
-//   return "";
-// }
+  //   return "";
+  // }
 
-const validateField = (name, value) => {
-  const requiredFields = [
-    "companyName",
-    "designation",
-    "field",
-    "stream",
-    "location",
-    "jobType",
-    "salary",
-    "experience",
-    "bond",
-    "skills",
-    "weekOff",
-    "jobRole",
-    "incentive",
-     "companyLogo",
-    "documentation",
-    "ageCriteria",
-  ];
+  const validateField = (name, value) => {
+    const requiredFields = [
+      "companyName",
+      "designation",
+      "field",
+      "stream",
+      "location",
+      "jobType",
+      "salary",
+      "experience",
+      "bond",
+      "skills",
+      "weekOff",
+      "jobRole",
+      "incentive",
+      "companyLogo",
+      "documentation",
+      "ageCriteria",
+    ];
 
-  if (requiredFields.includes(name)) {
-    if (!value || !value.toString().trim()) {
-      return "This field is required";
+    if (requiredFields.includes(name)) {
+      if (!value || !value.toString().trim()) {
+        return "This field is required";
+      }
     }
-  }
 
-  if (value && value.length > 60000) {
-    return "Character length should be less than 60,000";
-  }
+    if (value && value.length > 60000) {
+      return "Character length should be less than 60,000";
+    }
 
-  return "";
-};
+    return "";
+  };
 
 
   // added by sahil karnekar date 23-01-2025
@@ -174,11 +175,11 @@ const validateField = (name, value) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-if (name === "jobType" && value === "Hybrid") {
-  setDisplayHybridInput(true)
-}else if (name === "jobType" && value !== "Hybrid") {
-  setDisplayHybridInput(false)
-}
+    if (name === "jobType" && value === "Hybrid") {
+      setDisplayHybridInput(true)
+    } else if (name === "jobType" && value !== "Hybrid") {
+      setDisplayHybridInput(false)
+    }
 
     // Apply validation for numeric position field
     if (name === "position" && !/^\d*$/.test(value)) {
@@ -198,25 +199,25 @@ if (name === "jobType" && value === "Hybrid") {
     console.log(value.length);
   };
 
-const handleChangeSkillsTags = (value) => {
-  setTags(value);
+  const handleChangeSkillsTags = (value) => {
+    setTags(value);
 
-  const updatedSkills = value.join(',');
+    const updatedSkills = value.join(',');
 
-  // Update form data
-  setFormData(prev => ({
-    ...prev,
-    skills: updatedSkills,
-  }));
+    // Update form data
+    setFormData(prev => ({
+      ...prev,
+      skills: updatedSkills,
+    }));
 
-  // Validate the 'skills' field and update the errors state
-  const error = validateField("skills", updatedSkills);
+    // Validate the 'skills' field and update the errors state
+    const error = validateField("skills", updatedSkills);
 
-  setErrors(prevErrors => ({
-    ...prevErrors,
-    skills: error, // Ensure it's not undefined
-  }));
-};
+    setErrors(prevErrors => ({
+      ...prevErrors,
+      skills: error, // Ensure it's not undefined
+    }));
+  };
 
 
   const handleInputChange = (e, field, index) => {
@@ -276,7 +277,7 @@ const handleChangeSkillsTags = (value) => {
     }));
   };
 
-const setInitialErrorsRequired = ()=>{
+  const setInitialErrorsRequired = () => {
     // Revalidate all fields before submission
     const newErrors = {};
 
@@ -289,167 +290,167 @@ const setInitialErrorsRequired = ()=>{
     });
 
     // Validate nested fields (responsibilities, jobRequirements, preferredQualifications)
- ["responsibilities", "jobRequirements", "preferredQualifications"].forEach((field) => {
-  formData[field].forEach((item, index) => {
-    const key = Object.keys(item).find(k => k.includes("Msg"));
-    if (!item[key] || !item[key].trim()) {
-      if (!newErrors[field]) newErrors[field] = [];
-      newErrors[field][index] = { [key]: "This field is required" };
-    }
-  });
-});
-
-
-    setErrors(newErrors);
-}
-useEffect(()=>{
-  setInitialErrorsRequired();
-},[triggerForRequiredErrors])
-console.log(errors);
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  const newErrors = {};
-
-  // ✅ Run validation only for ADD mode
-  if (!requirementId) {
-    const requiredFields = [
-      "companyName",
-      "designation",
-      "field",
-      "stream",
-      "location",
-      "jobType",
-      "salary",
-      "experience",
-      "bond",
-      "skills",
-      "weekOff",
-      "jobRole",
-      "incentive",
-      "companyLogo",
-      "documentation",
-      "ageCriteria",
-    ];
-
-    requiredFields.forEach((key) => {
-      const value = formData[key];
-      if (!value || !value.toString().trim()) {
-        newErrors[key] = "This field is required";
-      }
-    });
-
-    const nestedGroups = [
-      { key: "responsibilities", field: "responsibilitiesMsg" },
-      { key: "jobRequirements", field: "jobRequirementMsg" },
-      { key: "preferredQualifications", field: "preferredQualificationMsg" },
-      { key: "questions", field: "question" },
-    ];
-
-    nestedGroups.forEach(({ key, field }) => {
-      formData[key].forEach((item, index) => {
-        if (!item[field] || !item[field].trim()) {
-          if (!newErrors[key]) newErrors[key] = [];
-          newErrors[key][index] = { [field]: "This field is required" };
+    ["responsibilities", "jobRequirements", "preferredQualifications"].forEach((field) => {
+      formData[field].forEach((item, index) => {
+        const key = Object.keys(item).find(k => k.includes("Msg"));
+        if (!item[key] || !item[key].trim()) {
+          if (!newErrors[field]) newErrors[field] = [];
+          newErrors[field][index] = { [key]: "This field is required" };
         }
       });
     });
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      toast.error("Please fill all required fields!");
-      return;
-    }
+
+    setErrors(newErrors);
   }
+  useEffect(() => {
+    setInitialErrorsRequired();
+  }, [triggerForRequiredErrors])
+  console.log(errors);
 
-  try {
-    const url = requirementId
-      ? `http://localhost:8080/api/requirements/update/${requirementId}`
-      : "http://localhost:8080/api/requirements/create";
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    const method = requirementId ? "PUT" : "POST";
+    const newErrors = {};
 
-    const response = await fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
+    // ✅ Run validation only for ADD mode
+    if (!requirementId) {
+      const requiredFields = [
+        "companyName",
+        "designation",
+        "field",
+        "stream",
+        "location",
+        "jobType",
+        "salary",
+        "experience",
+        "bond",
+        "skills",
+        "weekOff",
+        "jobRole",
+        "incentive",
+        "companyLogo",
+        "documentation",
+        "ageCriteria",
+      ];
 
-    if (response.ok) {
-      toast.success(
-        requirementId
-          ? "Requirement updated successfully!"
-          : "Requirement saved successfully!"
-      );
+      requiredFields.forEach((key) => {
+        const value = formData[key];
+        if (!value || !value.toString().trim()) {
+          newErrors[key] = "This field is required";
+        }
+      });
 
-       if (requirementId) {
-    navigate("/recruiter-navbar/newRecruiter");
-  } else {
-    navigate("/navbar");
-  }
-      // Reset form only if adding new
-      if (!requirementId) {
-        setFormData({
-          ...formData,
-          companyName: "",
-          designation: "",
-          position: "",
-          qualification: "",
-          yearOfPassing: "",
-          field: "",
-          stream: "",
-          location: "",
-          salary: "",
-          jobType: "",
-          experience: "",
-          bond: "",
-          percentage: "",
-          skills: "",
-          companyLink: "",
-          detailAddress: "",
-          shift: "",
-          weekOff: "",
-          noticePeriod: "",
-          jobRole: "",
-          perks: "",
-          incentive: "",
-          companyLogo: "",
-          gender: "",
-          documentation: "",
-          ageCriteria: "",
-          note: "",
-          jdAddedDate: formatDate(),
-          holdStatus: "Unhold",
-          positionOverview: { overview: "", employeeId: "" },
-          responsibilities: [{ employeeId: "", responsibilitiesMsg: "" }],
-          jobRequirements: [{ employeeId: "", jobRequirementMsg: "" }],
-          preferredQualifications: [
-            { employeeId: "", preferredQualificationMsg: "" },
-          ],
-          questions: [{ question: "" }],
+      const nestedGroups = [
+        { key: "responsibilities", field: "responsibilitiesMsg" },
+        { key: "jobRequirements", field: "jobRequirementMsg" },
+        { key: "preferredQualifications", field: "preferredQualificationMsg" },
+        { key: "questions", field: "question" },
+      ];
+
+      nestedGroups.forEach(({ key, field }) => {
+        formData[key].forEach((item, index) => {
+          if (!item[field] || !item[field].trim()) {
+            if (!newErrors[key]) newErrors[key] = [];
+            newErrors[key][index] = { [field]: "This field is required" };
+          }
         });
-        setTags([]);
+      });
+
+      if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
+        toast.error("Please fill all required fields!");
+        return;
       }
-    } else {
-      toast.error(
-        requirementId
-          ? "Failed to update requirement!"
-          : "Failed to save requirement!"
-      );
     }
-  } catch (error) {
-    console.error("Error connecting to backend:", error);
-    toast.error("Error connecting to backend!");
-  }
-};
+
+    try {
+      const url = requirementId
+        ? `${API_BASE_PORTAL}/update/${requirementId}`
+        : `${API_BASE_PORTAL}/create`;
+
+      const method = requirementId ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        toast.success(
+          requirementId
+            ? "Requirement updated successfully!"
+            : "Requirement saved successfully!"
+        );
+
+        if (requirementId) {
+          navigate("/recruiter-navbar/newRecruiter");
+        } else {
+          navigate("/navbar");
+        }
+        // Reset form only if adding new
+        if (!requirementId) {
+          setFormData({
+            ...formData,
+            companyName: "",
+            designation: "",
+            position: "",
+            qualification: "",
+            yearOfPassing: "",
+            field: "",
+            stream: "",
+            location: "",
+            salary: "",
+            jobType: "",
+            experience: "",
+            bond: "",
+            percentage: "",
+            skills: "",
+            companyLink: "",
+            detailAddress: "",
+            shift: "",
+            weekOff: "",
+            noticePeriod: "",
+            jobRole: "",
+            perks: "",
+            incentive: "",
+            companyLogo: "",
+            gender: "",
+            documentation: "",
+            ageCriteria: "",
+            note: "",
+            jdAddedDate: formatDate(),
+            holdStatus: "Unhold",
+            positionOverview: { overview: "", employeeId: "" },
+            responsibilities: [{ employeeId: "", responsibilitiesMsg: "" }],
+            jobRequirements: [{ employeeId: "", jobRequirementMsg: "" }],
+            preferredQualifications: [
+              { employeeId: "", preferredQualificationMsg: "" },
+            ],
+            questions: [{ question: "" }],
+          });
+          setTags([]);
+        }
+      } else {
+        toast.error(
+          requirementId
+            ? "Failed to update requirement!"
+            : "Failed to save requirement!"
+        );
+      }
+    } catch (error) {
+      console.error("Error connecting to backend:", error);
+      toast.error("Error connecting to backend!");
+    }
+  };
 
 
 
 
   // added by sahil karnekar date 23-01-2025
-const [hybridInputState, setHybridInputState] = useState("");
-  const handleChangeHybrid = (e)=>{
+  const [hybridInputState, setHybridInputState] = useState("");
+  const handleChangeHybrid = (e) => {
     const value = e.target.value;
     setHybridInputState(value);
     setFormData((prevData) => ({
@@ -457,7 +458,7 @@ const [hybridInputState, setHybridInputState] = useState("");
       ["jobType"]: value,
     }));
   }
-console.log(formData);
+  console.log(formData);
 
   return (
     <div>
@@ -636,20 +637,20 @@ console.log(formData);
                             <option value="Hybrid">Hybrid</option>
                           </select>
                           {
-                          displayHybridInput && (
+                            displayHybridInput && (
 
-                            <div className="hybridInputDiv">
-                               <input
-                            type="text"
-                            name="hybridInput"
-                            value={hybridInputState}
-                            onChange={handleChangeHybrid}
-                            placeholder="Enter WorkPlace"
+                              <div className="hybridInputDiv">
+                                <input
+                                  type="text"
+                                  name="hybridInput"
+                                  value={hybridInputState}
+                                  onChange={handleChangeHybrid}
+                                  placeholder="Enter WorkPlace"
 
-                          />
-                            </div>
+                                />
+                              </div>
 
-                          )
+                            )
                           }
                           {errors.jobType && <div className="setStarAsError">{errors.jobType}</div>}
                         </div>
@@ -724,7 +725,7 @@ console.log(formData);
                         </div>
 
                       </div> */}
-                       {/* added by shweta jagdale date 18-06-2025 line no-629 to 651*/}
+                      {/* added by shweta jagdale date 18-06-2025 line no-629 to 651*/}
                       <div className="field">
                         <label>Skills:</label>
                         <div className="setDivDisplayBlockForJDValidation">
@@ -869,32 +870,32 @@ console.log(formData);
                     </div>
                     <div className="field-Row-white">
                       <div className="field">
-  <label>Company Logo:</label>
-  
-  <input
-    type="file"
-    accept="image/*"
-    onChange={(e) => {
-      const file = e.target.files[0];
-      const reader = new FileReader();
+                        <label>Company Logo:</label>
 
-      reader.onloadend = () => {
-        setFormData({ ...formData, companyLogo: reader.result });
-      };
-      if (file) {
-        reader.readAsDataURL(file);
-      }
-    }}
-  />
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files[0];
+                            const reader = new FileReader();
 
-  {formData.companyLogo && (
-    <img
-      src={formData.companyLogo}
-      alt="Company Logo"
-      style={{ width: "100px", height: "100px", marginTop: "8px", borderRadius: "5px", border: "1px solid #ccc" }}
-    />
-  )}
-</div>
+                            reader.onloadend = () => {
+                              setFormData({ ...formData, companyLogo: reader.result });
+                            };
+                            if (file) {
+                              reader.readAsDataURL(file);
+                            }
+                          }}
+                        />
+
+                        {formData.companyLogo && (
+                          <img
+                            src={formData.companyLogo}
+                            alt="Company Logo"
+                            style={{ width: "100px", height: "100px", marginTop: "8px", borderRadius: "5px", border: "1px solid #ccc" }}
+                          />
+                        )}
+                      </div>
 
                       <div className="field">
                         <label>Gender:</label>
@@ -1211,48 +1212,48 @@ console.log(formData);
                       </div>
                     </div>
                     <div className="multi-field">
-  {formData.questions.map((item, index) => (
-    <div key={index}>
-      <div className="field">
-        <label>Question:</label>
-        <div className="setDivWidth100ForResponsiveness">
-          <textarea
-            className="textarea"
-            name="question"
-            value={item.question}
-            onChange={(e) => {
-              handleInputChange(e, "questions", index);
-              e.target.style.height = "auto";
-              e.target.style.height = `${e.target.scrollHeight}px`;
-            }}
-            placeholder="Enter Question"
-            style={{
-              resize: "none",
-              overflow: "hidden",
-            }}
-          />
-        </div>
-        <button
-          type="button"
-          className="job-remove-button"
-          onClick={() => handleRemove("questions", index)}
-        >
-          X
-        </button>
-      </div>
-    </div>
-  ))}
+                      {formData.questions.map((item, index) => (
+                        <div key={index}>
+                          <div className="field">
+                            <label>Question:</label>
+                            <div className="setDivWidth100ForResponsiveness">
+                              <textarea
+                                className="textarea"
+                                name="question"
+                                value={item.question}
+                                onChange={(e) => {
+                                  handleInputChange(e, "questions", index);
+                                  e.target.style.height = "auto";
+                                  e.target.style.height = `${e.target.scrollHeight}px`;
+                                }}
+                                placeholder="Enter Question"
+                                style={{
+                                  resize: "none",
+                                  overflow: "hidden",
+                                }}
+                              />
+                            </div>
+                            <button
+                              type="button"
+                              className="job-remove-button"
+                              onClick={() => handleRemove("questions", index)}
+                            >
+                              X
+                            </button>
+                          </div>
+                        </div>
+                      ))}
 
-  <div className="ajd-btndiv-div">
-    <button
-      type="button"
-      className="lineUp-Filter-btn"
-      onClick={() => handleAddMore("questions")}
-    >
-      Add More Questions
-    </button>
-  </div>
-</div>
+                      <div className="ajd-btndiv-div">
+                        <button
+                          type="button"
+                          className="lineUp-Filter-btn"
+                          onClick={() => handleAddMore("questions")}
+                        >
+                          Add More Questions
+                        </button>
+                      </div>
+                    </div>
 
                   </div>
                 </div>
@@ -1260,13 +1261,13 @@ console.log(formData);
                   <button className="daily-tr-btn" type="submit">
                     Submit
                   </button>
-                  
+
                 </div>
-                
+
               </form>
             </section>
           </main>
-                  <ToastContainer position="top-center" autoClose={3000} />
+          <ToastContainer position="top-center" autoClose={3000} />
 
         </>
       )}
