@@ -46,6 +46,7 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Button, message, Modal } from "antd";
 import { Select, Space } from 'antd';
 import { Radio as AntdRadio } from 'antd';
+import { API_BASE_PORTAL } from "../../API/api";
 // import CvTemplate from "../ResumeData/cv";
 // import ResumeCopy from "../ResumeData/resumecopy";
 
@@ -167,7 +168,7 @@ const [showBuyPlanPopup, setShowBuyPlanPopup] = useState(false);
     const fetchQuestions = async () => {
       try {
         const response = await axios.get(
-          `${API_BASE_URL}/api/questions/requirement/${formData.requirementId}`
+          `${API_BASE_PORTAL}/requirement/${formData.requirementId}`
         );
         setQuestions(response.data || []);
       } catch (error) {
@@ -824,7 +825,7 @@ const [showBuyPlanPopup, setShowBuyPlanPopup] = useState(false);
   useEffect(() => {
     if (formData.requirementId || id) {
       axios
-        .get(`${API_BASE_URL}/api/requirements/${formData.requirementId || id}/questions`)
+        .get(`${API_BASE_PORTAL}/questions/${formData.requirementId || id}`)
         .then((res) => {
           setQuestions(res.data || []);
         })
@@ -832,7 +833,7 @@ const [showBuyPlanPopup, setShowBuyPlanPopup] = useState(false);
     }
   }, [formData.requirementId, id]);
 
-  const API_BASE_URL = "http://localhost:8080"; // ✅ update if your backend runs elsewhere
+  // const API_BASE_URL = "http://localhost:8080"; // ✅ update if your backend runs elsewhere
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -892,12 +893,12 @@ const [showBuyPlanPopup, setShowBuyPlanPopup] = useState(false);
       }));
 
       if (formattedAnswers.length > 0) {
-        await axios.post(`${API_BASE_URL}/api/questions/submit-answers`, formattedAnswers);
+        await axios.post(`${API_BASE_PORTAL}/submit-answers`, formattedAnswers);
       }
 
       // ✅ Submit application to backend
       const response = await axios.post(
-        `${API_BASE_URL}/api/applications/submit`,
+        `${API_BASE_PORTAL}/submit`,
         applicationData
       );
 
@@ -910,7 +911,7 @@ const [showBuyPlanPopup, setShowBuyPlanPopup] = useState(false);
 
       toast.success("✅ Application submitted successfully!", { autoClose: 1500 });
       // ✅ Refresh job list from backend so RecruiterNavbar updates count
-      axios.get(`${API_BASE_URL}/api/requirements/all`)
+      axios.get(`${API_BASE_PORTAL}/getAllRequirements`)
         .then(res => {
           localStorage.setItem("jobsList", JSON.stringify(res.data));
           window.dispatchEvent(new Event("jobsUpdated")); // notify navbar to refresh
@@ -982,7 +983,7 @@ const handleStartTest = async () => {
     }
 
     const encodedRole = encodeURIComponent(roleName);
-    const resp = await axios.get(`${API_BASE_URL}/api/mcq/role/${encodedRole}`);
+    const resp = await axios.get(`${API_BASE_PORTAL}/role/${encodedRole}`);
     const payload = resp?.data || {};
 
     const candidates =

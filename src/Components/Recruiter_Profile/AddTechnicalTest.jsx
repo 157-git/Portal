@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AddTechnicalTest.css";
+import { API_BASE_PORTAL } from "../../API/api";
 
 const AddTechnicalTest = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const AddTechnicalTest = () => {
   useEffect(() => {
     const fetchJobRoles = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/requirements/all");
+        const response = await fetch(`${API_BASE_PORTAL}/getAllRequirements`);
         const data = await response.json();
         const uniqueRoles = [
           ...new Set(
@@ -46,7 +47,7 @@ const AddTechnicalTest = () => {
       setLoadingMCQs(true);
       try {
         const res = await fetch(
-          `http://localhost:8080/api/mcq/role/${encodeURIComponent(selectedRole)}`
+          `${API_BASE_PORTAL}/role/${encodeURIComponent(selectedRole)}`
         );
         if (res.ok) {
           const data = await res.json();
@@ -94,7 +95,7 @@ const AddTechnicalTest = () => {
     try {
       // 1️⃣ Fetch existing MCQs (if any)
       const existingRes = await fetch(
-        `http://localhost:8080/api/mcq/role/${encodeURIComponent(selectedRole)}`
+        `${API_BASE_PORTAL}/role/${encodeURIComponent(selectedRole)}`
       );
 
       let roleData = { roleName: selectedRole, questions: [newQ] };
@@ -105,7 +106,7 @@ const AddTechnicalTest = () => {
       }
 
       // 2️⃣ Save merged role data
-      const saveRes = await fetch("http://localhost:8080/api/mcq/role", {
+      const saveRes = await fetch(`${API_BASE_PORTAL}/role`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(roleData),
@@ -132,7 +133,7 @@ const AddTechnicalTest = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:8080/api/mcq/role/${encodeURIComponent(selectedRole)}/question/${questionId}`,
+        `${API_BASE_PORTAL}/role/${encodeURIComponent(selectedRole)}/question/${questionId}`,
         { method: "DELETE" }
       );
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./SavedJobs.css";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_PORTAL } from "../../API/api";
 
 
 const SavedJobs = () => {
@@ -13,7 +14,7 @@ const SavedJobs = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await axios.get("http://localhost:8080/api/saved-jobs/candidate/1/details");
+      const res = await axios.get(`${API_BASE_PORTAL}/candidate/1/details`);
       setSavedJobs(res.data);
     };
     fetchData();
@@ -21,7 +22,7 @@ const SavedJobs = () => {
 
   const openJDModal = async (requirementId) => {
     try {
-      const res = await axios.get(`http://localhost:8080/api/requirements/${requirementId}`);
+      const res = await axios.get(`${API_BASE_PORTAL}/getRequirementById/${requirementId}`);
       setSelectedJD(res.data);
       setShowJDModal(true);
     } catch (err) {

@@ -4,9 +4,12 @@ import LoginImage from "../.././assets/recruiter.png";
 import { SyncOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_PORTAL, API_BASE_URL } from "../../API/api";
+import { useUser } from "../UserContext";
 
 const LoginEmp = () => {
   const { role } = useParams();
+  const { loginUser } = useUser();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [userType, setUserType] = useState("");
@@ -39,10 +42,18 @@ const LoginEmp = () => {
   useEffect(() => { drawCaptcha(); }, [captcha]);
 
   const buildLoginBody = (username, password, role) => {
-    if (role === "portalemp") return { userName: username, password };
+    if (role === "portalemp") {
+      // For portal employee loginEmployee API
+      return {
+        userName: username,           // ✅ matches backend field
+        employeePassword: password,   // ✅ matches backend field
+        userType: role                // ✅ matches backend field
+      };
+    }
 
+    // For other roles (if applicable)
     switch (role) {
-      case "Recruiter":
+      case "Recruiters":
         return { userName: username, employeePassword: password };
       case "TeamLeader":
         return { userName: username, tlPassword: password };
@@ -56,7 +67,13 @@ const LoginEmp = () => {
   };
 
 
+
+
   const handleLogin = async (e) => {
+    console.log("username:", username);
+    console.log("employeePassword:", password);
+    console.log("userType:", userType);
+
     e.preventDefault();
 
     if (userCaptcha !== captcha) {
@@ -70,36 +87,48 @@ const LoginEmp = () => {
     }
 
     try {
-      // ✅ Step 2: Build the correct request body per role
+      // Step 1: Build the request body
       const body = buildLoginBody(username, password, userType);
 
+      // Step 2: Select the right API
       const apiUrl =
         userType === "portalemp"
-          ? "http://localhost:8080/jobportal/api/loginEmployee"
-          : `http://192.168.1.39:9090/api/ats/157industries/user-login-157/${userType}`;
+          ? `${API_BASE_PORTAL}/loginEmployee`
+          : `${API_BASE_URL}/user-login-157/${userType}`;
 
+      console.log("📤 API URL:", apiUrl);
+      console.log("📦 Request Body:", body);
+
+      // Step 3: Make API call
       const response = await axios.post(apiUrl, body);
+      console.log("✅ API Response:", response);
 
+      // Step 4: Extract only what's needed
+      const userId =
+        userType === "portalemp"
+          ? response.data.uid
+          : response.data.employeeId;
 
-      // ✅ Step 3: Save user info
+      // Step 5: Save login info in context
       loginUser({
-        userId: response.data.employeeId, // or whatever your API returns
+        userId,
         userType: "employee",
         role: userType,
-        name: response.data.fullName
       });
 
-      // Optional: localStorage persistence
-      localStorage.setItem("userId", response.data.employeeId);
+      // Step 6: Persist minimal info in localStorage
+      localStorage.setItem("userId", userId);
       localStorage.setItem("userType", "employee");
       localStorage.setItem("role", userType);
-      localStorage.setItem("name", response.data.fullName);
 
-      // Navigate after login
+      // Step 7: Navigate to the correct dashboard
       navigate(`/recruiter-navbar/${userType}`);
     } catch (error) {
+      console.error("❌ Login failed:", error.response?.data || error);
       alert(error.response?.data || "Login failed. Please try again.");
     }
+
+
   };
 
   return (
@@ -134,7 +163,7 @@ const LoginEmp = () => {
               required
             >
               <option value="">Select User Type</option>
-              <option value="Recruiter">Recruiter</option>
+              <option value="Recruiters">Recruiter</option>
               <option value="TeamLeader">Team Leader</option>
               <option value="Manager">Manager</option>
               <option value="SuperUser">Super User</option>

@@ -75,7 +75,7 @@ const LoginCard = () => {
 
         try {
             const loginResponse = await axios.post(
-                `${API_BASE_PORTAL}/jobportal/api/loginUser`,
+                `${API_BASE_PORTAL}/loginUser`,
                 {
                     userName: username,
                     password: password,
