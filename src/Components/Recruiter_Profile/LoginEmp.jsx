@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./LoginEmp.css";
 import LoginImage from "../.././assets/recruiter.png";
-import { SyncOutlined } from "@ant-design/icons";
+import { SyncOutlined, EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons"; // 👈 Added icons
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
@@ -9,6 +9,7 @@ const LoginEmp = () => {
   const { role } = useParams();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // 👈 Added for toggle
   const [userType, setUserType] = useState("");
   const [captcha, setCaptcha] = useState("");
   const [userCaptcha, setUserCaptcha] = useState("");
@@ -78,7 +79,7 @@ const LoginEmp = () => {
     <div className="login-container">
       <div className="login-card modern-card">
         <div className="login-left">
-         <img src={LoginImage} alt="Logo" className="login-logo" />
+          <img src={LoginImage} alt="Logo" className="login-logo" />
         </div>
         <div className="login-right">
           <div className="login-title">Employee Login</div>
@@ -91,14 +92,24 @@ const LoginEmp = () => {
               className="login-input"
               required
             />
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="login-input"
-              required
-            />
+
+            <div className="password-wrapper">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="login-input password-input"
+                required
+              />
+              <span
+                className="eye-icon"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
+              </span>
+            </div>
+
             <select
               className="login-input"
               value={userType}
