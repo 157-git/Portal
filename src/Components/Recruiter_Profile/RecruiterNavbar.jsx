@@ -48,9 +48,9 @@ const RecruiterNavbar = () => {
   //  const [companies, setCompanies] = useState([]);
   //   const [showCompanies, setShowCompanies] = useState(false);
   const [filteredJobs, setFilteredJobs] = useState([]);
-const [showInvitePopup, setShowInvitePopup] = useState(false);
-const [inviteCandidates, setInviteCandidates] = useState([]);
-const [selectedJobTitle, setSelectedJobTitle] = useState("");
+  const [showInvitePopup, setShowInvitePopup] = useState(false);
+  const [inviteCandidates, setInviteCandidates] = useState([]);
+  const [selectedJobTitle, setSelectedJobTitle] = useState("");
 
   const [filters, setFilters] = useState({
     keyword: "",
@@ -154,34 +154,34 @@ const [selectedJobTitle, setSelectedJobTitle] = useState("");
   const handleEdit = (requirementId) => {
     navigate(`/add-job-description/${requirementId}`);
   };
-const handleSentInvites = (requirementId, designation) => {
-  // simulate fetching matching candidates (based on designation)
-  const mockCandidates = [
-    { name: "Riya Sharma", email: "riya.sharma@example.com", designation: designation },
-    { name: "Amit Verma", email: "amit.verma@example.com", designation: designation },
-    { name: "Sneha Patil", email: "sneha.patil@example.com", designation: designation },
-  ];
+  const handleSentInvites = (requirementId, designation) => {
+    // simulate fetching matching candidates (based on designation)
+    const mockCandidates = [
+      { name: "Riya Sharma", email: "riya.sharma@example.com", designation: designation },
+      { name: "Amit Verma", email: "amit.verma@example.com", designation: designation },
+      { name: "Sneha Patil", email: "sneha.patil@example.com", designation: designation },
+    ];
 
-  setInviteCandidates(mockCandidates);
-  setSelectedJobTitle(designation);
-  setShowInvitePopup(true);
-};
-const handleSendAllInvites = () => {
-  // Show success toast when all invites are sent
-  toast.success(`✅ Invites sent to ${inviteCandidates.length} candidates for ${selectedJobTitle}!`, {
-    position: "top-center",
-    autoClose: 3000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-  });
+    setInviteCandidates(mockCandidates);
+    setSelectedJobTitle(designation);
+    setShowInvitePopup(true);
+  };
+  const handleSendAllInvites = () => {
+    // Show success toast when all invites are sent
+    toast.success(`✅ Invites sent to ${inviteCandidates.length} candidates for ${selectedJobTitle}!`, {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
 
-  // Close the popup after success
-  setShowInvitePopup(false);
-};
+    // Close the popup after success
+    setShowInvitePopup(false);
+  };
 
 
 
@@ -298,11 +298,19 @@ const handleSendAllInvites = () => {
               onClick={() => togglePanel("profile")}
             />
             <span className="recNav-label">Profile</span>
+
+            {/* Show panel only if openPanel === "profile" */}
+            {openPanel === "profile" && (
+              <div className="profile-panel">
+                <p>Profile content goes here</p>
+              </div>
+            )}
           </div>
+
         </div>
       </nav>
 
-            {/* ===== Profile Panel ===== */}
+      {/* ===== Profile Panel ===== */}
       {openPanel === "profile" && (
         <div className="recNav-profile-panel recNav-open">
           <button className="recNav-close-btn" onClick={() => setOpenPanel(null)}>
@@ -385,7 +393,7 @@ const handleSendAllInvites = () => {
             </button>
 
             <h2 className="jd-modal-title">Job Description Details</h2>
-<div className="jd-modal-scroll">
+            <div className="jd-modal-scroll">
               <section className="jd-section">
                 <h3>Overview</h3>
                 <div className="jd-grid">
@@ -564,12 +572,12 @@ const handleSendAllInvites = () => {
                     <button onClick={() => handleViewJD(job.requirementId)}>
                       View JD
                     </button>
-<button
-  className="recJobCard-invite-btn"
-  onClick={() => handleSentInvites(job.requirementId, job.designation)}
->
-  Sent Invites
-</button>
+                    <button
+                      className="recJobCard-invite-btn"
+                      onClick={() => handleSentInvites(job.requirementId, job.designation)}
+                    >
+                      Sent Invites
+                    </button>
                   </div>
                 </div>
               ))}
@@ -741,51 +749,51 @@ const handleSendAllInvites = () => {
         </div>
       )}
 
-{/* ===== SENT INVITES POPUP ===== */}
-{showInvitePopup && (
-  <div className="invite-popup-overlay">
-    <div className="invite-popup-box">
-      <div className="invite-header">
-        <h3>Matched Candidates for {selectedJobTitle}</h3>
-        <button className="popup-close-btn" onClick={() => setShowInvitePopup(false)}>×</button>
-      </div>
+      {/* ===== SENT INVITES POPUP ===== */}
+      {showInvitePopup && (
+        <div className="invite-popup-overlay">
+          <div className="invite-popup-box">
+            <div className="invite-header">
+              <h3>Matched Candidates for {selectedJobTitle}</h3>
+              <button className="popup-close-btn" onClick={() => setShowInvitePopup(false)}>×</button>
+            </div>
 
-      <p>Total Matching Candidates: <strong>{inviteCandidates.length}</strong></p>
+            <p>Total Matching Candidates: <strong>{inviteCandidates.length}</strong></p>
 
-      {inviteCandidates.length > 0 ? (
-        <table className="invite-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Designation</th>
-            </tr>
-          </thead>
-          <tbody>
-            {inviteCandidates.map((cand, i) => (
-              <tr key={i}>
-                <td>{cand.name}</td>
-                <td>{cand.email}</td>
-                <td>{cand.designation}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <p>No matching candidates found.</p>
+            {inviteCandidates.length > 0 ? (
+              <table className="invite-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Designation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {inviteCandidates.map((cand, i) => (
+                    <tr key={i}>
+                      <td>{cand.name}</td>
+                      <td>{cand.email}</td>
+                      <td>{cand.designation}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <p>No matching candidates found.</p>
+            )}
+
+            <div className="invite-popup-actions">
+              <button className="btn-primary" onClick={handleSendAllInvites}>
+                Send All
+              </button>
+              <button className="btn-secondary" onClick={() => setShowInvitePopup(false)}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
       )}
-
-      <div className="invite-popup-actions">
-        <button className="btn-primary" onClick={handleSendAllInvites}>
-          Send All
-        </button>
-        <button className="btn-secondary" onClick={() => setShowInvitePopup(false)}>
-          Cancel
-        </button>
-      </div>
-    </div>
-  </div>
-)}
 
       <footer className="recFooter-footer">
         <div className="recFooter-content">

@@ -121,6 +121,8 @@ const LoginEmp = () => {
       localStorage.setItem("userType", "employee");
       localStorage.setItem("role", userType);
 
+      console.log("EMP ID:", userId)
+
       // Step 7: Navigate to the correct dashboard
       navigate(`/recruiter-navbar/${userType}`);
     } catch (error) {
