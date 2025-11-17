@@ -23,8 +23,11 @@ import { useUser } from "../UserContext";
 import { API_BASE_PORTAL } from "../../API/api";
 
 const Navbar = () => {
+
   // ===== Navbar States =====
   const { user } = useUser(); // get user here
+  console.log("USER FROM CONTEXT = ", user);
+
   const { logoutUser } = useUser(); // ✅ now it's defined
   const [menuOpen, setMenuOpen] = useState(false);
   const [openPanel, setOpenPanel] = useState(null);
@@ -320,11 +323,27 @@ const Navbar = () => {
     setShowSearchOverlay(false);
   };
 
-  const handleLogout = () => {
-    logoutUser();
-    setOpenPanel(null);
-    navigate("/login");
+  const handleLogout = async () => {
+    if (!user || !user.userName) {
+      console.error("User data not loaded yet");
+      return;
+    }
+
+    try {
+      await axios.post(
+        `${API_BASE_PORTAL}/logoutUser?userName=${user.userName}&userType=candidate`
+      );
+
+      logoutUser();
+      setOpenPanel(null);
+      console.log("Logout successful!")
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
+
+
 
   return (
     <>

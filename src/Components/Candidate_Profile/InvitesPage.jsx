@@ -5,6 +5,7 @@ import "./InvitesPage.css";
 import { useUser } from "../UserContext";
 import { useNavigate } from "react-router-dom";
 import { FaMapMarkerAlt, FaMoneyBillWave, FaBriefcase, FaBuilding } from "react-icons/fa";
+import { API_BASE_PORTAL } from "../../API/api";
 
 const InvitesPage = () => {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const InvitesPage = () => {
     const fetchInvites = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8080/api/jobportal/candidate/${candidateId}`
+          `${API_BASE_PORTAL}/getInvitesForCandidate/${candidateId}`
         );
 
         setInvites(res.data);
